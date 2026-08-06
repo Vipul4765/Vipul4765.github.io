@@ -58,25 +58,32 @@ previews work when you share it.
 Everything is in one HTML file with commented sections (`HERO`, `SELECTED WORK`,
 `SERVICES`, `CAPABILITIES`, `APPROACH`, `BACKGROUND`, `CONTACT`).
 
-Colours and type live at the top of `style.css` as custom properties, defined three
-times: `:root` (light), `@media (prefers-color-scheme: dark)`, and the two
-`:root[data-theme=...]` blocks the manual toggle uses. **Change a colour in all the
-blocks it appears in**, or the theme toggle will disagree with the OS setting.
+Colours and type live at the top of `style.css` as custom properties. The design is
+dark-first, so the palette is declared **three times**:
+
+1. `:root` — the dark palette (the default)
+2. `:root[data-theme="light"]` — what the manual toggle switches to
+3. `@media (prefers-color-scheme: light)` on `:root:not([data-theme])` — the OS
+   preference, only while the visitor hasn't chosen a theme
+
+**Change a light-theme colour in both places 2 and 3**, or the toggle and the OS
+setting will disagree.
 
 ### Things to update as they change
 
-- The availability pill in the hero — turn it off when you're booked.
-- Rate / minimum engagement in the **How I work** table.
-- Every number in the `.spec` tables is a real measurement. If the code changes,
-  re-measure before editing, or the page stops being true.
+- The availability pill in the hero, and the `Availability` row in **About** —
+  turn both off when you're booked.
+- Minimum engagement / rate in the **About** facts panel.
+- Every number in the `.kv` rows and the hero counters is a real measurement taken
+  from the source. If the code changes, re-measure before editing — otherwise the
+  page quietly stops being true, which is the one thing it can't afford to be.
 
 ## Accessibility & compatibility notes
 
 - All text passes WCAG AA in both themes, verified by calculation: 4.5:1 for body
   copy, and the large gradient headline clears the 3:1 large-text threshold.
 - Honours `prefers-reduced-motion` — all animation is disabled, nothing is hidden.
-- No horizontal page scroll from 320 px up; the wide topology diagram scrolls inside
-  its own container.
+- No horizontal page scroll, verified from 320 px to 1920 px.
 - Works with JavaScript disabled. The entrance animations are armed by a `js` class
   that scripting adds; without it every element renders in its final state, so the
   page can never come up blank. Never move those hidden start states outside the
