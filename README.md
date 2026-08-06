@@ -36,6 +36,24 @@ gh repo create vipulkumar-dev --public --source=. --push
 Then in the repo: **Settings → Pages → Source: `main` / root**.
 Live at `https://vipul4765.github.io/vipulkumar-dev/` in about a minute.
 
+### Cloudflare Pages (connected to this repo)
+
+Cloudflare watches the repo directly — no workflow file, no API token, no secrets.
+
+1. Sign up free at <https://dash.cloudflare.com/sign-up>
+2. **Workers & Pages → Create → Pages → Connect to Git**
+3. Authorise GitHub and pick this repository
+4. Build settings — this is a plain static site, so:
+   - Framework preset: **None**
+   - Build command: *(leave empty)*
+   - Build output directory: **`/`**
+5. **Save and Deploy**
+
+Every push to `master` redeploys automatically. Lives at `<project>.pages.dev`.
+
+GitHub Pages and Cloudflare Pages can both serve this repo at once — they're
+independent, so adding one does not disturb the other.
+
 ### Vercel or Netlify (free, custom domain in 2 minutes)
 
 Drag the folder onto <https://app.netlify.com/drop>, or:
