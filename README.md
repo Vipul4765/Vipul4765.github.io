@@ -7,13 +7,16 @@ Open `index.html` and it works.
 index.html                  the whole page
 assets/css/style.css        design tokens + layout
 assets/js/main.js           theme toggle, scroll-spy, reveal-on-scroll
-assets/fonts/               self-hosted Archivo + IBM Plex Mono (78 KB, latin subset)
-assets/img/profile.jpg      profile photo
-assets/img/certs/           certificate scans (web-sized)
-assets/img/projects/        archived 2023 project screenshots (not used on the page)
+assets/fonts/               self-hosted variable Archivo + IBM Plex Mono (136 KB)
+assets/img/                  archived assets — not referenced by the page
 ```
 
-Total weight: ~2 MB, of which the unused archive images are most of it.
+The page itself loads ~150 KB. The `assets/img/` folder is an offline archive of the
+old 2023 site and is not referenced — delete it if you don't want it in the repo.
+
+**Confidentiality:** the copy deliberately describes scope and scale only. No
+implementation techniques, algorithms or system internals appear anywhere on the page.
+Keep it that way when editing — the detail belongs in a call, under NDA.
 
 ## Run it locally
 
@@ -62,16 +65,21 @@ blocks it appears in**, or the theme toggle will disagree with the OS setting.
 
 ### Things to update as they change
 
-- The availability pill in the rail — turn it off when you're booked.
+- The availability pill in the hero — turn it off when you're booked.
 - Rate / minimum engagement in the **How I work** table.
 - Every number in the `.spec` tables is a real measurement. If the code changes,
   re-measure before editing, or the page stops being true.
 
 ## Accessibility & compatibility notes
 
-- All text passes WCAG AA (4.5:1) in both themes; verified by calculation.
+- All text passes WCAG AA in both themes, verified by calculation: 4.5:1 for body
+  copy, and the large gradient headline clears the 3:1 large-text threshold.
 - Honours `prefers-reduced-motion` — all animation is disabled, nothing is hidden.
 - No horizontal page scroll from 320 px up; the wide topology diagram scrolls inside
   its own container.
-- Works with JavaScript disabled: you lose the theme toggle and scroll-spy, and the
-  reveal animations are skipped so all content shows immediately.
+- Works with JavaScript disabled. The entrance animations are armed by a `js` class
+  that scripting adds; without it every element renders in its final state, so the
+  page can never come up blank. Never move those hidden start states outside the
+  `.js` prefix.
+- The hero canvas is decorative, pauses off-screen and on hidden tabs, and renders a
+  single static frame under `prefers-reduced-motion`.
