@@ -499,6 +499,22 @@ h1 {
   .btn .arw, .route__a { transition: none !important; }
 }
 .me{width:72px;height:72px;border-radius:50%;object-fit:cover;border:1px solid var(--rule);margin-bottom:1rem;display:block}
+
+.product{display:grid;gap:clamp(1.5rem,3vw,2.5rem);align-items:start}
+@media(min-width:900px){.product{grid-template-columns:1.15fr .85fr}}
+.product__main{display:flex;flex-direction:column;gap:1rem;align-items:flex-start}
+.product__eyebrow{font:600 .74rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem}
+.product__eyebrow::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)}
+.product__main h3{font-family:var(--serif);font-size:clamp(1.35rem,2.4vw,1.85rem);line-height:1.2;letter-spacing:-.012em;max-width:22ch}
+.product__main p{color:var(--ink-2);max-width:56ch}
+.product__note{font-size:.88rem;color:var(--muted)}
+.product__f{list-style:none;margin:0;padding:1.25rem;border:1px solid var(--rule);border-radius:14px;background:var(--sunk);display:flex;flex-direction:column;gap:.1rem}
+.product__f li{display:flex;flex-direction:column;gap:.2rem;padding:.75rem 0;border-bottom:1px solid var(--rule)}
+.product__f li:last-child{border-bottom:0}
+.product__f b{font-family:var(--serif);font-weight:600;font-size:1.02rem}
+.product__f span{font-size:.9rem;color:var(--ink-2)}
+.ilink{color:inherit;text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1.5px}
+.ilink:hover{color:var(--accent)}
 </style>
 </head>
 <body id="top">
@@ -535,6 +551,7 @@ h1 {
     </a>
 
     <div class="nav__links">
+      <a href="#product">The product</a>
       <a href="#team">The two of us</a>
       <a href="#work">Work</a>
       <a href="#services">What we take on</a>
@@ -591,7 +608,7 @@ h1 {
 
     <div class="hero__cta">
       <a class="btn btn--solid" href="#contact">Start a conversation <span class="arw" aria-hidden="true">&rarr;</span></a>
-      <a class="btn" href="#work">See what we&rsquo;ve built</a>
+      <a class="btn" href="https://algoverve.in/" target="_blank" rel="noopener">Visit Algoverve <span class="arw" aria-hidden="true">&#8599;</span></a>
     </div>
 
     <div class="totals">
@@ -613,6 +630,47 @@ h1 {
 </header>
 
 <!-- ══════════════════════════════ THE TWO OF US ══════════════════════════════ -->
+<section class="sec sec--rule" id="product">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="label">The product</span>
+      <h2>You can go and use the thing we built.</h2>
+      <p class="lede">
+        Most of what follows is private code running a live platform. The platform itself
+        is not — it is open on the internet, with a sign-up, a price list and real market
+        hours. Everything on this page exists to keep it running.
+      </p>
+    </div>
+
+    <div class="product rv">
+      <div class="product__main">
+        <p class="product__eyebrow">Algoverve &mdash; live</p>
+        <h3>An options-trading platform for people who do not want to write code.</h3>
+        <p>
+          Traders design multi-leg strategies in a builder, test them against real market
+          data, and deploy them to run on their own. The platform prices the positions,
+          holds capital against exchange margin rules, and shows profit and loss moving in
+          real time. We built and operate all of it, the two of us.
+        </p>
+        <a class="btn btn--solid" href="https://algoverve.in/" target="_blank" rel="noopener">
+          Open algoverve.in <span class="arw" aria-hidden="true">&#8599;</span>
+        </a>
+        <p class="product__note">
+          A public product, not a case study we are asking you to take on trust.
+        </p>
+      </div>
+
+      <ul class="product__f">
+        <li><b>Strategy Builder</b><span>Design multi-leg strategies without code.</span></li>
+        <li><b>Forward Trading</b><span>Test live against real market data.</span></li>
+        <li><b>Real-Time MTM</b><span>Live profit and loss per strategy and across the book.</span></li>
+        <li><b>Payoff Chart</b><span>Curves that move as the market does.</span></li>
+        <li><b>Trading Journal</b><span>Every trade logged and reviewable afterwards.</span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
 <section class="sec sec--rule" id="team">
   <div class="wrap">
     <div class="shead rv">
@@ -678,23 +736,6 @@ h1 {
         market-data ingest that everything downstream reads. On those two we sat on the same
         problems from both ends — which is also how we&rsquo;d rather work for you.
       </p>
-    </div>
-
-    <div class="creds rv">
-      <p class="creds__h">Credentials — Vipul</p>
-      <div class="cred"><span>B.Tech, SRM Institute of Science &amp; Technology, 2024</span></div>
-      <div class="cred">
-        <span>NPTEL — Data Structures &amp; Algorithms</span>
-        <a href="https://drive.google.com/file/d/1m7J5pY9VGkKaS6RUgXlBg-MbEjPPlrCN/view" target="_blank" rel="noopener">Verify</a>
-      </div>
-      <div class="cred">
-        <span>HackerRank — SQL (Intermediate)</span>
-        <a href="https://www.hackerrank.com/certificates/7781b740714d" target="_blank" rel="noopener">Verify</a>
-      </div>
-      <div class="cred">
-        <span>HackerRank — Problem Solving (Intermediate)</span>
-        <a href="https://www.hackerrank.com/certificates/bb46e0b2d12d" target="_blank" rel="noopener">Verify</a>
-      </div>
     </div>
   </div>
 </section>
