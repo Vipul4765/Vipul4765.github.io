@@ -23,6 +23,8 @@
 </head>
 <body>
 
+<div class="progress" id="progress" aria-hidden="true"><span></span></div>
+
 <!-- ambient light + film grain -->
 <div class="atmos" aria-hidden="true">
   <div class="orb orb--1"></div>
@@ -57,10 +59,12 @@
       <div>
         <span class="hero__badge"><span class="pip"></span> Available for freelance projects</span>
 
+        <!-- Words are individually masked so they can rise on a stagger.
+             Order of .w elements sets the sequence; --i drives the delay. -->
         <h1 class="disp">
-          <span class="ln"><span>I build backends</span></span>
-          <span class="ln"><span>where being wrong</span></span>
-          <span class="ln"><span class="gradtext">costs money.</span></span>
+          <span class="ln"><span class="w" style="--i:0"><i>I</i></span> <span class="w" style="--i:1"><i>build</i></span> <span class="w" style="--i:2"><i>backends</i></span></span>
+          <span class="ln"><span class="w" style="--i:3"><i>where</i></span> <span class="w" style="--i:4"><i>being</i></span> <span class="w" style="--i:5"><i>wrong</i></span></span>
+          <span class="ln"><span class="w gradtext" style="--i:6"><i>costs</i></span> <span class="w gradtext" style="--i:7"><i>money.</i></span></span>
         </h1>
 
         <p class="hero__sub">
@@ -308,50 +312,50 @@
       </p>
     </div>
 
-    <div class="bento">
-      <div class="card svc b-wide rv">
+    <div class="bento rv stag">
+      <div class="card svc b-wide">
         <span class="svc__n mono">01</span>
         <h3>Real-time streaming APIs</h3>
         <p>The layer between your data and your live interface: authenticated long-lived connections, multiplexed updates, reconnects that don't lose or duplicate anything, and backpressure that holds when one client is slow.</p>
         <div class="svc__fit">For dashboards, live ops, trading screens</div>
       </div>
 
-      <div class="card svc b-wide rv">
+      <div class="card svc b-wide">
         <span class="svc__n mono">02</span>
         <h3>Money-path reliability</h3>
         <p>A focused engagement on the part of your system where wrong state costs real money. I map every route a critical event can take, find the double-processing and lost-update windows, and close them. You get a written findings list ranked by blast radius.</p>
         <div class="svc__fit">For payments, orders, billing, ledgers</div>
       </div>
 
-      <div class="card svc b-third rv">
+      <div class="card svc b-third">
         <span class="svc__n mono">03</span>
         <h3>Event-driven backends</h3>
         <p>Multi-worker pipelines that process each item exactly once, survive restarts without duplicating work, isolate poisoned jobs, and recover cleanly from a crash mid-operation.</p>
         <div class="svc__fit">Job fleets, ingest, fulfilment</div>
       </div>
 
-      <div class="card svc b-third rv">
+      <div class="card svc b-third">
         <span class="svc__n mono">04</span>
         <h3>Python performance rescue</h3>
         <p>When a job that used to finish in time no longer does, I measure first and fix where the measurement points. Always behind a fallback, so a build issue never becomes a correctness issue.</p>
         <div class="svc__fit">Pipelines that outgrew their runtime</div>
       </div>
 
-      <div class="card svc b-third rv">
+      <div class="card svc b-third">
         <span class="svc__n mono">05</span>
         <h3>Trading &amp; market data</h3>
         <p>The specialist lane: live feed ingestion, strategy scheduling and order execution, broker integrations, portfolio margin, options pricing and accurate cost modelling.</p>
         <div class="svc__fit">Brokers, prop desks, algo products</div>
       </div>
 
-      <div class="card svc b-wide rv">
+      <div class="card svc b-wide">
         <span class="svc__n mono">06</span>
         <h3>What I don't take on</h3>
         <p>Frontend and design work. I'll say so on the first call rather than subcontract it badly. I work backend, data and infrastructure — and I'll define a clean API contract so your frontend developer has an easy job.</p>
         <div class="svc__fit">Honest scope beats a missed deadline</div>
       </div>
 
-      <div class="card svc b-wide rv">
+      <div class="card svc b-wide">
         <span class="svc__n mono">→</span>
         <h3>Not sure which one you need?</h3>
         <p>Describe the problem in a paragraph and I'll tell you what I'd actually do about it — including if the answer is that you don't need me.</p>
@@ -372,7 +376,7 @@
       <p class="shead__meta">Everything here is in production code I've written — not a course list.</p>
     </div>
 
-    <div class="matrix rv">
+    <div class="matrix rv stag">
       <div class="mcell"><h4>Core</h4><ul><li>Python 3.12</li><li>Cython</li><li>NumPy</li><li>SQL</li><li>Bash</li><li>C++</li></ul></div>
       <div class="mcell"><h4>Concurrency</h4><ul><li>asyncio &amp; uvloop</li><li>Multi-process fleets</li><li>Bounded queues</li><li>Backpressure</li><li>Graceful shutdown</li></ul></div>
       <div class="mcell"><h4>Data</h4><ul><li>Redis</li><li>PostgreSQL</li><li>SQLAlchemy 2.0</li><li>asyncpg</li><li>Alembic</li><li>Binary encoding</li></ul></div>
@@ -396,23 +400,23 @@
       <p class="shead__meta">No discovery theatre. You'll know inside a week whether this is working.</p>
     </div>
 
-    <div class="steps">
-      <div class="card step rv">
+    <div class="steps rv stag">
+      <div class="card step">
         <div class="step__n">STEP 01</div>
         <h4>A real conversation</h4>
         <p>Tell me what the system does and what's going wrong. Free, no pitch. If I'm not the right person I'll say so and, where I can, point you at who is.</p>
       </div>
-      <div class="card step rv">
+      <div class="card step">
         <div class="step__n">STEP 02</div>
         <h4>Scoped proposal</h4>
         <p>A written plan: what I'll do, what I won't, what it costs and when it lands. Fixed scope for defined work, retainer for ongoing. No hourly guessing games.</p>
       </div>
-      <div class="card step rv">
+      <div class="card step">
         <div class="step__n">STEP 03</div>
         <h4>Build in the open</h4>
         <p>You get commits as they happen and a short written update every week — what moved, what's next, what worries me. No month-long silences.</p>
       </div>
-      <div class="card step rv">
+      <div class="card step">
         <div class="step__n">STEP 04</div>
         <h4>Handover that holds</h4>
         <p>Tests, a README your next developer can follow, and a walkthrough. The goal is that you don't need me afterwards — and call me again because you want to.</p>
@@ -491,7 +495,7 @@
         can help and what I'd do first — no sales call required.
       </p>
 
-      <div class="links">
+      <div class="links rv stag">
         <a class="link" href="mailto:vipuldhankar17170277@gmail.com">
           <span class="link__k">Email</span>
           <span class="link__v">vipuldhankar17170277@gmail.com</span>

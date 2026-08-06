@@ -251,8 +251,10 @@ img, svg, canvas { display: block; max-width: 100%; }
   max-width: 20ch; font-size: var(--s-5); font-weight: 700;
   font-variation-settings: 'wdth' 104; letter-spacing: -.034em; line-height: 1.03;
 }
-.hero h1 .ln { display: block; overflow: hidden; }
-.hero h1 .ln > span { display: block; }
+/* .ln / .w display rules live in the motion system at the end of this file.
+   A `.hero h1 .ln > span { display: block }` rule used to sit here for the old
+   line-based reveal; it out-specifies `.w` and stacked every word onto its own
+   line once the headline moved to per-word markup. Do not reintroduce it. */
 
 .hero__sub {
   margin-top: 1.5rem; max-width: 50ch;
@@ -262,12 +264,9 @@ img, svg, canvas { display: block; max-width: 100%; }
 
 /* entrance — enhancement only, armed by html.js, released by .hero.in */
 @media (prefers-reduced-motion: no-preference) {
-  .js .hero h1 .ln > span { transform: translateY(105%); transition: transform .95s var(--ease); }
-  .js .hero h1 .ln:nth-child(1) > span { transition-delay: .10s; }
-  .js .hero h1 .ln:nth-child(2) > span { transition-delay: .20s; }
-  .js .hero h1 .ln:nth-child(3) > span { transition-delay: .30s; }
-  .hero.in h1 .ln > span { transform: none; }
-
+  /* Line-level reveal removed: the headline now animates per word via .w > i
+     in the motion system below. A `.ln > span` rule here would match those
+     word spans too and double the movement. */
   .js .hero__badge, .js .hero__sub, .js .hero__cta, .js .hero__viz, .js .hero__strip {
     opacity: 0; transform: translateY(20px);
     transition: opacity .9s var(--ease), transform .9s var(--ease);
@@ -560,7 +559,116 @@ details.more summary:hover { color: var(--text); }
 @media (prefers-reduced-motion: no-preference) {
   .js .rv { opacity: 0; transform: translateY(24px); transition: opacity .8s var(--ease), transform .8s var(--ease); }
   .js .rv.in { opacity: 1; transform: none; }
+
+  /* children of a revealed block come in on a stagger; --i set by JS */
+  .js .stag > * {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .7s var(--ease), transform .7s var(--ease);
+    transition-delay: calc(var(--i, 0) * 65ms);
+  }
+  .js .stag.in > * { opacity: 1; transform: none; }
 }
+
+/* ═══════════════════════════════════════════════════════════════
+   MOTION SYSTEM
+   Everything here is enhancement: each effect is gated behind
+   html.js and prefers-reduced-motion, and composes through CSS
+   custom properties so JS never fights the stylesheet for
+   ownership of `transform`.
+   ═══════════════════════════════════════════════════════════════ */
+
+/* ── scroll progress ── */
+.progress {
+  position: fixed; inset: 0 0 auto 0; height: 2px; z-index: 200;
+  background: transparent; pointer-events: none;
+}
+.progress span {
+  display: block; height: 100%; width: 100%;
+  transform: scaleX(var(--p, 0)); transform-origin: left;
+  background: var(--grad-wide);
+}
+@media (prefers-reduced-motion: reduce) { .progress { display: none; } }
+
+/* ── headline: per-word rise ── */
+.hero h1 .ln { display: block; overflow: visible; }
+.w {
+  display: inline-block; overflow: hidden; vertical-align: bottom;
+  padding-bottom: .14em; margin-bottom: -.14em;   /* room for descenders */
+}
+.w > i { display: inline-block; font-style: inherit; }
+@media (prefers-reduced-motion: no-preference) {
+  .js .hero h1 .w > i {
+    transform: translateY(115%);
+    transition: transform .9s cubic-bezier(.16,.84,.34,1);
+    transition-delay: calc(var(--i, 0) * 62ms + 120ms);
+  }
+  .hero.in h1 .w > i { transform: none; }
+}
+
+/* ── magnetic buttons ── */
+.btn, .navcta {
+  transform: translate3d(var(--tx, 0px), calc(var(--ty, 0px) + var(--lift, 0px)), 0);
+  will-change: transform;
+}
+.btn:hover, .navcta:hover { --lift: -2px; }
+
+/* ── card tilt + border sweep ── */
+.card {
+  transform:
+    perspective(1100px)
+    rotateX(var(--rx, 0deg))
+    rotateY(var(--ry, 0deg))
+    translateY(var(--cy, 0px));
+  transform-style: preserve-3d;
+}
+.card:hover { --cy: -4px; }
+/* animated hairline that sweeps the top edge on hover */
+.card::after {
+  content: ''; position: absolute; z-index: 2; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0; transform: translateX(-100%);
+  transition: opacity .3s;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card:hover::after { opacity: .9; animation: sweep 1.1s var(--ease) forwards; }
+  @keyframes sweep { to { transform: translateX(100%); } }
+}
+
+/* ── section heading rule draw ── */
+.shead h2 { position: relative; padding-bottom: .5rem; }
+.shead h2::after {
+  content: ''; position: absolute; left: 0; bottom: 0; height: 2px; width: 3.2rem;
+  background: var(--grad); border-radius: 2px;
+  transform: scaleX(0); transform-origin: left;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js .shead h2::after { transition: transform .8s var(--ease) .18s; }
+  .js .rv.in h2::after { transform: scaleX(1); }
+}
+@media (prefers-reduced-motion: reduce) { .shead h2::after { transform: scaleX(1); } }
+
+/* ── odometer counters ── */
+.odo { display: inline-flex; align-items: baseline; }
+.odo__d { display: inline-block; height: 1em; overflow: hidden; line-height: 1; }
+.odo__c { display: flex; flex-direction: column; will-change: transform; }
+.odo__c > span { line-height: 1; height: 1em; }
+@media (prefers-reduced-motion: no-preference) {
+  .odo__c {
+    transform: translateY(calc(var(--d, 0) * -1em));
+    transition: transform 1.5s cubic-bezier(.16,.84,.34,1);
+    transition-delay: calc(var(--k, 0) * 70ms);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .odo__c { transform: translateY(calc(var(--d, 0) * -1em)); }
+}
+
+/* ── hero visual parallax ── */
+.hero__viz { transform: translateY(var(--pz, 0px)); will-change: transform; }
+
+/* ── ticker reacts to scroll velocity ── */
+.ticker__row { transform: skewX(var(--sk, 0deg)); }
 
 @media print {
   .nav, .atmos, .grain, .hero__viz, .ticker, .iconbtn { display: none; }
