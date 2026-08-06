@@ -1,4 +1,4 @@
-# Portfolio — Vipul Kumar
+# Portfolio — Vipul Kumar & Naveen Shah
 
 A static, dependency-free portfolio site. No build step, no framework, no tracking.
 Open `index.html` and it works.
@@ -14,11 +14,17 @@ One 140 KB file. No images, no webfonts, no external requests of any kind — th
 only outbound URLs are the credential-verification links. All artwork is inline
 SVG drawn for the page; the type is a system font stack.
 
-The design is an engineering-drawing conceit: a drafting grid, sheet numbering,
-numbered figures with callout legends, and spec tables. FIG. 1 is a general
-arrangement of an event-driven process fleet; FIG. 3 is a register of verified
-figures on a shared log scale. Every drawing is invented and depicts no real or
-client system — each says so in its own caption.
+A two-person team site: Vipul Kumar and Naveen Shah, who take freelance work
+together. Warm and typographic rather than technical — no grid, no dashboard
+chrome. Light theme is the default.
+
+It covers all eight production services with per-project figures counted from
+source. Naveen is credited as an equal partner; by deliberate choice the page
+carries **no personal contact details for him** — every route in is Vipul's
+address. If that should change, he needs to say so first.
+
+Copy describes scope and scale only: no implementation techniques, algorithms
+or internal designs. Keep it that way.
 
 **Confidentiality:** the copy deliberately describes scope and scale only. No
 implementation techniques, algorithms or system internals appear anywhere on the page.

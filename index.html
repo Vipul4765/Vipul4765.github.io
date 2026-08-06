@@ -3,2459 +3,1091 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vipul Kumar — Backend Engineer · Real-Time &amp; Trading Infrastructure</title>
-<meta name="description" content="I build Python backends where being wrong costs money — real-time event pipelines, order execution and regulatory-grade margin systems for a live derivatives platform.">
-<meta name="author" content="Vipul Kumar">
+<title>Vipul Kumar &amp; Naveen Shah — Backend engineers, India</title>
+<meta name="description" content="Two backend engineers in India who build and run the infrastructure behind a live derivatives trading platform. Available for freelance projects, as a pair.">
+<meta name="author" content="Vipul Kumar and Naveen Shah">
 <meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#061219" media="(prefers-color-scheme: dark)">
-<meta name="theme-color" content="#EBE8E0" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#FBF8F3" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#191714" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Vipul Kumar — Backend &amp; Trading Infrastructure">
-<meta property="og:description" content="Python backends where being wrong costs money. Real-time event pipelines, order execution, regulatory-grade margin.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23061219'/><rect x='10.5' y='10.5' width='79' height='79' fill='none' stroke='%235CC9EA' stroke-width='3'/><path d='M30 32 L50 70 L70 32' fill='none' stroke='%235CC9EA' stroke-width='8'/></svg>">
+<meta property="og:title" content="Vipul Kumar &amp; Naveen Shah — Backend engineers">
+<meta property="og:description" content="Two engineers who build and run the infrastructure behind a live derivatives trading platform. Freelance work, taken on as a pair.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 24'><circle cx='13' cy='12' r='9' fill='%238A4527'/><circle cx='27' cy='12' r='8' fill='none' stroke='%238A4527' stroke-width='2.4'/></svg>">
 
 <script>
-/* Runs before paint. Restores the saved theme and adds .js, which switches the
-   hero headline to a CSS animation. That animation is fill-mode:both, so it
-   always finishes on its own — no script is needed to un-hide anything here.
-   Nothing on the page is hidden by this script; the scroll reveals are armed
-   later, by the very script that also guarantees they are un-armed. A hard
-   failsafe is scheduled here anyway, belt and braces. */
+/* Runs before first paint.
+   1. Restores a saved theme choice so there is no flash.
+   2. Adds .js — the ONLY switch that arms any entrance effect. If this script
+      never runs, nothing is ever hidden, so the page is whole without it.
+   3. Schedules a hard failsafe that reveals everything regardless of what the
+      main script at the bottom does, or fails to do. */
 (function () {
   var d = document.documentElement;
   try {
-    var t = localStorage.getItem('bp-theme');
+    var t = localStorage.getItem('vn-theme');
     if (t === 'light' || t === 'dark') d.setAttribute('data-theme', t);
   } catch (e) {}
-  d.classList.add('js');
-  setTimeout(function () { d.classList.add('reveal-all'); }, 8000);
+  d.className += ' js';
+  setTimeout(function () { d.className += ' reveal-all'; }, 6000);
 })();
 </script>
 
 <style>
 /* ══════════════════════════════════════════════════════════════════════════
-   TOKENS — light ("ink on paper") is the default; dark ("cyan on navy")
-   arrives via prefers-color-scheme; the [data-theme] blocks come last so a
-   manual choice wins in BOTH directions.
-   Measured contrast (WCAG 2.1, sRGB) against --bg / --panel / a grid line:
-     ink   14.68 / 16.06 / 13.22      ink2  6.28 / 6.87 / 5.66
-     faint  5.09 /  5.57 /  4.58      accent 7.08 / 7.75 / 6.38
-     anno   5.60 /  6.13 /  5.04      line (graphics) 4.59 / 5.02 / 4.26
-   Dark: ink 15.87/14.30/14.21 · ink2 8.79/7.92/7.87 · faint 6.96/6.27/6.23
-         accent 9.92/8.94/8.88 · anno 9.50/8.55/8.50 · line 5.08/4.57/4.54
-   The two themes are matched for PERCEIVED weight, not just colour: dark ink on
-   a pale sheet reads thinner than a light stroke glowing on navy, so the light
-   theme also carries a stroke multiplier (--sw) and a heavier hatch (--hatch-a).
+   TOKENS
+
+   Light is the confident default: warm paper, warm-black ink, one clay accent.
+   Dark is the same room with the lamp off — the same warmth, inverted, with the
+   accent lifted to a sand tone so it keeps its weight on a dark ground.
+
+   Measured contrast (WCAG 2.1, sRGB), text colour against each ground:
+     LIGHT   paper #FBF8F3   card #FFFFFF   sunk #F4EFE6
+       ink    16.39   17.36   15.16
+       ink-2   8.52    9.02    7.88
+       muted   6.03    6.39    5.58   ← worst text pair on the page, 5.58:1
+       accent  6.69    7.09    6.19
+       paper on ink (buttons) 16.39 · paper on accent 6.69
+     DARK    paper #191714   card #221F1B   sunk #131210
+       ink    15.49   14.21   16.21
+       ink-2   9.72    8.91   10.17
+       muted   7.02    6.44    7.35   ← worst text pair, 6.44:1
+       accent  8.79    8.07    9.20
+       ink on paper-ground buttons 15.49 · paper on accent 8.79
+   The maker's marks are meaningful graphics and are drawn in accent: 6.69:1
+   light, 8.79:1 dark — both clear of the 3:1 floor for non-text.
+   Never put ink on accent (2.45:1); accent grounds always carry paper.
    ══════════════════════════════════════════════════════════════════════════ */
 :root {
   color-scheme: light;
-  --bg:     #EBE8E0;
-  --panel:  #F4F2EC;
-  --sunk:   #E3E0D7;
-  --ink:    #14171B;
-  --ink2:   #4C545C;
-  --faint:  #5C6169;
-  --rule:   #B3AEA2;
-  --line:   #63686E;
-  --accent: #0F4C8A;
-  --anno:   #9C3B22;
-  --grid:      rgba(20,23,27,.055);
-  --grid-maj:  rgba(20,23,27,.085);
-  --shadow: 0 1px 0 rgba(20,23,27,.05);
-  --mx-on:  #0F4C8A;
-  --sw:      1.2;    /* stroke-weight multiplier for SVG line work  */
-  --hatch-a: .9;     /* hatch stroke opacity                        */
-  --hatch-f: .92;    /* hatched-area opacity                        */
-  --part-a:  .5;     /* part-square opacity                         */
+  --paper:  #FBF8F3;
+  --card:   #FFFFFF;
+  --sunk:   #F4EFE6;
+  --ink:    #1C1A17;
+  --ink-2:  #4E4841;
+  --muted:  #655E56;
+  --accent: #8A4527;
+  --rule:   #E1D8CA;
+  --rule-2: #C9BFAE;
+  --shadow: 0 1px 2px rgba(28,26,23,.04), 0 8px 24px -18px rgba(28,26,23,.30);
+  --mark-w: 1.7;
 }
 @media (prefers-color-scheme: dark) {
   :root {
     color-scheme: dark;
-    --bg:     #061219;
-    --panel:  #0B1E28;
-    --sunk:   #040E14;
-    --ink:    #DCEEF5;
-    --ink2:   #93B6C6;
-    --faint:  #7FA2B2;
-    --rule:   #22485B;
-    --line:   #4E8CA6;
-    --accent: #5CC9EA;
-    --anno:   #F0A959;
-    --grid:      rgba(140,205,230,.055);
-    --grid-maj:  rgba(140,205,230,.09);
-    --shadow: none;
-    --mx-on:  #5CC9EA;
-    --sw:      1;
-    --hatch-a: .55;
-    --hatch-f: .8;
-    --part-a:  .38;
+    --paper:  #191714;
+    --card:   #221F1B;
+    --sunk:   #131210;
+    --ink:    #F3EEE6;
+    --ink-2:  #C6BEB2;
+    --muted:  #AAA195;
+    --accent: #E8A87C;
+    --rule:   #35302A;
+    --rule-2: #514A40;
+    --shadow: 0 1px 2px rgba(0,0,0,.30), 0 10px 30px -20px rgba(0,0,0,.75);
+    --mark-w: 1.5;
   }
 }
+/* Both explicit choices come AFTER the media query, so a manual pick beats the
+   operating system in BOTH directions at equal specificity. */
 :root[data-theme="light"] {
   color-scheme: light;
-  --bg:#EBE8E0; --panel:#F4F2EC; --sunk:#E3E0D7; --ink:#14171B; --ink2:#4C545C;
-  --faint:#5C6169; --rule:#B3AEA2; --line:#63686E; --accent:#0F4C8A; --anno:#9C3B22;
-  --grid:rgba(20,23,27,.055); --grid-maj:rgba(20,23,27,.085);
-  --shadow:0 1px 0 rgba(20,23,27,.05); --mx-on:#0F4C8A;
-  --sw:1.2; --hatch-a:.9; --hatch-f:.92; --part-a:.5;
+  --paper:#FBF8F3; --card:#FFFFFF; --sunk:#F4EFE6;
+  --ink:#1C1A17; --ink-2:#4E4841; --muted:#655E56; --accent:#8A4527;
+  --rule:#E1D8CA; --rule-2:#C9BFAE;
+  --shadow: 0 1px 2px rgba(28,26,23,.04), 0 8px 24px -18px rgba(28,26,23,.30);
+  --mark-w: 1.7;
 }
 :root[data-theme="dark"] {
   color-scheme: dark;
-  --bg:#061219; --panel:#0B1E28; --sunk:#040E14; --ink:#DCEEF5; --ink2:#93B6C6;
-  --faint:#7FA2B2; --rule:#22485B; --line:#4E8CA6; --accent:#5CC9EA; --anno:#F0A959;
-  --grid:rgba(140,205,230,.055); --grid-maj:rgba(140,205,230,.09);
-  --shadow:none; --mx-on:#5CC9EA;
-  --sw:1; --hatch-a:.55; --hatch-f:.8; --part-a:.38;
+  --paper:#191714; --card:#221F1B; --sunk:#131210;
+  --ink:#F3EEE6; --ink-2:#C6BEB2; --muted:#AAA195; --accent:#E8A87C;
+  --rule:#35302A; --rule-2:#514A40;
+  --shadow: 0 1px 2px rgba(0,0,0,.30), 0 10px 30px -20px rgba(0,0,0,.75);
+  --mark-w: 1.5;
 }
 
-:root{
-  --mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas, "Liberation Mono", "DejaVu Sans Mono", monospace;
-  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Liberation Sans", Arial, sans-serif;
-  --wrap: 1180px;
-  --pad:  clamp(18px, 4vw, 40px);
-  --inset: 9px;          /* sheet-frame inset; the nav pads by exactly this  */
-  --navbar: 54px;        /* height of the nav's inner bar                    */
-  --nav-h: calc(var(--navbar) + var(--inset));
-  --tap: 44px;           /* minimum touch target                            */
+:root {
+  --serif: ui-serif, "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua",
+           Georgia, "Nimbus Roman", "Liberation Serif", "DejaVu Serif", serif;
+  --sans:  system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+           "Liberation Sans", Arial, sans-serif;
+  --wrap: 1080px;
+  --pad: clamp(20px, 5vw, 48px);
+  --nav-h: 68px;
+  --tap: 44px;
+  --gap: clamp(56px, 8vw, 112px);
 }
-@media (max-width: 760px) { :root { --inset: 5px; } }
 
-/* ══════════════════════════════ RESET ══════════════════════════════ */
+/* ────────────────────────────── reset ────────────────────────────── */
 *, *::before, *::after { box-sizing: border-box; }
 [hidden] { display: none !important; }
 html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
-body, h1, h2, h3, h4, p, ul, li, figure, figcaption, dl, dd { margin: 0; padding: 0; }
-ul { list-style: none; }
-img, svg { display: block; max-width: 100%; }
+body, h1, h2, h3, h4, p, ul, ol, li, figure, dl, dd, blockquote { margin: 0; padding: 0; }
+ul, ol { list-style: none; }
+svg { display: block; }
 a { color: inherit; }
-button { font: inherit; color: inherit; }
+button { font: inherit; color: inherit; background: none; border: 0; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 
 body {
   font-family: var(--sans);
-  background-color: var(--bg);
-  color: var(--ink);
-  line-height: 1.62;
-  font-size: 16px;
-  overflow-x: hidden;
-  /* the drafting substrate: 24px minor grid, 120px major */
-  background-image:
-    linear-gradient(var(--grid-maj) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-maj) 1px, transparent 1px),
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
-  background-position: 0 0;
-  background-attachment: fixed;
+  background: var(--paper);
+  color: var(--ink-2);
+  font-size: 17px;
+  line-height: 1.72;
+  letter-spacing: .002em;
+  -webkit-font-smoothing: antialiased;
 }
 
-/* ══════════════════════════════ SHEET FRAME ══════════════════════════════ */
-.frame { position: fixed; inset: var(--inset); border: 1px solid var(--rule); pointer-events: none; z-index: 60; }
-.frame i { position: absolute; width: 13px; height: 13px; border: 0 solid var(--accent); }
-.frame i:nth-child(1) { top: -1px; left: -1px;  border-top-width: 2px; border-left-width: 2px; }
-.frame i:nth-child(2) { top: -1px; right: -1px; border-top-width: 2px; border-right-width: 2px; }
-.frame i:nth-child(3) { bottom: -1px; left: -1px;  border-bottom-width: 2px; border-left-width: 2px; }
-.frame i:nth-child(4) { bottom: -1px; right: -1px; border-bottom-width: 2px; border-right-width: 2px; }
-@media (max-width: 760px) { .frame i { width: 9px; height: 9px; } }
-
-/* ══════════════════════════════ SHARED ══════════════════════════════ */
-@media (max-width: 760px) { body { background-attachment: scroll; } }
-
+/* ────────────────────────────── shared type ────────────────────────────── */
 .wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: var(--pad); }
-.mono { font-family: var(--mono); }
+.serif { font-family: var(--serif); font-weight: 400; letter-spacing: -.012em; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 400; color: var(--ink); letter-spacing: -.014em; }
+
+.label {
+  font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase;
+  color: var(--accent); font-weight: 600; line-height: 1.5;
+}
+.lede { color: var(--ink-2); font-size: clamp(1.02rem, .96rem + .3vw, 1.16rem); max-width: 60ch; }
+.small { font-size: .82rem; color: var(--muted); line-height: 1.6; }
+.num { font-variant-numeric: tabular-nums lining-nums; }
+
 .skip {
-  position: absolute; left: 12px; top: 12px; z-index: 200;
-  background: var(--ink); color: var(--bg); padding: .6rem 1rem; font-family: var(--mono); font-size: 13px;
-  clip-path: inset(50%); white-space: nowrap;
+  position: absolute; left: 14px; top: 12px; z-index: 200;
+  background: var(--ink); color: var(--paper); padding: .7rem 1.1rem;
+  font-size: 14px; border-radius: 3px; white-space: nowrap;
+  clip-path: inset(50%);
 }
 .skip:not(:focus) { pointer-events: none; }
 .skip:focus { clip-path: none; }
-:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-.kicker {
-  font-family: var(--mono); font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase;
-  color: var(--anno); white-space: nowrap;
+/* ───────────────────────── the one idea: maker's marks ─────────────────────
+   Every piece of work carries a small hand-inked mark saying whose hand led it:
+   filled for Vipul, open for Naveen, half-and-half for work they built together.
+   The two marks side by side are the studio's logo, and the same wobbly circle
+   is the theme toggle. One drawn shape, used everywhere, and nothing else. */
+.mark { width: 20px; height: 20px; color: var(--accent); flex: none; }
+.mark--sm { width: 15px; height: 15px; }
+.mark--lg { width: 30px; height: 30px; }
+/* stroke-width is an inherited SVG property, so it reaches the <use> shadow
+   content from here — presentation attributes cannot carry a CSS variable. */
+.mark, .brand__marks, .tbtn svg { stroke-width: var(--mark-w); }
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+
+/* hand-inked underline beneath the italic phrase in the headline */
+.inked { position: relative; display: inline-block; font-style: italic; }
+.inked svg {
+  position: absolute; left: -.04em; right: -.04em; top: 100%; margin-top: -.2em;
+  width: calc(100% + .08em); height: .24em; color: var(--accent); overflow: visible;
 }
-.disp { font-weight: 600; letter-spacing: -.021em; line-height: 1.06; }
+.inked path { stroke-dashoffset: 0; }
+.js .inked path { animation: ink 1.05s cubic-bezier(.32,.72,.3,1) .35s both; }
+@keyframes ink { from { stroke-dashoffset: 210; } to { stroke-dashoffset: 0; } }
 
-/* Scroll reveal. The hiding is gated on .rv-on, which is added by the same
-   script that attaches the observers AND schedules the un-hiding timer — so if
-   that script never runs, or throws, nothing is ever hidden in the first place.
-   .reveal-all comes last so it wins over .rv-on at equal specificity. */
-.rv-on .rv { opacity: 0; transform: translateY(15px); transition: opacity .62s ease, transform .62s cubic-bezier(.22,.72,.2,1); }
-.rv-on .stag > * { opacity: 0; transform: translateY(13px); transition: opacity .5s ease, transform .5s cubic-bezier(.22,.72,.2,1); transition-delay: calc(var(--d, 0) * 65ms); }
-.rv-on .rv.is-in, .rv-on .stag.is-in > * { opacity: 1; transform: none; }
-.reveal-all .rv, .reveal-all .stag > * { opacity: 1; transform: none; transition: none; }
-@media (prefers-reduced-motion: reduce) {
-  .rv-on .rv, .rv-on .stag > * { opacity: 1 !important; transform: none !important; transition: none !important; }
-}
-
-/* ══════════════════════════════ NAV ══════════════════════════════
-   top:0 — flush. The bar carries a --inset top pad so the fixed sheet frame's
-   top rule lands exactly on the bar's inner edge and reads as its top border;
-   nothing can scroll through the gap because there is no gap. */
+/* ────────────────────────────── nav ────────────────────────────── */
 .nav {
   position: sticky; top: 0; z-index: 50;
-  padding-top: var(--inset);
-  border-bottom: 1px solid var(--rule);
-  /* fully opaque — nothing can read through the bar at any scroll position.
-     The drafting substrate is redrawn on the bar itself, pinned to the same
-     viewport origin as the body's, so the grid runs straight through it. */
-  background-color: var(--bg);
-  background-image:
-    linear-gradient(var(--grid-maj) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid-maj) 1px, transparent 1px),
-    linear-gradient(var(--grid) 1px, transparent 1px),
-    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 120px 120px, 120px 120px, 24px 24px, 24px 24px;
-  background-position: 0 0;
-  background-attachment: fixed;
+  background: var(--paper); border-bottom: 1px solid var(--rule);
 }
-@media (max-width: 760px) { .nav { background-attachment: scroll; } }
-.nav__in { display: flex; align-items: center; gap: 14px; width: 100%; max-width: var(--wrap); margin-inline: auto; padding: 0 var(--pad); height: var(--navbar); }
-.brand { display: flex; align-items: center; gap: 10px; text-decoration: none; flex: none; }
-.brand svg { width: 24px; height: 24px; color: var(--accent); flex: none; }
-.brand b { font-family: var(--mono); font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
-.nav__links { display: flex; gap: 4px; margin-left: auto; }
-.nav__links a {
-  font-family: var(--mono); font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--ink2); text-decoration: none; padding: 6px 10px; border: 1px solid transparent;
+.nav__in {
+  display: flex; align-items: center; gap: 16px;
+  max-width: var(--wrap); margin-inline: auto; padding-inline: var(--pad);
+  min-height: var(--nav-h);
 }
-.nav__links a:hover { color: var(--ink); border-color: var(--rule); }
-.nav__links a span { color: var(--faint); }
-.nav__right { display: flex; align-items: center; gap: 8px; margin-left: auto; }
-.nav__links + .nav__right { margin-left: 0; }
-.iconbtn {
-  width: 38px; height: 38px; display: grid; place-items: center; cursor: pointer; flex: none;
-  background: transparent; border: 1px solid var(--rule); color: var(--ink2);
+.brand {
+  display: flex; align-items: center; gap: 11px; text-decoration: none; flex: none;
+  min-height: var(--tap); color: var(--ink);
 }
-.iconbtn:hover { color: var(--ink); border-color: var(--line); }
-.iconbtn svg { width: 15px; height: 15px; }
-.navcta {
-  display: inline-flex; align-items: center; min-height: 38px; flex: none;
-  font-family: var(--mono); font-size: 11.5px; letter-spacing: .12em; text-transform: uppercase;
-  text-decoration: none; padding: 0 14px; border: 1px solid var(--ink); background: var(--ink); color: var(--bg);
-}
-.navcta:hover { background: transparent; color: var(--ink); }
-.prog { position: absolute; left: 0; bottom: -1px; height: 1px; background: var(--accent); width: 0; }
+.brand__marks { width: 40px; height: 24px; color: var(--accent); flex: none; }
+.brand__n { font-family: var(--serif); font-size: 17px; white-space: nowrap; letter-spacing: -.008em; }
+.brand__n i { font-style: normal; color: var(--muted); padding: 0 .15em; }
 
-/* ── mobile wayfinding: a native <details> disclosure ──────────────────────
-   It opens, closes and is keyboard-operable with no script at all; the script
-   only adds Escape-to-close, close-on-selection and the aria-expanded sync. */
-.mnav { display: none; position: static; flex: none; }
+.nav__links { display: flex; gap: 2px; margin-left: auto; }
+.nav__links a {
+  display: inline-flex; align-items: center; min-height: var(--tap);
+  padding: 0 13px; text-decoration: none; color: var(--ink-2);
+  font-size: 14.5px; border-radius: 3px;
+}
+.nav__links a:hover { color: var(--ink); background: var(--sunk); }
+.nav__right { display: flex; align-items: center; gap: 8px; margin-left: 12px; }
+
+.tbtn {
+  display: none; width: var(--tap); height: var(--tap); place-items: center;
+  cursor: pointer; border-radius: 50%; color: var(--muted); flex: none;
+}
+.js .tbtn { display: grid; }
+.tbtn:hover { color: var(--accent); background: var(--sunk); }
+.tbtn svg { width: 19px; height: 19px; }
+
+.navcta {
+  display: inline-flex; align-items: center; min-height: var(--tap); flex: none;
+  padding: 0 17px; border-radius: 999px; text-decoration: none;
+  background: var(--ink); color: var(--paper); font-size: 14.5px;
+}
+.navcta:hover { opacity: .86; }
+
+/* mobile wayfinding — a native <details>, so it opens, closes and takes the
+   keyboard with no script at all. Script only adds Escape and close-on-pick. */
+.mnav { display: none; flex: none; margin-left: 8px; }
 .mnav > summary {
   display: inline-flex; align-items: center; gap: 9px; cursor: pointer; list-style: none;
-  min-height: var(--tap); padding: 0 12px; border: 1px solid var(--line); color: var(--ink);
-  font-family: var(--mono); font-size: 11.5px; letter-spacing: .13em; text-transform: uppercase;
-  background: transparent;
+  min-height: var(--tap); padding: 0 15px; border: 1px solid var(--rule-2);
+  border-radius: 999px; color: var(--ink); font-size: 14.5px;
 }
 .mnav > summary::-webkit-details-marker { display: none; }
-.mnav > summary::after { content: "[ + ]"; color: var(--anno); letter-spacing: 0; }
-.mnav[open] > summary::after { content: "[ \2212 ]"; }
-.mnav[open] > summary { background: var(--panel); border-color: var(--ink); }
+.mnav__bars { width: 15px; height: 11px; flex: none; }
+.mnav__bars i {
+  display: block; height: 1.5px; background: currentColor; border-radius: 2px;
+  margin-bottom: 3.2px;
+}
+.mnav__bars i:last-child { margin-bottom: 0; width: 68%; }
+.mnav[open] > summary { background: var(--sunk); border-color: var(--rule-2); }
 .mnav__panel {
   position: absolute; left: 0; right: 0; top: 100%; z-index: 55;
-  background: var(--bg); border-bottom: 1px solid var(--line);
-  box-shadow: 0 18px 34px -22px rgba(0,0,0,.55);
-  max-height: calc(100vh - var(--nav-h));
-  max-height: calc(100dvh - var(--nav-h));
+  background: var(--card); border-bottom: 1px solid var(--rule-2);
+  box-shadow: var(--shadow);
+  max-height: calc(100vh - var(--nav-h)); max-height: calc(100dvh - var(--nav-h));
   overflow-y: auto; overscroll-behavior: contain;
 }
-.mnav__in { max-width: var(--wrap); margin-inline: auto; padding: 10px var(--pad) 16px; }
-.mnav__h {
-  display: flex; justify-content: space-between; gap: 12px; padding: 8px 0 9px;
-  border-bottom: 1px solid var(--line);
-  font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--faint);
-}
+.mnav__in { max-width: var(--wrap); margin-inline: auto; padding: 6px var(--pad) 22px; }
 .mnav__a {
-  display: grid; grid-template-columns: 30px minmax(0,1fr) auto; gap: 12px; align-items: center;
-  min-height: 50px; padding: 6px 2px; border-bottom: 1px solid var(--rule);
-  text-decoration: none; color: var(--ink2); font-family: var(--mono); font-size: 13px;
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  min-height: 54px; padding: 6px 2px; text-decoration: none; color: var(--ink);
+  border-bottom: 1px solid var(--rule); font-family: var(--serif); font-size: 20px;
 }
-.mnav__a:hover, .mnav__a:focus-visible { color: var(--ink); background: var(--panel); }
-.mnav__a i { color: var(--anno); font-style: normal; font-size: 11px; }
-.mnav__a em { color: var(--faint); font-style: normal; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
-.mnav__cta { display: flex; margin-top: 16px; }
-.mnav__cta .btn { flex: 1; justify-content: center; min-height: var(--tap); }
+.mnav__a::after { content: "\2192"; font-family: var(--sans); font-size: 17px; color: var(--accent); }
+.mnav__a:hover { color: var(--accent); }
+.mnav__cta { margin-top: 20px; }
+.mnav__cta .btn { width: 100%; justify-content: center; }
 
 @media (max-width: 900px) {
   .nav__links { display: none; }
-  .mnav { display: block; margin-left: auto; }
-  .nav__links + .nav__right, .nav__right { margin-left: 0; }
-  .iconbtn { width: var(--tap); height: var(--tap); }
-  .navcta { min-height: var(--tap); }
-  .brand { min-height: var(--tap); min-width: var(--tap); }
+  .nav__right { margin-left: auto; }
+  .mnav { display: block; }
+  .navcta { display: none; }
 }
-@media (max-width: 430px) {
-  .brand b { display: none; }
-  .nav__in { gap: 10px; padding-inline: 14px; }
-  .mnav__in { padding-inline: 14px; }
-  .mnav > summary { padding: 0 10px; letter-spacing: .08em; }
-}
-@media (max-width: 380px) {
-  .nav__in { gap: 6px; padding-inline: 10px; }
-  .mnav__in { padding-inline: 10px; }
-  .mnav > summary { padding: 0 8px; gap: 7px; font-size: 10.5px; }
-  .mnav > summary::after { content: "[+]"; }
-  .mnav[open] > summary::after { content: "[\2212]"; }
-  .navcta { padding: 0 10px; font-size: 10.5px; letter-spacing: .07em; }
+@media (max-width: 460px) {
+  .brand__n { display: none; }
+  .nav__in { gap: 10px; }
+  .mnav > summary { padding: 0 13px; }
 }
 
-/* ══════════════════════════════ SECTIONS ══════════════════════════════ */
-.sec { padding-block: clamp(40px, 4.2vw, 60px); position: relative; }
-.sec + .sec { border-top: 1px solid var(--rule); }
-[id] { scroll-margin-top: calc(var(--nav-h) + 14px); }
-.shead { margin-bottom: clamp(26px, 3vw, 40px); }
-.shead__top { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
-.shead__top::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
-.shead h2 { font-size: clamp(1.7rem, 3.4vw, 2.5rem); margin-bottom: 16px; max-width: 26ch; }
-.lede { color: var(--ink2); font-size: clamp(.98rem, 1.35vw, 1.06rem); max-width: 66ch; }
+/* ────────────────────────────── sections ────────────────────────────── */
+.sec { padding-block: var(--gap); }
+.sec--rule { border-top: 1px solid var(--rule); }
+[id] { scroll-margin-top: calc(var(--nav-h) + 20px); }
+.shead { max-width: 62ch; margin-bottom: clamp(34px, 4.5vw, 56px); }
+.shead .label { display: block; margin-bottom: 18px; }
+.shead h2 { font-size: clamp(1.85rem, 1.3rem + 2.1vw, 2.7rem); line-height: 1.16; margin-bottom: 18px; }
 
-/* ══════════════════════════════ HERO ══════════════════════════════ */
-.hero { padding-top: clamp(24px, 3vw, 38px); padding-bottom: clamp(38px, 4.2vw, 58px); }
-.sheetbar {
-  display: flex; flex-wrap: wrap; gap: 6px 26px; align-items: baseline;
-  border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule);
-  padding: 8px 0; margin-bottom: clamp(24px, 3vw, 34px);
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: .15em; text-transform: uppercase; color: var(--faint);
+/* ────────────────────────────── hero ────────────────────────────── */
+.hero { padding-top: clamp(52px, 7vw, 96px); padding-bottom: clamp(48px, 6vw, 84px); }
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 10px; margin-bottom: clamp(26px, 3vw, 36px);
+  font-size: 12.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--muted);
 }
-.sheetbar b { color: var(--ink2); font-weight: 400; }
-.sheetbar .sb-r { margin-left: auto; }
-.badge {
-  display: inline-flex; align-items: center; gap: 9px; padding: 6px 12px 6px 10px;
-  border: 1px solid var(--rule); background: var(--panel);
-  font-family: var(--mono); font-size: 11px; letter-spacing: .13em; text-transform: uppercase; color: var(--ink2);
-  margin-bottom: 26px;
-}
-.pip { width: 7px; height: 7px; background: var(--anno); flex: none; }
-.js .pip { animation: blip 2.6s steps(1) infinite; }
-@keyframes blip { 0%, 62% { opacity: 1; } 63%, 100% { opacity: .25; } }
-@media (prefers-reduced-motion: reduce) { .js .pip { animation: none; } }
+.eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex: none; }
+.js .eyebrow .dot { animation: pulse 3.4s ease-in-out infinite; }
+@keyframes pulse { 0%, 72%, 100% { opacity: 1; } 86% { opacity: .3; } }
 
-h1.disp { font-size: clamp(2.05rem, 5.5vw, 4.15rem); max-width: 22ch; }
-.ln { display: block; }
-.w { display: inline-block; overflow: hidden; vertical-align: bottom; padding-bottom: .16em; margin-bottom: -.16em; }
-.w > i { display: inline-block; font-style: normal; }
-/* fill-mode BOTH: the words are visible by default and the animation always
-   completes on its own, so a dead script can never leave the headline blank. */
-.js .w > i { animation: wrise .74s cubic-bezier(.19,.86,.24,1) both; animation-delay: calc(var(--i) * 52ms); }
-@keyframes wrise { from { transform: translateY(110%); } to { transform: translateY(0); } }
-@media (prefers-reduced-motion: reduce) { .js .w > i { animation: none; } }
-.accent-w { color: var(--accent); }
+h1 {
+  font-size: clamp(2.2rem, 1.35rem + 3.3vw, 4rem);
+  line-height: 1.09; max-width: 15ch; margin-bottom: clamp(26px, 3vw, 34px);
+}
+.hero__sub { font-size: clamp(1.06rem, .98rem + .42vw, 1.28rem); max-width: 54ch; line-height: 1.62; }
+.hero__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(30px, 3.4vw, 40px); }
 
-.ruler { height: 13px; margin: clamp(20px, 2.4vw, 28px) 0 22px; }
-.ruler {
-  background:
-    linear-gradient(var(--line), var(--line)) left bottom / 100% 1px no-repeat,
-    repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 60px) left bottom / 100% 12px no-repeat,
-    repeating-linear-gradient(90deg, var(--rule) 0 1px, transparent 1px 12px) left bottom / 100% 6px no-repeat;
-}
-/* The index is a full-height column: it starts level with the badge and its
-   rows share out whatever height is left, so the top-right quadrant is never
-   an empty band and every row clears the 44px touch minimum. */
-.hero__grid { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: clamp(26px, 3.4vw, 52px); align-items: stretch; }
-.hero__main { min-width: 0; }
-.index { align-self: stretch; display: flex; flex-direction: column; }
-.index__h {
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink);
-  padding: 11px 14px; border-bottom: 1px solid var(--line); background: var(--sunk); flex: none;
-}
-.index__r {
-  display: grid; grid-template-columns: 26px minmax(0, 1fr) auto; gap: 4px 10px; align-content: center;
-  flex: 1 1 auto; min-height: var(--tap);
-  padding: 9px 14px; border-bottom: 1px solid var(--rule); text-decoration: none;
-  font-family: var(--mono); font-size: 11.5px; color: var(--ink2);
-}
-.index__r:hover, .index__r:focus-visible { background: var(--sunk); color: var(--ink); }
-.index__r:last-of-type { border-bottom: 0; }
-.index__n { color: var(--anno); font-size: 10px; }
-.index__q { color: var(--faint); font-size: 10px; letter-spacing: .1em; text-transform: uppercase; }
-.index__f {
-  display: flex; justify-content: space-between; padding: 11px 14px; flex: none;
-  border-top: 1px solid var(--line); background: var(--sunk);
-  font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint);
-}
-.index__f b { color: var(--ink2); font-weight: 400; }
-@media (max-width: 1000px) { .hero__grid { grid-template-columns: 1fr; } .index { max-width: 460px; } .index__r { flex: none; } }
-.hero__sub { color: var(--ink2); font-size: clamp(1rem, 1.5vw, 1.12rem); max-width: 62ch; }
-.hero__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
 .btn {
-  display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
-  font-family: var(--mono); font-size: 12px; letter-spacing: .13em; text-transform: uppercase;
-  padding: 13px 20px; border: 1px solid var(--line); color: var(--ink); background: transparent;
+  display: inline-flex; align-items: center; gap: 10px; min-height: 50px;
+  padding: 0 22px; border-radius: 999px; text-decoration: none; font-size: 15.5px;
+  border: 1px solid var(--rule-2); color: var(--ink); background: var(--paper);
 }
-.btn:hover { border-color: var(--ink); background: var(--panel); }
-.btn--go { background: var(--ink); border-color: var(--ink); color: var(--bg); }
-.btn--go:hover { background: transparent; color: var(--ink); }
-.arw { transition: transform .3s ease; }
+.btn:hover { background: var(--sunk); border-color: var(--muted); }
+.btn--solid { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.btn--solid:hover { background: var(--ink); opacity: .86; }
+.btn .arw { transition: transform .32s cubic-bezier(.22,.72,.2,1); }
 .btn:hover .arw { transform: translateX(4px); }
-@media (prefers-reduced-motion: reduce) { .arw { transition: none; } }
 
-.hstrip {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: clamp(14px, 2.4vw, 30px);
-  margin-top: clamp(30px, 3.4vw, 44px); border-top: 1px solid var(--rule); padding-top: 20px;
+/* the three totals — quiet, serif, on one hairline */
+.totals {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(20px, 3vw, 44px);
+  margin-top: clamp(46px, 5.5vw, 76px); padding-top: clamp(26px, 3vw, 34px);
+  border-top: 1px solid var(--rule);
 }
-.hstat__v { font-family: var(--mono); font-size: clamp(1.35rem, 2.9vw, 2rem); font-weight: 600; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
-.hstat__dim { height: 9px; position: relative; margin: 8px 0 9px; }
-.hstat__dim::before { content: ""; position: absolute; left: 0; right: 0; top: 4px; height: 1px; background: var(--line); }
-.hstat__dim::after { content: ""; position: absolute; inset: 0; border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
-.hstat__k { font-family: var(--mono); font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--faint); line-height: 1.5; }
-@media (max-width: 620px) { .hstrip { grid-template-columns: repeat(2, 1fr); row-gap: 26px; } }
-
-/* ══════════════════════════════ FIGURES ══════════════════════════════ */
-.fig { margin: 0; }
-.fig__head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; border-bottom: 1px solid var(--line); padding-bottom: 9px; margin-bottom: 0; }
-.fig__id { font-family: var(--mono); font-size: 12px; letter-spacing: .14em; color: var(--anno); font-weight: 600; }
-.fig__t { font-family: var(--mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); font-weight: 600; }
-.fig__n { font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); margin-left: auto; }
-.plate { border: 1px solid var(--rule); border-top: 0; background: var(--panel); position: relative; }
-.scroller { overflow-x: auto; overflow-y: hidden; overscroll-behavior-x: contain; }
-.scroller > svg { width: 100%; height: auto; display: block; }
-.plate--main .scroller > svg { min-width: 940px; }
-.plate--q .scroller > svg { min-width: 880px; }
-.fig__cap { font-family: var(--mono); font-size: 11.5px; letter-spacing: .02em; color: var(--faint); padding-top: 11px; line-height: 1.6; }
-
-/* ── wide-figure scroll affordance ────────────────────────────────────────
-   The cue sits in the figure HEAD, above the plate, so it is read before the
-   crop is ever reached; the plate carries a fade on whichever edge still has
-   drawing behind it. Both are on by default at any width where the drawing
-   can outrun its frame — script only ever REMOVES them, when it measures that
-   a figure fits, so a dead script can never hide the affordance. */
-.scrollcue {
-  display: none; align-items: center; gap: 7px; flex: none;
-  padding: 4px 9px; border: 1px solid var(--anno); color: var(--anno); background: var(--panel);
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap;
+.total__v {
+  font-family: var(--serif); color: var(--ink);
+  font-size: clamp(1.6rem, 1.1rem + 1.9vw, 2.5rem); line-height: 1.1; letter-spacing: -.02em;
 }
-.scrollcue b { font-weight: 400; letter-spacing: .2em; }
-.js .scrollcue b { animation: nudge 2.4s ease-in-out infinite; display: inline-block; }
-@keyframes nudge { 0%, 62%, 100% { transform: none; } 78% { transform: translateX(4px); } }
-@media (prefers-reduced-motion: reduce) { .js .scrollcue b { animation: none; } }
-.plate::before, .plate::after {
-  content: ""; position: absolute; top: 0; bottom: 0; width: 46px; pointer-events: none;
-  opacity: 0; transition: opacity .2s linear; z-index: 2;
-}
-.plate::before { left: 0; background: linear-gradient(to right, var(--panel), transparent); }
-.plate::after  { right: 0; background: linear-gradient(to left,  var(--panel), transparent); }
-@media (prefers-reduced-motion: reduce) { .plate::before, .plate::after { transition: none; } }
-@media (max-width: 1024px) {
-  .fig--wide .scrollcue { display: inline-flex; }
-  .fig--wide .plate::after { opacity: 1; }
-  .fig--wide.is-panned .plate::before { opacity: 1; }
-  .fig--wide.is-end .plate::after { opacity: 0; }
-}
-.fig--fits .scrollcue { display: none; }
-.fig--fits .plate::before, .fig--fits .plate::after { opacity: 0; }
-.scroller:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-
-/* SVG drawing vocabulary. Stroke widths carry --sw so the light sheet, where
-   dark hairlines read thinner, is drawn at matched perceived weight. */
-svg .sr { stroke: var(--rule); stroke-width: calc(1px * var(--sw)); fill: none; }
-svg .sl { stroke: var(--line); stroke-width: calc(1px * var(--sw)); fill: none; }
-svg .si { stroke: var(--ink); stroke-width: calc(1.4px * var(--sw)); fill: none; }
-svg .sa { stroke: var(--accent); stroke-width: calc(1.4px * var(--sw)); fill: none; }
-svg .sn { stroke: var(--anno); stroke-width: calc(1.2px * var(--sw)); fill: none; }
-svg .dsh { stroke-dasharray: 5 4; }
-svg .dot2 { stroke-dasharray: 1.5 3.5; }
-svg .bx { fill: var(--panel); stroke: var(--line); stroke-width: calc(1px * var(--sw)); }
-svg .bx2 { fill: var(--sunk); stroke: var(--line); stroke-width: calc(1px * var(--sw)); }
-svg .dot { fill: var(--accent); stroke: none; }
-svg text { font-family: var(--mono); letter-spacing: .07em; }
-svg .tb { fill: var(--ink); font-size: 13.5px; font-weight: 600; letter-spacing: .09em; }
-svg .tt { fill: var(--ink); font-size: 15px; font-weight: 600; letter-spacing: .11em; }
-svg .ta { fill: var(--anno); font-size: 11px; letter-spacing: .1em; }
-svg .tc { fill: var(--accent); font-size: 11px; letter-spacing: .1em; }
-svg .ts { fill: var(--ink2); font-size: 11px; letter-spacing: .09em; }
-svg .tz  { fill: var(--faint); font-size: 10.5px; letter-spacing: .08em; text-anchor: middle; }
-svg .tzs { fill: var(--faint); font-size: 10.5px; letter-spacing: .08em; text-anchor: start; }
-svg .tze { fill: var(--faint); font-size: 10.5px; letter-spacing: .08em; text-anchor: end; }
-svg .tb2 { fill: var(--ink); font-size: 12px; font-weight: 600; letter-spacing: .06em; }
-svg .ta-c { fill: var(--anno); font-size: 10.5px; letter-spacing: .08em; text-anchor: middle; }
-svg .tbig { fill: var(--ink); font-size: 27px; font-weight: 600; letter-spacing: .01em; }
-svg .cno { fill: var(--panel); stroke: var(--anno); stroke-width: calc(1.3px * var(--sw)); }
-svg .cnot { fill: var(--anno); font-size: 11.5px; font-weight: 700; text-anchor: middle; letter-spacing: 0; }
-svg .mx-on { fill: var(--mx-on); stroke: none; }
-svg .mx-part { fill: var(--mx-on); opacity: var(--part-a); stroke: none; }
-svg .mx-off { fill: none; stroke: var(--rule); stroke-width: calc(1px * var(--sw)); }
-svg .hatch { fill: url(#hx); stroke: var(--line); stroke-width: calc(1px * var(--sw)); }
-svg .f-line { fill: var(--line); }
-svg .f-anno { fill: var(--anno); }
-svg .f-accent { fill: var(--accent); }
-svg .f-bg { fill: var(--bg); }
-svg .f-panel { fill: var(--panel); }
-svg .s-anno { stroke: var(--anno); }
-svg .s-ink12 { stroke: var(--ink); stroke-width: calc(1.2px * var(--sw)); }
-svg .mk-tick { stroke: var(--line); stroke-width: calc(1.3px * var(--sw)); fill: none; }
-svg .pt-line { stroke: var(--line); stroke-width: calc(1px * var(--sw)); opacity: var(--hatch-a); }
-svg .pt-acc { stroke: var(--accent); stroke-width: calc(1px * var(--sw)); opacity: var(--hatch-a); }
-svg .ci-open { fill: none; stroke: var(--line); stroke-width: calc(1px * var(--sw)); }
-/* hatched fills: opacity is themed, not baked into the mark-up */
-svg .hf { opacity: var(--hatch-f); }
-svg .pt-bar { stroke: var(--accent); stroke-width: calc(1.4px * var(--sw)); opacity: var(--hatch-a); }
-
-/* keyed notes */
-.notes { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 34px; margin-top: 26px; }
-.note { display: grid; grid-template-columns: 26px 1fr; gap: 12px; align-items: start; }
-.note__n {
-  width: 22px; height: 22px; border: 1px solid var(--anno); border-radius: 50%; color: var(--anno);
-  font-family: var(--mono); font-size: 11px; font-weight: 700; display: grid; place-items: center; margin-top: 2px;
-}
-.note p { font-size: .93rem; color: var(--ink2); line-height: 1.56; }
-.note b { color: var(--ink); font-weight: 600; }
-@media (max-width: 780px) { .notes { grid-template-columns: 1fr; } }
-
-/* ══════════════════════════════ CARDS ══════════════════════════════ */
-.card { position: relative; background: var(--panel); border: 1px solid var(--rule); box-shadow: var(--shadow); }
-.card::before, .card::after {
-  content: ""; position: absolute; width: 9px; height: 9px; border: 0 solid var(--line); pointer-events: none;
-}
-.card::before { top: -1px; left: -1px; border-top-width: 1px; border-left-width: 1px; }
-.card::after { bottom: -1px; right: -1px; border-bottom-width: 1px; border-right-width: 1px; }
-
-/* work — the spec rail fills its frame: the schedule rows share out whatever
-   height the prose column leaves over, instead of stranding the pinned foot. */
-.work { display: grid; gap: clamp(20px, 2.6vw, 30px); }
-.proj { display: grid; grid-template-columns: 330px minmax(0, 1fr); }
-.proj__l { border-right: 1px solid var(--rule); display: flex; flex-direction: column; }
-.proj__foot {
-  margin-top: auto; display: flex; justify-content: space-between; gap: 12px; align-items: center;
-  min-height: 40px; padding: 9px 18px; border-top: 1px solid var(--line); background: var(--sunk);
-  font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint);
-}
-.proj__foot b { color: var(--anno); font-weight: 400; }
-.proj__r { padding: clamp(20px, 2.4vw, 30px); min-width: 0; }
-.det { border-bottom: 1px solid var(--rule); background: var(--sunk); flex: none; }
-.det svg { width: 100%; height: auto; }
-.proj__idx { font-family: var(--mono); font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--anno); margin-bottom: 12px; }
-.proj h3 { font-size: clamp(1.25rem, 2.1vw, 1.6rem); font-weight: 600; letter-spacing: -.015em; line-height: 1.18; margin-bottom: 14px; }
-.proj__lede { color: var(--ink); font-size: 1.02rem; margin-bottom: 14px; }
-.proj__body { color: var(--ink2); font-size: .95rem; margin-bottom: 12px; }
-.kv { display: flex; flex-direction: column; flex: 1 1 auto; }
-.kv__row {
-  display: flex; justify-content: space-between; align-items: center; gap: 14px;
-  flex: 1 1 auto; min-height: 40px; padding: 9px 18px;
-  border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: 11.5px;
-}
-.kv__row:last-child { border-bottom: 0; }
-.kv__k { color: var(--faint); letter-spacing: .1em; text-transform: uppercase; }
-.kv__v { color: var(--ink); text-align: right; }
-/* chip rule, applied identically on all four cards: the two chips that name
-   the primary runtime of that system are marked; everything else is plain. */
-.chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
-.chip {
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase;
-  padding: 5px 9px; border: 1px solid var(--rule); color: var(--ink2); background: var(--bg);
-}
-.chip--hi { border-color: var(--accent); color: var(--accent); }
-@media (max-width: 900px) {
-  .proj { grid-template-columns: 1fr; }
-  .proj__l { border-right: 0; border-bottom: 1px solid var(--rule); }
-  .kv__row { flex: none; }
+.total__k { font-size: 13.5px; color: var(--muted); line-height: 1.45; margin-top: 8px; }
+.totals__note { grid-column: 1 / -1; margin-top: 4px; }
+@media (max-width: 560px) {
+  .totals { grid-template-columns: 1fr; gap: 22px; }
+  .total { display: flex; align-items: baseline; gap: 14px; }
+  .total__k { margin-top: 0; }
 }
 
-/* services */
-.g3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(14px, 1.8vw, 22px); }
-.svc { padding: clamp(20px, 2.2vw, 26px); display: flex; flex-direction: column; }
-.svc__n { display: block; font-family: var(--mono); font-size: 11px; letter-spacing: .16em; color: var(--anno); margin-bottom: 16px; }
-.svc h3 { font-size: 1.08rem; font-weight: 600; letter-spacing: -.01em; margin-bottom: 10px; }
-.svc p { color: var(--ink2); font-size: .92rem; margin-bottom: 18px; }
-.svc__fit {
-  margin-top: auto; padding-top: 12px; border-top: 1px dashed var(--rule);
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint);
+/* ────────────────────────────── the pair ────────────────────────────── */
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2.2vw, 26px); }
+.person {
+  background: var(--card); border: 1px solid var(--rule); border-radius: 14px;
+  padding: clamp(24px, 3vw, 38px); box-shadow: var(--shadow);
+  display: flex; flex-direction: column;
 }
-@media (max-width: 980px) { .g3 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 640px) { .g3 { grid-template-columns: 1fr; } }
+.person__top { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.person h3 { font-size: clamp(1.3rem, 1.1rem + .6vw, 1.55rem); line-height: 1.2; }
+.person__role { display: block; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-top: 5px; }
+.person p { margin-bottom: 16px; font-size: .97rem; }
+.person__leads {
+  margin-top: auto; padding-top: 18px; border-top: 1px solid var(--rule);
+  font-size: .84rem; color: var(--muted); line-height: 1.6;
+}
+.person__leads b { color: var(--ink-2); font-weight: 600; display: block; margin-bottom: 3px;
+  font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; }
+.together {
+  margin-top: clamp(16px, 2.2vw, 26px); padding: clamp(20px, 2.4vw, 26px) clamp(22px, 3vw, 32px);
+  background: var(--sunk); border-radius: 14px; border: 1px solid var(--rule);
+  display: flex; align-items: flex-start; gap: 16px;
+}
+.together p { font-size: .97rem; max-width: 68ch; }
+.together b { color: var(--ink); font-weight: 600; }
+@media (max-width: 820px) { .pair { grid-template-columns: 1fr; } }
 
-/* stack — materials schedule. Same fill rule as the spec rails: the schedule
-   rows share out the leftover height so no box stops short of its own border. */
-.g4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.5vw, 18px); }
-.sched { display: flex; flex-direction: column; }
-.sched h4 {
-  font-family: var(--mono); font-size: 11px; letter-spacing: .15em; text-transform: uppercase; color: var(--ink);
-  padding: 11px 14px; border-bottom: 1px solid var(--line); background: var(--sunk); flex: none;
+/* credentials — small, plain, always visible */
+.creds { margin-top: clamp(30px, 4vw, 48px); max-width: 620px; }
+.creds__h { font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+.cred {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px;
+  min-height: var(--tap); padding: 8px 0; border-bottom: 1px solid var(--rule);
+  font-size: .9rem;
 }
-.sched ul { display: flex; flex-direction: column; flex: 1 1 auto; }
-.sched li {
-  display: grid; grid-template-columns: 26px 1fr; gap: 8px; align-items: center; align-content: center;
-  flex: 1 1 auto; min-height: 38px;
-  padding: 7px 14px; border-bottom: 1px solid var(--rule); font-size: .875rem; color: var(--ink2);
+.cred:last-child { border-bottom: 0; }
+.cred a {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex: none;
+  min-height: var(--tap); min-width: 92px; padding: 0 14px; border-radius: 999px;
+  border: 1px solid var(--rule-2); color: var(--accent); text-decoration: none;
+  font-size: 13px; letter-spacing: .04em;
 }
-.sched li:last-child { border-bottom: 0; }
-.sched li span { font-family: var(--mono); font-size: 10px; color: var(--faint); }
-@media (max-width: 1040px) { .g4 { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (max-width: 760px)  { .g4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 430px)  { .g4 { grid-template-columns: 1fr; } }
+.cred a:hover { border-color: var(--accent); background: var(--sunk); }
 
-/* process */
-.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.5vw, 20px); }
-.step { padding: clamp(18px, 2vw, 24px); }
-.step__n { font-family: var(--mono); font-size: 10.5px; letter-spacing: .16em; color: var(--anno); margin-bottom: 14px; }
-.step h4 { font-size: 1.02rem; font-weight: 600; margin-bottom: 9px; letter-spacing: -.01em; }
-.step p { color: var(--ink2); font-size: .89rem; }
-@media (max-width: 900px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+/* ────────────────────────────── work ────────────────────────────── */
+.legend {
+  display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: center;
+  margin-bottom: clamp(28px, 3.4vw, 42px);
+}
+.legend__i { display: inline-flex; align-items: center; gap: 9px; font-size: .86rem; color: var(--muted); }
+
+.entries { border-bottom: 1px solid var(--rule); }
+.entry {
+  display: grid; grid-template-columns: 3.2rem minmax(0, 1fr) 11.5rem;
+  gap: 0 clamp(20px, 3.4vw, 56px);
+  padding: clamp(26px, 3vw, 38px) 0; border-top: 1px solid var(--rule);
+  align-items: start;
+}
+.entry__n { font-family: var(--serif); font-size: 1.05rem; color: var(--muted); line-height: 1.5; padding-top: 2px; }
+.entry h3 { font-size: clamp(1.18rem, 1.04rem + .5vw, 1.42rem); line-height: 1.25; margin-bottom: 10px; }
+.entry p { font-size: .97rem; max-width: 58ch; }
+.entry__meta { text-align: right; padding-top: 3px; }
+.entry__f { display: block; line-height: 1.35; margin-bottom: 7px; }
+.entry__f b { font-family: var(--serif); font-weight: 400; color: var(--ink); font-size: 1.12rem; letter-spacing: -.01em; }
+.entry__f span { font-size: 12.5px; color: var(--muted); margin-left: 6px; }
+.entry__by {
+  display: inline-flex; align-items: center; gap: 8px; margin-top: 9px;
+  font-size: 12.5px; color: var(--muted); letter-spacing: .02em;
+}
+.work__foot {
+  display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: space-between;
+  padding-top: 20px;
+}
+@media (max-width: 860px) {
+  .entry { grid-template-columns: 2.4rem minmax(0, 1fr); row-gap: 16px; }
+  .entry__meta { grid-column: 2; text-align: left; padding-top: 0; }
+  .entry__f { display: inline-block; margin-right: 22px; }
+  .entry__by { display: flex; margin-top: 12px; }
+}
+@media (max-width: 420px) {
+  .entry { grid-template-columns: 1fr; row-gap: 12px; }
+  .entry__n { padding-top: 0; font-size: .95rem; }
+  .entry__meta { grid-column: 1; }
+}
+
+/* ────────────────────────────── services ────────────────────────────── */
+.lanes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(20px, 2.6vw, 36px) clamp(24px, 3.4vw, 52px); }
+.lane { padding-top: 22px; border-top: 1px solid var(--rule); }
+.lane h3 { font-size: 1.22rem; line-height: 1.3; margin-bottom: 12px; }
+.lane p { font-size: .93rem; }
+.lane--no h3 { color: var(--muted); }
+@media (max-width: 900px) { .lanes { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .lanes { grid-template-columns: 1fr; } }
+
+/* ────────────────────────────── process ────────────────────────────── */
+.steps { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(22px, 2.6vw, 40px); }
+.step__n {
+  width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--rule-2);
+  display: grid; place-items: center; margin-bottom: 16px;
+  font-family: var(--serif); font-size: 15px; color: var(--accent);
+}
+.step h3 { font-size: 1.15rem; margin-bottom: 11px; }
+.step p { font-size: .92rem; }
+@media (max-width: 880px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
 
-/* about */
-.about { display: grid; grid-template-columns: minmax(0, 1.42fr) minmax(0, 1fr); gap: clamp(24px, 3vw, 46px); align-items: start; }
-.about p { color: var(--ink2); margin-bottom: 15px; max-width: 62ch; }
-.about p:first-child { color: var(--ink); font-size: 1.05rem; }
-.facts { padding: 4px 0; }
-.fact { display: flex; justify-content: space-between; gap: 14px; padding: 11px 18px; border-bottom: 1px solid var(--rule); font-family: var(--mono); font-size: 11.5px; }
-.fact:last-child { border-bottom: 0; }
-.fact__k { color: var(--faint); letter-spacing: .1em; text-transform: uppercase; }
-.fact__v { color: var(--ink); text-align: right; }
-.more { margin-top: 22px; border-top: 1px solid var(--rule); }
-.more summary {
-  cursor: pointer; list-style: none; font-family: var(--mono); font-size: 11px; letter-spacing: .14em;
-  text-transform: uppercase; color: var(--ink2); display: flex; align-items: center; gap: 10px;
-  min-height: var(--tap);
+/* ────────────────────────────── contact ────────────────────────────── */
+.contact { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(18px, 2.4vw, 30px); align-items: stretch; }
+.contact__main {
+  background: var(--card); border: 1px solid var(--rule); border-radius: 14px;
+  padding: clamp(26px, 3.4vw, 42px); box-shadow: var(--shadow);
+  display: flex; flex-direction: column;
 }
-.more summary::-webkit-details-marker { display: none; }
-.more summary::after { content: "[ + ]"; color: var(--anno); }
-.more[open] summary::after { content: "[ \2212 ]"; }
-.more summary:hover { color: var(--ink); }
-.credit {
-  display: flex; justify-content: space-between; align-items: center; gap: 14px;
-  min-height: var(--tap); padding: 6px 0; border-bottom: 1px solid var(--rule);
-  font-family: var(--mono); font-size: 11.5px; color: var(--ink2);
-}
-.credit a {
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex: none;
-  min-height: var(--tap); min-width: 86px; padding: 0 12px; border: 1px solid var(--rule);
-  color: var(--accent); text-decoration: none; letter-spacing: .1em; text-transform: uppercase; font-size: 10.5px;
-}
-.credit a:hover, .credit a:focus-visible { border-color: var(--accent); background: var(--panel); }
-.credit a::after { content: "\2197"; font-size: 12px; }
-.more__body { margin-top: 4px; }
-@media (max-width: 860px) { .about { grid-template-columns: 1fr; } }
-
-/* ══════════════════════════════ CONTACT ══════════════════════════════
-   The close is a two-part issue sheet: one primary route drawn large, two
-   secondary routes as stamped chips. Same address, same links, real hierarchy. */
-.close { display: grid; grid-template-columns: minmax(0, 1.32fr) minmax(0, 1fr); gap: clamp(16px, 2vw, 24px); align-items: stretch; }
-.close__main { display: flex; flex-direction: column; padding: clamp(22px, 2.6vw, 34px); }
-.close__k {
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase;
-  color: var(--anno); display: flex; align-items: center; gap: 12px; margin-bottom: 18px;
-}
-.close__k::after { content: ""; flex: 1; height: 1px; background: var(--rule); }
-.close__main h3 { font-size: clamp(1.3rem, 2.4vw, 1.75rem); font-weight: 600; letter-spacing: -.018em; line-height: 1.14; margin-bottom: 12px; }
-.close__lead { color: var(--ink2); font-size: .97rem; max-width: 46ch; margin-bottom: 22px; }
-.cta {
-  display: inline-flex; align-items: center; justify-content: space-between; gap: 18px;
-  align-self: flex-start; min-height: 56px; padding: 0 20px; max-width: 100%;
-  background: var(--ink); border: 1px solid var(--ink); color: var(--bg); text-decoration: none;
-  font-family: var(--mono); font-size: 13px; letter-spacing: .14em; text-transform: uppercase;
-}
-.cta:hover, .cta:focus-visible { background: transparent; color: var(--ink); }
-.cta .arw { font-size: 15px; }
+.contact__main h3 { font-size: clamp(1.4rem, 1.15rem + .9vw, 1.85rem); line-height: 1.18; margin-bottom: 14px; }
+.contact__main p { font-size: .98rem; margin-bottom: 24px; max-width: 46ch; }
 .addr {
-  margin-top: 22px; border: 1px solid var(--rule); background: var(--sunk);
-  display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: stretch;
+  margin-top: 22px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
+  padding-top: 18px; border-top: 1px solid var(--rule);
 }
-.addr__k {
-  grid-column: 1 / -1; padding: 8px 12px 0;
-  font-family: var(--mono); font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--faint);
-}
-.addr__v {
-  padding: 2px 12px 10px; min-width: 0;
-  font-family: var(--mono); font-size: clamp(.82rem, 1.5vw, .96rem); color: var(--ink);
-  letter-spacing: .01em; overflow-wrap: anywhere; align-self: center;
-}
+.addr__v { font-size: .95rem; color: var(--ink); overflow-wrap: anywhere; min-width: 0; }
 .copy {
-  display: none; align-items: center; gap: 7px; align-self: stretch; cursor: pointer;
-  min-height: var(--tap); min-width: 92px; justify-content: center; padding: 0 14px;
-  border: 0; border-left: 1px solid var(--rule); background: transparent; color: var(--ink2);
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: .13em; text-transform: uppercase;
+  display: none; align-items: center; gap: 7px; cursor: pointer;
+  min-height: var(--tap); padding: 0 14px; border-radius: 999px;
+  border: 1px solid var(--rule-2); color: var(--muted); font-size: 13px;
 }
 .js .copy { display: inline-flex; }
-.copy:hover { background: var(--panel); color: var(--ink); }
+.copy:hover { color: var(--ink); background: var(--sunk); }
 .copy[data-state="done"] { color: var(--accent); border-color: var(--accent); }
-.close__note {
-  margin-top: auto; padding-top: 20px;
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint);
-}
-/* the closing panel mirrors the hero's SHEET INDEX: header strip, rows that
-   share out the remaining height, footer strip. Nothing stops short. */
-.close__side { display: flex; flex-direction: column; }
-.side__h {
-  font-family: var(--mono); font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink);
-  padding: 11px 14px; border-bottom: 1px solid var(--line); background: var(--sunk); flex: none;
-}
-.side__f {
-  display: flex; justify-content: space-between; padding: 11px 14px; flex: none;
-  border-top: 1px solid var(--line); background: var(--sunk);
-  font-family: var(--mono); font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint);
-}
-.side__f b { color: var(--ink2); font-weight: 400; }
+.contact__note { margin-top: auto; padding-top: 26px; }
+
+.aside { display: flex; flex-direction: column; gap: clamp(18px, 2.4vw, 30px); }
+.routes { border: 1px solid var(--rule); border-radius: 14px; overflow: hidden; background: var(--card); box-shadow: var(--shadow); }
 .route {
-  flex: 1 1 auto; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-content: center; gap: 4px 14px;
-  min-height: 96px; padding: 18px clamp(16px, 1.8vw, 22px); text-decoration: none; color: inherit;
-  border-bottom: 1px solid var(--rule);
+  display: flex; align-items: center; justify-content: space-between; gap: 14px;
+  min-height: 76px; padding: 16px clamp(18px, 2.2vw, 24px); text-decoration: none;
+  border-bottom: 1px solid var(--rule); color: inherit;
 }
-.route:last-of-type { border-bottom: 0; }
-.route:hover, .route:focus-visible { background: var(--sunk); }
-.route__k { font-family: var(--mono); font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--anno); }
-.route__n { font-size: 1.02rem; font-weight: 600; letter-spacing: -.01em; }
-.route__v { grid-column: 1; font-family: var(--mono); font-size: 11.5px; color: var(--ink2); overflow-wrap: anywhere; }
-.route__a {
-  grid-column: 2; grid-row: 1 / span 3; align-self: center;
-  width: 40px; height: 40px; display: grid; place-items: center; flex: none;
-  border: 1px solid var(--rule); color: var(--accent); font-family: var(--mono); font-size: 14px;
-  transition: transform .3s ease, border-color .2s linear;
-}
-.route:hover .route__a { transform: translate(3px, -3px); border-color: var(--accent); }
-@media (prefers-reduced-motion: reduce) { .route__a { transition: none; } }
-@media (max-width: 900px) { .close { grid-template-columns: 1fr; } .route { min-height: 84px; } }
-@media (max-width: 420px) {
-  .addr { grid-template-columns: 1fr; }
-  .copy { border-left: 0; border-top: 1px solid var(--rule); }
-}
+.route:last-child { border-bottom: 0; }
+.route:hover { background: var(--sunk); }
+.route__n { display: block; color: var(--ink); font-size: 1rem; font-family: var(--serif); }
+.route__v { display: block; font-size: 12.5px; color: var(--muted); overflow-wrap: anywhere; }
+.route__a { color: var(--accent); font-size: 15px; flex: none; transition: transform .3s cubic-bezier(.22,.72,.2,1); }
+.route:hover .route__a { transform: translate(2px, -2px); }
+.facts { padding: 4px clamp(18px, 2.2vw, 24px); border: 1px solid var(--rule); border-radius: 14px; background: var(--sunk); }
+.fact { display: flex; justify-content: space-between; gap: 14px; padding: 12px 0; border-bottom: 1px solid var(--rule); font-size: .88rem; }
+.fact:last-child { border-bottom: 0; }
+.fact__k { color: var(--muted); }
+.fact__v { color: var(--ink); text-align: right; }
+@media (max-width: 860px) { .contact { grid-template-columns: 1fr; } }
 
-/* ══════════════════════════ FIG. 3 — VERIFIED FIGURES ══════════════════════
-   A register, not a chart: key, meaning, value, one shared log axis and the
-   method each number was obtained by. Bars are log-scaled so a five-figure
-   count and a single-figure count can share an axis without either lying. */
-.plate--led { padding: clamp(14px, 1.8vw, 22px) clamp(12px, 1.8vw, 22px) 0; }
-.ledger { width: 100%; border-collapse: collapse; table-layout: fixed; font-family: var(--mono); }
-.ledger th, .ledger td { text-align: left; vertical-align: middle; }
-.ledger thead th {
-  padding: 0 10px 9px; border-bottom: 1px solid var(--line);
-  font-size: 9.5px; font-weight: 400; letter-spacing: .18em; text-transform: uppercase; color: var(--faint);
-}
-.ledger tbody tr { border-bottom: 1px solid var(--rule); }
-.ledger tbody td, .ledger tbody th { padding: 13px 10px; }
-.ledger tbody tr:hover { background: var(--sunk); }
-.led__k { font-size: 11px; letter-spacing: .12em; color: var(--anno); font-weight: 400; white-space: nowrap; }
-.led__m { font-family: var(--sans); font-size: .9rem; color: var(--ink2); }
-.led__v { font-size: 1.02rem; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; white-space: nowrap; }
-.led__v small { display: block; font-size: 10px; font-weight: 400; letter-spacing: .1em; text-transform: uppercase; color: var(--faint); margin-top: 2px; }
-.bar {
-  display: block; position: relative; height: 16px; min-width: 90px;
-  border: 1px solid var(--rule); background: var(--bg);
-  background-image: repeating-linear-gradient(90deg, var(--rule) 0 1px, transparent 1px 20%);
-}
-.bar > i {
-  position: absolute; inset: 1px auto 1px 1px; width: calc(var(--p) - 2px);
-  background: var(--mx-on); display: block;
-}
-.bar--na {
-  display: flex; align-items: center; padding-left: 8px; background-image: none;
-  font-size: 9.5px; letter-spacing: .1em; text-transform: uppercase; color: var(--faint);
-  border-style: dashed; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-}
-.led__s { font-size: 10.5px; letter-spacing: .06em; color: var(--ink2); }
-.stamp {
-  display: inline-flex; align-items: center; gap: 5px; margin-bottom: 3px;
-  padding: 2px 6px; border: 1px solid var(--accent); color: var(--accent);
-  font-size: 9px; letter-spacing: .14em; text-transform: uppercase;
-}
-.stamp::before { content: "\2713"; }
-.led__s em { display: block; font-style: normal; color: var(--faint); font-size: 10px; letter-spacing: .05em; }
-.led__mob { display: none; }
-.ledger tfoot td {
-  padding: 9px 10px 12px; font-size: 9.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--faint);
-}
-/* decade labels sit exactly on the bar's own gridlines (every 20%) */
-.axis { position: relative; height: 13px; }
-.axis span { position: absolute; top: 0; transform: translateX(-50%); white-space: nowrap; }
-.axis span:nth-child(1) { left: 0; transform: none; }
-.axis span:nth-child(2) { left: 20%; }
-.axis span:nth-child(3) { left: 40%; }
-.axis span:nth-child(4) { left: 60%; }
-.axis span:nth-child(5) { left: 80%; }
-.axis span:nth-child(6) { left: 100%; transform: translateX(-100%); }
-@media (max-width: 1000px) {
-  .plate--led { padding: 4px 0 0; }
-  .ledger, .ledger tbody, .ledger tr, .ledger td, .ledger th { display: block; width: auto; }
-  .ledger thead, .ledger tfoot { display: none; }
-  .ledger tbody tr { padding: 14px clamp(14px, 4vw, 20px); border-bottom: 1px solid var(--rule); }
-  .ledger tbody tr:last-child { border-bottom: 0; }
-  .ledger tbody td, .ledger tbody th { padding: 0; }
-  .led__k { margin-bottom: 4px; }
-  .led__m { margin-bottom: 8px; }
-  .led__v { font-size: 1.3rem; margin-bottom: 10px; }
-  .led__v small { display: inline; margin-left: 8px; }
-  .led__b { margin-bottom: 10px; }
-  .bar { height: 14px; }
-  .led__mob { display: block; font-size: 9.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--faint); margin-bottom: 5px; }
-}
-.skip-cap { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+/* ────────────────────────────── footer ────────────────────────────── */
+.foot { border-top: 1px solid var(--rule); padding-block: 34px 44px; }
+.foot__in { display: flex; flex-wrap: wrap; gap: 10px 30px; justify-content: space-between; align-items: center; }
+.foot p { font-size: .84rem; color: var(--muted); }
+.foot .brand__marks { width: 32px; height: 19px; }
 
-/* title block */
-.tblock { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); border: 1px solid var(--line); margin-top: clamp(30px, 3.4vw, 46px); }
-.tb { padding: 12px 14px; border-right: 1px solid var(--rule); border-top: 1px solid var(--rule); }
-.tb:nth-child(-n+2) { border-top: 0; }
-.tb:last-child { border-right: 0; }
-.tb--w { grid-column: span 4; }
-.tb--h { grid-column: span 2; }
-.tb__k { display: block; font-family: var(--mono); font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--faint); margin-bottom: 5px; }
-.tb__v { font-family: var(--mono); font-size: 12.5px; color: var(--ink); }
-.tb--w .tb__v { font-size: 13.5px; }
-@media (max-width: 820px) { .tblock { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tb--w, .tb--h { grid-column: span 2; } .tb:nth-child(2) { border-top: 1px solid var(--rule); } .tb { border-right: 1px solid var(--rule); } .tb:nth-child(2n) { border-right: 0; } }
-.foot { display: flex; flex-wrap: wrap; gap: 8px 26px; justify-content: space-between; padding: 18px 2px 6px; font-family: var(--mono); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); }
+/* ───────────────────────── entrance, and its failsafes ─────────────────────
+   Hiding is gated on .rv-on, which is added by the very script that also
+   attaches the observers AND schedules the un-hiding. A second, independent
+   failsafe (.reveal-all) is armed in <head>. Either one un-hides everything,
+   and .reveal-all is declared last so it wins at equal specificity. */
+.rv-on .rv { opacity: 0; transform: translateY(12px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,.72,.2,1); }
+.rv-on .rv.in { opacity: 1; transform: none; }
+.reveal-all .rv { opacity: 1 !important; transform: none !important; transition: none !important; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rv-on .rv { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .js .inked path { animation: none !important; }
+  .js .eyebrow .dot { animation: none !important; }
+  .btn .arw, .route__a { transition: none !important; }
+}
 </style>
 </head>
 <body id="top">
 
-<div class="frame" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+<!-- the maker's marks, drawn once ------------------------------------------->
+<svg class="sprite" aria-hidden="true" focusable="false">
+  <!-- a circle drawn by hand: never quite round, never quite closed -->
+  <symbol id="m-vipul" viewBox="0 0 24 24">
+    <path d="M12.2 2.6C17.4 2.7 21.5 7 21.4 12.2 21.3 17.4 17 21.5 11.8 21.4 6.7 21.3 2.6 17 2.6 11.8 2.7 6.8 7 2.6 12.2 2.6Z"
+          fill="currentColor" stroke="currentColor" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="m-naveen" viewBox="0 0 24 24">
+    <path d="M12.2 2.6C17.4 2.7 21.5 7 21.4 12.2 21.3 17.4 17 21.5 11.8 21.4 6.7 21.3 2.6 17 2.6 11.8 2.7 6.8 7 2.6 12.2 2.6Z"
+          fill="none" stroke="currentColor" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="m-both" viewBox="0 0 24 24">
+    <path d="M12 2.6C6.8 2.7 2.6 6.9 2.6 12 2.6 17.1 6.8 21.3 12 21.4Z" fill="currentColor" stroke="none"/>
+    <path d="M12.2 2.6C17.4 2.7 21.5 7 21.4 12.2 21.3 17.4 17 21.5 11.8 21.4 6.7 21.3 2.6 17 2.6 11.8 2.7 6.8 7 2.6 12.2 2.6Z"
+          fill="none" stroke="currentColor" stroke-linejoin="round"/>
+  </symbol>
+</svg>
+
 <a class="skip" href="#main">Skip to content</a>
 
-<!-- ═══════════════════════════ NAV ═══════════════════════════ -->
+<!-- ══════════════════════════════ NAV ══════════════════════════════ -->
 <nav class="nav" aria-label="Primary">
   <div class="nav__in">
     <a class="brand" href="#top">
-      <svg viewBox="0 0 100 100" aria-hidden="true"><rect x="2" y="2" width="96" height="96" fill="none" stroke="currentColor" stroke-width="5"/><path d="M26 30 L50 72 L74 30" fill="none" stroke="currentColor" stroke-width="10"/></svg>
-      <b>Vipul Kumar</b>
+      <svg class="brand__marks" viewBox="0 0 40 24" aria-hidden="true">
+        <use href="#m-vipul" x="0" y="0" width="24" height="24"/>
+        <use href="#m-naveen" x="16" y="0" width="24" height="24"/>
+      </svg>
+      <span class="brand__n">Vipul Kumar <i>&amp;</i> Naveen Shah</span>
     </a>
+
     <div class="nav__links">
-      <a href="#work"><span>01</span> Work</a>
-      <a href="#services"><span>02</span> Services</a>
-      <a href="#stack"><span>03</span> Stack</a>
-      <a href="#process"><span>04</span> Process</a>
-      <a href="#about"><span>05</span> About</a>
+      <a href="#team">The two of us</a>
+      <a href="#work">Work</a>
+      <a href="#services">What we take on</a>
+      <a href="#process">How it goes</a>
     </div>
+
+    <div class="nav__right">
+      <button class="tbtn" id="theme" type="button" aria-label="Switch colour theme" title="Switch colour theme">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#m-both" width="24" height="24"/></svg>
+      </button>
+      <a class="navcta" href="#contact">Get in touch</a>
+    </div>
+
     <details class="mnav" id="mnav">
-      <summary id="mnav-btn" aria-expanded="false" aria-controls="mnav-panel">Index</summary>
+      <summary id="mnav-btn" aria-expanded="false" aria-controls="mnav-panel">
+        <span class="mnav__bars" aria-hidden="true"><i></i><i></i><i></i></span> Menu
+      </summary>
       <div class="mnav__panel" id="mnav-panel">
         <div class="mnav__in">
-          <div class="mnav__h"><span>Sheet index</span><span>Rev 2026.08</span></div>
           <nav aria-label="Sections">
-            <a class="mnav__a" href="#drawing"><i>00</i><span>General arrangement</span><em>Fig. 1</em></a>
-            <a class="mnav__a" href="#work"><i>01</i><span>Selected work</span><em>4 systems</em></a>
-            <a class="mnav__a" href="#services"><i>02</i><span>Services</span><em>6 lanes</em></a>
-            <a class="mnav__a" href="#stack"><i>03</i><span>Working stack</span><em>8 groups</em></a>
-            <a class="mnav__a" href="#process"><i>04</i><span>Process</span><em>4 steps</em></a>
-            <a class="mnav__a" href="#about"><i>05</i><span>About</span><em>Fig. 3</em></a>
-            <a class="mnav__a" href="#contact"><i>06</i><span>Contact</span><em>3 routes</em></a>
+            <a class="mnav__a" href="#team">The two of us</a>
+            <a class="mnav__a" href="#work">Work</a>
+            <a class="mnav__a" href="#services">What we take on</a>
+            <a class="mnav__a" href="#process">How it goes</a>
+            <a class="mnav__a" href="#contact">Contact</a>
           </nav>
-          <div class="mnav__cta"><a class="btn btn--go" href="#contact">Start a project <span class="arw">&rarr;</span></a></div>
+          <div class="mnav__cta">
+            <a class="btn btn--solid" href="#contact">Start a conversation <span class="arw" aria-hidden="true">&rarr;</span></a>
+          </div>
         </div>
       </div>
     </details>
-    <div class="nav__right">
-      <button class="iconbtn" id="theme" type="button" aria-label="Switch colour theme" title="Switch colour theme">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 3 A9 9 0 0 1 12 21 Z" fill="currentColor"/></svg>
-      </button>
-      <a class="navcta" href="#contact">Hire me</a>
-    </div>
   </div>
-  <span class="prog" id="prog" aria-hidden="true"></span>
 </nav>
 
 <main id="main">
 
-<!-- ═══════════════════════════ HERO ═══════════════════════════ -->
+<!-- ══════════════════════════════ HERO ══════════════════════════════ -->
 <header class="sec hero">
   <div class="wrap">
+    <p class="eyebrow"><span class="dot" aria-hidden="true"></span> Available for freelance projects</p>
 
-    <div class="sheetbar">
-      <span>Sheet <b>01</b> of <b>06</b></span>
-      <span>Backend &amp; trading infrastructure</span>
-      <span class="sb-r">India &middot; remote &middot; IST</span>
-    </div>
-
-    <div class="hero__grid">
-    <div class="hero__main">
-
-    <span class="badge"><span class="pip"></span> Available for freelance projects</span>
-
-    <h1 class="disp">
-      <span class="ln"><span class="w" style="--i:0"><i>I</i></span> <span class="w" style="--i:1"><i>build</i></span> <span class="w" style="--i:2"><i>backends</i></span></span>
-      <span class="ln"><span class="w" style="--i:3"><i>where</i></span> <span class="w" style="--i:4"><i>being</i></span> <span class="w" style="--i:5"><i>wrong</i></span></span>
-      <span class="ln"><span class="w accent-w" style="--i:6"><i>costs</i></span> <span class="w accent-w" style="--i:7"><i>money.</i></span></span>
+    <h1>
+      We build software that
+      <span class="inked">isn&rsquo;t allowed<svg viewBox="0 0 200 8" preserveAspectRatio="none" aria-hidden="true"><path d="M2 5.6C38 2.4 74 6.8 110 4.2 140 2 168 5.6 198 3.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-dasharray="210" vector-effect="non-scaling-stroke"/></svg></span>
+      to be wrong.
     </h1>
 
-    <div class="ruler" aria-hidden="true"></div>
-
     <p class="hero__sub">
-      For the past two years I've built and run the execution core of a live
-      derivatives trading platform — the systems that fire real orders, hold real
-      capital against exchange margin rules, and are engineered so a failure never
-      becomes a financial loss.
+      Vipul Kumar and Naveen Shah — two backend engineers in India. We build and run the
+      infrastructure behind a live derivatives trading platform, and we take freelance
+      work on together, as a pair.
     </p>
 
     <div class="hero__cta">
-      <a class="btn btn--go" href="#contact">Start a project <span class="arw">&rarr;</span></a>
-      <a class="btn" href="#work">See the work</a>
+      <a class="btn btn--solid" href="#contact">Start a conversation <span class="arw" aria-hidden="true">&rarr;</span></a>
+      <a class="btn" href="#work">See what we&rsquo;ve built</a>
     </div>
 
-    </div><!-- /hero__main -->
-
-    <aside class="index card" aria-label="Sheet index">
-      <div class="index__h">Sheet index</div>
-      <a class="index__r" href="#drawing"><span class="index__n">00</span><span class="index__t">General arrangement</span><span class="index__q">Fig. 1</span></a>
-      <a class="index__r" href="#work"><span class="index__n">01</span><span class="index__t">Selected work</span><span class="index__q">4 systems</span></a>
-      <a class="index__r" href="#services"><span class="index__n">02</span><span class="index__t">Services</span><span class="index__q">6 lanes</span></a>
-      <a class="index__r" href="#stack"><span class="index__n">03</span><span class="index__t">Working stack</span><span class="index__q">8 groups</span></a>
-      <a class="index__r" href="#process"><span class="index__n">04</span><span class="index__t">Process</span><span class="index__q">4 steps</span></a>
-      <a class="index__r" href="#about"><span class="index__n">05</span><span class="index__t">About</span><span class="index__q">Fig. 3</span></a>
-      <a class="index__r" href="#contact"><span class="index__n">06</span><span class="index__t">Contact</span><span class="index__q">3 routes</span></a>
-      <div class="index__f">
-        <span>Rev</span><b>2026.08</b>
+    <div class="totals">
+      <div class="total">
+        <div class="total__v num">150,734</div>
+        <div class="total__k">lines of production code</div>
       </div>
-    </aside>
-
-    </div><!-- /hero__grid -->
-
-    <div class="hstrip">
-      <div class="hstat">
-        <div class="hstat__v" data-count="80753" data-sep="1">80,753</div>
-        <div class="hstat__dim" aria-hidden="true"></div>
-        <div class="hstat__k">Lines in production</div>
+      <div class="total">
+        <div class="total__v num">3,006</div>
+        <div class="total__k">automated tests</div>
       </div>
-      <div class="hstat">
-        <div class="hstat__v" data-count="2134" data-sep="1">2,134</div>
-        <div class="hstat__dim" aria-hidden="true"></div>
-        <div class="hstat__k">Automated tests green</div>
+      <div class="total">
+        <div class="total__v num">8</div>
+        <div class="total__k">services in production</div>
       </div>
-      <div class="hstat">
-        <div class="hstat__v" data-count="17">17</div>
-        <div class="hstat__dim" aria-hidden="true"></div>
-        <div class="hstat__k">Coordinated processes</div>
-      </div>
-      <div class="hstat">
-        <div class="hstat__v" data-count="7">7</div>
-        <div class="hstat__dim" aria-hidden="true"></div>
-        <div class="hstat__k">Platform services live</div>
-      </div>
+      <p class="small totals__note">Counted from the source, one service at a time. Nothing here is an estimate.</p>
     </div>
-
   </div>
 </header>
 
-<!-- ═══════════════════════════ FIG. 1 ═══════════════════════════ -->
-<section class="sec" id="drawing">
-  <div class="wrap">
-    <div class="shead__top rv" style="margin-bottom:26px"><span class="kicker">00 — General arrangement</span></div>
-
-    <figure class="fig fig--wide rv">
-      <div class="fig__head">
-        <span class="fig__id">FIG. 1</span>
-        <span class="fig__t">General arrangement — event-driven process fleet</span>
-        <span class="scrollcue">Wide drawing &mdash; scroll it sideways <b>&rarr;</b></span>
-        <span class="fig__n">Schematic &middot; not to scale</span>
-      </div>
-      <div class="plate plate--main">
-        <div class="scroller" tabindex="0" role="group" aria-label="Figure 1 drawing — scrolls sideways">
-<svg viewBox="0 0 1160 700" role="img" aria-labelledby="f1t f1d">
-  <title id="f1t">Schematic of a multi-process event-driven system</title>
-  <desc id="f1d">An abstract engineering drawing: source adapters feed an append-only event backbone; five stages of replicated worker processes read and write it through consumer groups; below it sit a durable state store, a reconciler, an isolation lane and an egress process; a dashed boundary on the right marks the only crossing to an external system; a dimension line along the bottom marks seventeen supervised processes.</desc>
-  <defs>
-    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
-      <path class="f-line" d="M0,1 L9,5 L0,9 z"/>
-    </marker>
-    <marker id="arn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" markerUnits="userSpaceOnUse" orient="auto">
-      <path class="f-anno" d="M0,1 L9,5 L0,9 z"/>
-    </marker>
-    <marker id="tick" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="11" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto">
-      <path class="mk-tick" d="M2,8 L8,2"/>
-    </marker>
-    <pattern id="hx" width="7" height="7" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-      <line class="pt-line" x1="0" y1="0" x2="0" y2="7"/>
-    </pattern>
-  </defs>
-
-  <!-- sheet frame + zone marks -->
-  <rect class="sl" x="8" y="8" width="1144" height="684"/>
-  <rect class="sr" x="30" y="30" width="1100" height="640"/>
-<line class="sr" x1="167.5" y1="8" x2="167.5" y2="30"/>
-<line class="sr" x1="167.5" y1="670" x2="167.5" y2="692"/>
-<line class="sr" x1="305" y1="8" x2="305" y2="30"/>
-<line class="sr" x1="305" y1="670" x2="305" y2="692"/>
-<line class="sr" x1="442.5" y1="8" x2="442.5" y2="30"/>
-<line class="sr" x1="442.5" y1="670" x2="442.5" y2="692"/>
-<line class="sr" x1="580" y1="8" x2="580" y2="30"/>
-<line class="sr" x1="580" y1="670" x2="580" y2="692"/>
-<line class="sr" x1="717.5" y1="8" x2="717.5" y2="30"/>
-<line class="sr" x1="717.5" y1="670" x2="717.5" y2="692"/>
-<line class="sr" x1="855" y1="8" x2="855" y2="30"/>
-<line class="sr" x1="855" y1="670" x2="855" y2="692"/>
-<line class="sr" x1="992.5" y1="8" x2="992.5" y2="30"/>
-<line class="sr" x1="992.5" y1="670" x2="992.5" y2="692"/>
-<text class="tz" x="98.75" y="24">1</text>
-<text class="tz" x="98.75" y="686">1</text>
-<text class="tz" x="236.25" y="24">2</text>
-<text class="tz" x="236.25" y="686">2</text>
-<text class="tz" x="373.75" y="24">3</text>
-<text class="tz" x="373.75" y="686">3</text>
-<text class="tz" x="511.25" y="24">4</text>
-<text class="tz" x="511.25" y="686">4</text>
-<text class="tz" x="648.75" y="24">5</text>
-<text class="tz" x="648.75" y="686">5</text>
-<text class="tz" x="786.25" y="24">6</text>
-<text class="tz" x="786.25" y="686">6</text>
-<text class="tz" x="923.75" y="24">7</text>
-<text class="tz" x="923.75" y="686">7</text>
-<text class="tz" x="1061.25" y="24">8</text>
-<text class="tz" x="1061.25" y="686">8</text>
-<line class="sr" x1="8" y1="158" x2="30" y2="158"/>
-<line class="sr" x1="1130" y1="158" x2="1152" y2="158"/>
-<line class="sr" x1="8" y1="286" x2="30" y2="286"/>
-<line class="sr" x1="1130" y1="286" x2="1152" y2="286"/>
-<line class="sr" x1="8" y1="414" x2="30" y2="414"/>
-<line class="sr" x1="1130" y1="414" x2="1152" y2="414"/>
-<line class="sr" x1="8" y1="542" x2="30" y2="542"/>
-<line class="sr" x1="1130" y1="542" x2="1152" y2="542"/>
-<text class="tz" x="19" y="98">A</text>
-<text class="tz" x="1141" y="98">A</text>
-<text class="tz" x="19" y="226">B</text>
-<text class="tz" x="1141" y="226">B</text>
-<text class="tz" x="19" y="354">C</text>
-<text class="tz" x="1141" y="354">C</text>
-<text class="tz" x="19" y="482">D</text>
-<text class="tz" x="1141" y="482">D</text>
-<text class="tz" x="19" y="610">E</text>
-<text class="tz" x="1141" y="610">E</text>
-
-  <!-- drawing title -->
-  <text class="tt" x="46" y="58">FIG. 1 &#8212; GENERAL ARRANGEMENT</text>
-  <text class="ts" x="46" y="78">EVENT-DRIVEN PROCESS FLEET &#183; DRAWN FOR THIS PAGE &#183; DEPICTS A PATTERN, NOT A CLIENT SYSTEM</text>
-  <text class="tze" x="1114" y="58">SCALE NONE</text>
-  <text class="tze" x="1114" y="78">SHEET 1 OF 1</text>
-
-  <!-- ingress -->
-  <rect class="bx" x="46" y="140" width="130" height="52"/>
-  <text class="ts" x="56" y="162">SOURCE</text><text class="ts" x="56" y="180">ADAPTER 01</text>
-  <rect class="bx" x="46" y="208" width="130" height="52"/>
-  <text class="ts" x="56" y="230">SOURCE</text><text class="ts" x="56" y="248">ADAPTER 02</text>
-  <rect class="bx" x="46" y="276" width="130" height="52"/>
-  <text class="ts" x="56" y="298">SCHEDULED</text><text class="ts" x="56" y="316">TRIGGERS</text>
-  <line class="sl" x1="176" y1="166" x2="212" y2="166"/>
-  <line class="sl" x1="176" y1="234" x2="212" y2="234"/>
-  <line class="sl" x1="176" y1="302" x2="212" y2="302"/>
-  <line class="sl" x1="212" y1="166" x2="212" y2="367"/>
-  <line class="sl" marker-end="url(#ar)" x1="212" y1="367" x2="246" y2="367"/>
-  <text class="tz" x="196" y="386">NORMALISED</text>
-
-  <!-- stages -->
-<g><rect class="bx" x="250" y="196" width="124" height="104"/>
-<line class="sr" x1="250" y1="222" x2="374" y2="222"/>
-<text class="tb" x="259" y="215">STAGE A</text>
-<text class="ta" x="365" y="215" text-anchor="end">&#215;3</text>
-<rect class="dot" x="259" y="233" width="9" height="9"/>
-<rect class="dot" x="272" y="233" width="9" height="9"/>
-<rect class="dot" x="285" y="233" width="9" height="9"/>
-<text class="ts" x="259" y="264">CONSUMER GRP</text>
-<text class="ts" x="259" y="278">AT-LEAST-ONCE</text>
-<text class="ts" x="259" y="292">IDEMPOTENT</text>
-</g>
-<line class="sl" marker-end="url(#ar)" x1="319" y1="300" x2="319" y2="344"/>
-<line class="sl" marker-end="url(#ar)" x1="305" y1="344" x2="305" y2="300"/>
-<g><rect class="bx" x="399" y="196" width="124" height="104"/>
-<line class="sr" x1="399" y1="222" x2="523" y2="222"/>
-<text class="tb" x="408" y="215">STAGE B</text>
-<text class="ta" x="514" y="215" text-anchor="end">&#215;2</text>
-<rect class="dot" x="408" y="233" width="9" height="9"/>
-<rect class="dot" x="421" y="233" width="9" height="9"/>
-<text class="ts" x="408" y="264">CONSUMER GRP</text>
-<text class="ts" x="408" y="278">AT-LEAST-ONCE</text>
-<text class="ts" x="408" y="292">IDEMPOTENT</text>
-</g>
-<line class="sl" marker-end="url(#ar)" x1="468" y1="300" x2="468" y2="344"/>
-<line class="sl" marker-end="url(#ar)" x1="454" y1="344" x2="454" y2="300"/>
-<g><rect class="bx" x="548" y="196" width="124" height="104"/>
-<line class="sr" x1="548" y1="222" x2="672" y2="222"/>
-<text class="tb" x="557" y="215">STAGE C</text>
-<text class="ta" x="663" y="215" text-anchor="end">&#215;4</text>
-<rect class="dot" x="557" y="233" width="9" height="9"/>
-<rect class="dot" x="570" y="233" width="9" height="9"/>
-<rect class="dot" x="583" y="233" width="9" height="9"/>
-<rect class="dot" x="596" y="233" width="9" height="9"/>
-<text class="ts" x="557" y="264">CONSUMER GRP</text>
-<text class="ts" x="557" y="278">AT-LEAST-ONCE</text>
-<text class="ts" x="557" y="292">IDEMPOTENT</text>
-</g>
-<line class="sl" marker-end="url(#ar)" x1="617" y1="300" x2="617" y2="344"/>
-<line class="sl" marker-end="url(#ar)" x1="603" y1="344" x2="603" y2="300"/>
-<g><rect class="bx" x="697" y="196" width="124" height="104"/>
-<line class="sr" x1="697" y1="222" x2="821" y2="222"/>
-<text class="tb" x="706" y="215">STAGE D</text>
-<text class="ta" x="812" y="215" text-anchor="end">&#215;2</text>
-<rect class="dot" x="706" y="233" width="9" height="9"/>
-<rect class="dot" x="719" y="233" width="9" height="9"/>
-<text class="ts" x="706" y="264">CONSUMER GRP</text>
-<text class="ts" x="706" y="278">AT-LEAST-ONCE</text>
-<text class="ts" x="706" y="292">IDEMPOTENT</text>
-</g>
-<line class="sl" marker-end="url(#ar)" x1="766" y1="300" x2="766" y2="344"/>
-<line class="sl" marker-end="url(#ar)" x1="752" y1="344" x2="752" y2="300"/>
-<g><rect class="bx" x="846" y="196" width="124" height="104"/>
-<line class="sr" x1="846" y1="222" x2="970" y2="222"/>
-<text class="tb" x="855" y="215">STAGE E</text>
-<text class="ta" x="961" y="215" text-anchor="end">&#215;3</text>
-<rect class="dot" x="855" y="233" width="9" height="9"/>
-<rect class="dot" x="868" y="233" width="9" height="9"/>
-<rect class="dot" x="881" y="233" width="9" height="9"/>
-<text class="ts" x="855" y="264">CONSUMER GRP</text>
-<text class="ts" x="855" y="278">AT-LEAST-ONCE</text>
-<text class="ts" x="855" y="292">IDEMPOTENT</text>
-</g>
-<line class="sl" marker-end="url(#ar)" x1="915" y1="300" x2="915" y2="344"/>
-<line class="sl" marker-end="url(#ar)" x1="901" y1="344" x2="901" y2="300"/>
-
-  <!-- backbone -->
-  <rect class="bx2" x="250" y="350" width="720" height="34"/>
-<line class="sl" x1="258" y1="350" x2="258" y2="357"/>
-<line class="sl" x1="274" y1="350" x2="274" y2="357"/>
-<line class="sl" x1="290" y1="350" x2="290" y2="357"/>
-<line class="sl" x1="306" y1="350" x2="306" y2="357"/>
-<line class="sl" x1="322" y1="350" x2="322" y2="357"/>
-<line class="sl" x1="338" y1="350" x2="338" y2="357"/>
-<line class="sl" x1="354" y1="350" x2="354" y2="357"/>
-<line class="sl" x1="370" y1="350" x2="370" y2="357"/>
-<line class="sl" x1="386" y1="350" x2="386" y2="357"/>
-<line class="sl" x1="402" y1="350" x2="402" y2="357"/>
-<line class="sl" x1="418" y1="350" x2="418" y2="357"/>
-<line class="sl" x1="434" y1="350" x2="434" y2="357"/>
-<line class="sl" x1="450" y1="350" x2="450" y2="357"/>
-<line class="sl" x1="466" y1="350" x2="466" y2="357"/>
-<line class="sl" x1="482" y1="350" x2="482" y2="357"/>
-<line class="sl" x1="498" y1="350" x2="498" y2="357"/>
-<line class="sl" x1="514" y1="350" x2="514" y2="357"/>
-<line class="sl" x1="530" y1="350" x2="530" y2="357"/>
-<line class="sl" x1="546" y1="350" x2="546" y2="357"/>
-<line class="sl" x1="562" y1="350" x2="562" y2="357"/>
-<line class="sl" x1="578" y1="350" x2="578" y2="357"/>
-<line class="sl" x1="594" y1="350" x2="594" y2="357"/>
-<line class="sl" x1="610" y1="350" x2="610" y2="357"/>
-<line class="sl" x1="626" y1="350" x2="626" y2="357"/>
-<line class="sl" x1="642" y1="350" x2="642" y2="357"/>
-<line class="sl" x1="658" y1="350" x2="658" y2="357"/>
-<line class="sl" x1="674" y1="350" x2="674" y2="357"/>
-<line class="sl" x1="690" y1="350" x2="690" y2="357"/>
-<line class="sl" x1="706" y1="350" x2="706" y2="357"/>
-<line class="sl" x1="722" y1="350" x2="722" y2="357"/>
-<line class="sl" x1="738" y1="350" x2="738" y2="357"/>
-<line class="sl" x1="754" y1="350" x2="754" y2="357"/>
-<line class="sl" x1="770" y1="350" x2="770" y2="357"/>
-<line class="sl" x1="786" y1="350" x2="786" y2="357"/>
-<line class="sl" x1="802" y1="350" x2="802" y2="357"/>
-<line class="sl" x1="818" y1="350" x2="818" y2="357"/>
-<line class="sl" x1="834" y1="350" x2="834" y2="357"/>
-<line class="sl" x1="850" y1="350" x2="850" y2="357"/>
-<line class="sl" x1="866" y1="350" x2="866" y2="357"/>
-<line class="sl" x1="882" y1="350" x2="882" y2="357"/>
-<line class="sl" x1="898" y1="350" x2="898" y2="357"/>
-<line class="sl" x1="914" y1="350" x2="914" y2="357"/>
-<line class="sl" x1="930" y1="350" x2="930" y2="357"/>
-<line class="sl" x1="946" y1="350" x2="946" y2="357"/>
-<line class="sl" x1="962" y1="350" x2="962" y2="357"/>
-  <line class="sr dsh" x1="440" y1="358" x2="440" y2="384"/>
-  <line class="sr dsh" x1="630" y1="358" x2="630" y2="384"/>
-  <line class="sr dsh" x1="820" y1="358" x2="820" y2="384"/>
-  <text class="tb" x="610" y="376" text-anchor="middle">EVENT BACKBONE &#183; APPEND-ONLY &#183; PARTITIONED BY OWNER</text>
-
-  <!-- claim gate on stage C -->
-  <rect class="bx" x="604" y="318" width="14" height="14" transform="rotate(45 611 325)"/>
-  <line class="sn" marker-end="url(#arn)" x1="676" y1="325" x2="626" y2="325"/>
-
-  <!-- below the backbone -->
-  <path class="bx" d="M250,436 a70,12 0 0 1 140,0 v76 a70,12 0 0 1 -140,0 z"/>
-  <path class="sl" d="M250,436 a70,12 0 0 0 140,0"/>
-  <text class="tb" x="320" y="478" text-anchor="middle">DURABLE STATE</text>
-  <text class="ts" x="320" y="496" text-anchor="middle">ACK AFTER WRITE</text>
-  <line class="sl" marker-end="url(#ar)" x1="320" y1="386" x2="320" y2="428"/>
-
-  <rect class="bx" x="430" y="424" width="124" height="100"/>
-  <line class="sr" x1="430" y1="450" x2="554" y2="450"/>
-  <text class="tb2" x="439" y="443">RECONCILER</text>
-  <text class="ta" x="545" y="443" text-anchor="end">&#215;1</text>
-  <text class="ts" x="439" y="472">PERIODIC</text>
-  <text class="ts" x="439" y="488">SWEEP FOR</text>
-  <text class="ts" x="439" y="504">DRIFT</text>
-  <line class="sl" marker-end="url(#ar)" x1="485" y1="386" x2="485" y2="420"/>
-  <line class="sl" marker-end="url(#ar)" x1="499" y1="420" x2="499" y2="386"/>
-
-  <rect class="hatch" x="594" y="424" width="124" height="100"/>
-  <rect class="bx" x="594" y="424" width="124" height="26"/>
-  <text class="tb2" x="603" y="443">ISOLATION</text>
-  <rect class="bx" x="600" y="462" width="112" height="50"/>
-  <text class="ts" x="608" y="482">QUARANTINE</text>
-  <text class="ts" x="608" y="500">&amp; INSPECT</text>
-  <line class="sn" marker-end="url(#arn)" x1="656" y1="386" x2="656" y2="420"/>
-  <text class="ta" x="646" y="408" text-anchor="end">AFTER n RETRIES</text>
-
-  <rect class="bx" x="846" y="424" width="124" height="100"/>
-  <line class="sr" x1="846" y1="450" x2="970" y2="450"/>
-  <text class="tb2" x="855" y="443">EGRESS</text>
-  <text class="ta" x="961" y="443" text-anchor="end">&#215;1</text>
-  <text class="ts" x="855" y="472">SINGLE</text>
-  <text class="ts" x="855" y="488">CROSSING</text>
-  <text class="ts" x="855" y="504">POINT</text>
-  <line class="sl" marker-end="url(#ar)" x1="908" y1="386" x2="908" y2="420"/>
-
-  <!-- external boundary -->
-  <rect class="hf" x="1000" y="140" width="130" height="460" fill="url(#hx)"/>
-  <line class="sl dsh" x1="1000" y1="140" x2="1000" y2="600"/>
-  <rect class="bx" x="1010" y="440" width="110" height="68"/>
-  <text class="ts" x="1020" y="470">EXTERNAL</text>
-  <text class="ts" x="1020" y="488">PARTY</text>
-  <line class="sl" marker-end="url(#ar)" x1="970" y1="474" x2="1006" y2="474"/>
-  <rect class="f-panel" x="968" y="404" width="88" height="16"/>
-  <text class="tz" x="1012" y="416">IDEMPOTENT</text>
-  <text class="ts" x="1065" y="300" text-anchor="middle" transform="rotate(-90 1065 300)">EXTERNAL SYSTEM BOUNDARY</text>
-
-  <!-- supervisor dimension line -->
-  <line class="sl" x1="46" y1="600" x2="46" y2="622"/>
-  <line class="sl" x1="970" y1="600" x2="970" y2="622"/>
-  <line class="sl" marker-start="url(#tick)" marker-end="url(#tick)" x1="46" y1="628" x2="970" y2="628"/>
-<line class="sl" x1="46" y1="620" x2="46" y2="636"/>
-<text class="tz" x="46" y="613">01</text>
-<line class="sl" x1="103.75" y1="620" x2="103.75" y2="636"/>
-<line class="sl" x1="161.5" y1="620" x2="161.5" y2="636"/>
-<line class="sl" x1="219.25" y1="620" x2="219.25" y2="636"/>
-<line class="sl" x1="277" y1="620" x2="277" y2="636"/>
-<text class="tz" x="277" y="613">05</text>
-<line class="sl" x1="334.75" y1="620" x2="334.75" y2="636"/>
-<line class="sl" x1="392.5" y1="620" x2="392.5" y2="636"/>
-<line class="sl" x1="450.25" y1="620" x2="450.25" y2="636"/>
-<line class="sl" x1="508" y1="620" x2="508" y2="636"/>
-<text class="tz" x="508" y="613">09</text>
-<line class="sl" x1="565.75" y1="620" x2="565.75" y2="636"/>
-<line class="sl" x1="623.5" y1="620" x2="623.5" y2="636"/>
-<line class="sl" x1="681.25" y1="620" x2="681.25" y2="636"/>
-<line class="sl" x1="739" y1="620" x2="739" y2="636"/>
-<text class="tz" x="739" y="613">13</text>
-<line class="sl" x1="796.75" y1="620" x2="796.75" y2="636"/>
-<line class="sl" x1="854.5" y1="620" x2="854.5" y2="636"/>
-<line class="sl" x1="912.25" y1="620" x2="912.25" y2="636"/>
-<line class="sl" x1="970" y1="620" x2="970" y2="636"/>
-<text class="tz" x="970" y="613">17</text>
-  <text class="ts" x="508" y="658" text-anchor="middle">17 SUPERVISED PROCESSES &#183; PER-PROCESS HEALTH CHECK &#183; SCHEDULED FAILURE DRILLS</text>
-  <text class="tze" x="1114" y="600">&#931; 14 + 3 = 17</text>
-
-  <!-- callouts -->
-  <g>
-    <circle class="cno" cx="206" cy="112" r="12"/><text class="cnot" x="206" y="116">1</text>
-    <line class="sn" x1="199" y1="122" x2="180" y2="140"/><circle cx="178" cy="142" class="f-anno" r="2.4"/>
-  </g>
-  <g>
-    <circle class="cno" cx="782" cy="404" r="12"/><text class="cnot" x="782" y="408">2</text>
-    <line class="sn" x1="782" y1="392" x2="782" y2="386"/><circle cx="782" cy="384" class="f-anno" r="2.4"/>
-  </g>
-  <g>
-    <circle class="cno" cx="312" cy="166" r="12"/><text class="cnot" x="312" y="170">3</text>
-    <line class="sn" x1="312" y1="178" x2="312" y2="194"/><circle cx="312" cy="196" class="f-anno" r="2.4"/>
-  </g>
-  <g>
-    <circle class="cno" cx="688" cy="325" r="12"/><text class="cnot" x="688" y="329">4</text>
-  </g>
-  <g>
-    <circle class="cno" cx="320" cy="560" r="12"/><text class="cnot" x="320" y="564">5</text>
-    <line class="sn" x1="320" y1="548" x2="320" y2="526"/><circle cx="320" cy="524" class="f-anno" r="2.4"/>
-  </g>
-  <g>
-    <circle class="cno" cx="656" cy="560" r="12"/><text class="cnot" x="656" y="564">6</text>
-    <line class="sn" x1="656" y1="548" x2="656" y2="526"/><circle cx="656" cy="524" class="f-anno" r="2.4"/>
-  </g>
-  <g>
-    <circle class="cno" cx="110" cy="586" r="12"/><text class="cnot" x="110" y="590">7</text>
-    <line class="sn" x1="108" y1="598" x2="104" y2="618"/><circle cx="103.75" cy="620" class="f-anno" r="2.4"/>
-  </g>
-  <g>
-    <circle class="cno" cx="1065" cy="112" r="12"/><text class="cnot" x="1065" y="116">8</text>
-    <line class="sn" x1="1065" y1="124" x2="1065" y2="138"/><circle cx="1065" cy="140" class="f-anno" r="2.4"/>
-  </g>
-</svg>
-        </div>
-      </div>
-      <figcaption class="fig__cap">
-        Drawn for this page. It illustrates the pattern I work in — it is not a diagram of any client system.
-      </figcaption>
-    </figure>
-
-    <ol class="notes rv stag">
-      <li class="note" style="--d:0"><span class="note__n">1</span><p><b>Ingress adapters.</b> Every inbound source is normalised into one event shape before it reaches anything that matters.</p></li>
-      <li class="note" style="--d:1"><span class="note__n">2</span><p><b>Event backbone.</b> Append-only and partitioned by owner, so ordering is guaranteed exactly where it must be and nowhere it would cost throughput.</p></li>
-      <li class="note" style="--d:2"><span class="note__n">3</span><p><b>Consumer groups.</b> Each stage reads independently. A stage that falls behind falls behind alone — it cannot stall the others.</p></li>
-      <li class="note" style="--d:3"><span class="note__n">4</span><p><b>Claim gate.</b> Several processes can reach the same conclusion in the same instant. One atomic claim decides which of them is allowed to act.</p></li>
-      <li class="note" style="--d:4"><span class="note__n">5</span><p><b>Durable state.</b> The record of truth. Work is acknowledged only after the write that makes it survive a crash — never before.</p></li>
-      <li class="note" style="--d:5"><span class="note__n">6</span><p><b>Isolation lane.</b> Work that keeps failing is quarantined for inspection instead of being retried forever in front of everything else.</p></li>
-      <li class="note" style="--d:6"><span class="note__n">7</span><p><b>Supervisor rail.</b> Health per process, a restart policy, and drills that kill processes on purpose to prove recovery is real.</p></li>
-      <li class="note" style="--d:7"><span class="note__n">8</span><p><b>External boundary.</b> One place where the system speaks to the outside world, and every crossing is safe to repeat.</p></li>
-    </ol>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ 01 — WORK ═══════════════════════════ -->
-<section class="sec" id="work">
+<!-- ══════════════════════════════ THE TWO OF US ══════════════════════════════ -->
+<section class="sec sec--rule" id="team">
   <div class="wrap">
     <div class="shead rv">
-      <div class="shead__top"><span class="kicker">01 — Selected work</span></div>
-      <h2 class="disp">Systems I've built</h2>
+      <span class="label">The two of us</span>
+      <h2>Two people, one inbox.</h2>
       <p class="lede">
-        These run a live trading platform, so the code and the methods stay private.
-        What follows is scope and scale — the detail belongs in a call, under NDA if
-        you'd like one.
+        We&rsquo;ve worked on the same platform long enough to have opinions about each other&rsquo;s
+        code, which is the useful kind of partnership. You get both of us on the work, and
+        one person to talk to.
       </p>
     </div>
 
-    <div class="work">
-
-      <!-- ── 01 ── -->
-      <article class="card proj rv">
-        <div class="proj__l">
-          <div class="det">
-<svg viewBox="0 0 330 172" role="img" aria-labelledby="dAt dAd">
-  <title id="dAt">Detail A &#8212; single-claim fan-in</title>
-  <desc id="dAd">Five parallel processes reach a gate; one is admitted by an atomic claim and crosses the boundary, the other four are rejected.</desc>
-  <defs><marker id="arn2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto"><path class="f-anno" d="M0,1 L9,5 L0,9 z"/></marker></defs>
-  <rect class="sr" x="6" y="6" width="318" height="160"/>
-  <text class="ta" x="16" y="26">DETAIL A</text>
-  <line class="sl" x1="58" y1="40" x2="58" y2="144"/>
-  <line class="sl" x1="52" y1="40" x2="64" y2="40"/>
-  <line class="sl" x1="52" y1="144" x2="64" y2="144"/>
-  <g>
-    <line class="sl" x1="58" y1="48" x2="124" y2="48"/>
-    <rect class="bx" x="124" y="39" width="66" height="18"/>
-    <text class="tz" x="157" y="52">P-01</text>
-    <line class="sl" x1="190" y1="48" x2="214" y2="48"/>
-    <circle class="ci-open" cx="219" cy="48" r="4"/>
-  </g>
-  <g>
-    <line class="sl" x1="58" y1="70" x2="124" y2="70"/>
-    <rect class="bx" x="124" y="61" width="66" height="18"/>
-    <text class="tz" x="157" y="74">P-02</text>
-    <line class="sl" x1="190" y1="70" x2="214" y2="70"/>
-    <circle class="ci-open" cx="219" cy="70" r="4"/>
-  </g>
-  <g>
-    <line class="si" x1="58" y1="92" x2="124" y2="92"/>
-    <rect class="bx s-anno" x="124" y="83" width="66" height="18"/>
-    <text class="ta-c" x="157" y="96">P-03</text>
-    <line class="sn" x1="190" y1="92" x2="210" y2="92"/>
-    <rect class="f-anno" x="214" y="87" width="10" height="10" transform="rotate(45 219 92)"/>
-    <line class="sn" marker-end="url(#arn2)" x1="228" y1="92" x2="272" y2="92"/>
-  </g>
-  <g>
-    <line class="sl" x1="58" y1="114" x2="124" y2="114"/>
-    <rect class="bx" x="124" y="105" width="66" height="18"/>
-    <text class="tz" x="157" y="118">P-04</text>
-    <line class="sl" x1="190" y1="114" x2="214" y2="114"/>
-    <circle class="ci-open" cx="219" cy="114" r="4"/>
-  </g>
-  <g>
-    <line class="sl" x1="58" y1="136" x2="124" y2="136"/>
-    <rect class="bx" x="124" y="127" width="66" height="18"/>
-    <text class="tz" x="157" y="140">P-05</text>
-    <line class="sl" x1="190" y1="136" x2="214" y2="136"/>
-    <circle class="ci-open" cx="219" cy="136" r="4"/>
-  </g>
-  <line class="sl dsh" x1="280" y1="36" x2="280" y2="148"/>
-  <text class="tz" x="300" y="92" transform="rotate(-90 300 92)">OUT</text>
-  <text class="tzs" x="16" y="160">ONE ATOMIC CLAIM &#8212; EXACTLY ONE ACTS</text>
-</svg>
+    <div class="pair rv">
+      <article class="person">
+        <div class="person__top">
+          <svg class="mark mark--lg" role="img" aria-label="Vipul&rsquo;s mark: a filled circle"><use href="#m-vipul"/></svg>
+          <div>
+            <h3>Vipul Kumar</h3>
+            <span class="person__role">Execution &amp; delivery</span>
           </div>
-          <div class="kv">
-            <div class="kv__row"><span class="kv__k">Scale</span><span class="kv__v">80,753 lines</span></div>
-            <div class="kv__row"><span class="kv__k">Test suite</span><span class="kv__v">1,856 in 55 s</span></div>
-            <div class="kv__row"><span class="kv__k">Processes</span><span class="kv__v">17</span></div>
-            <div class="kv__row"><span class="kv__k">Hot paths</span><span class="kv__v">Compiled</span></div>
-            <div class="kv__row"><span class="kv__k">Role</span><span class="kv__v">Designed &amp; built</span></div>
-              <div class="kv__row"><span class="kv__k">Status</span><span class="kv__v">Live</span></div>
-          </div>
-          <div class="proj__foot"><span>Part 01 of 04</span><b>Detail A</b></div>
         </div>
-        <div class="proj__r">
-          <div class="proj__idx">01 — Execution</div>
+        <p>
+          Vipul leads the engine that runs live strategies — the largest system here, by some
+          distance — and both generations of the streaming layer that carries a user&rsquo;s live
+          picture to the browser. He wrote the current one on his own.
+        </p>
+        <p>
+          He&rsquo;s also the one you&rsquo;ll be writing to, and the one who answers.
+        </p>
+        <div class="person__leads">
+          <b>Leads</b>
+          Options execution engine · Live streaming gateway · Streaming gateway, first generation
+        </div>
+      </article>
+
+      <article class="person">
+        <div class="person__top">
+          <svg class="mark mark--lg" role="img" aria-label="Naveen&rsquo;s mark: an open circle"><use href="#m-naveen"/></svg>
+          <div>
+            <h3>Naveen Shah</h3>
+            <span class="person__role">Money &amp; billing</span>
+          </div>
+        </div>
+        <p>
+          Naveen leads everything that touches money on its way in or out: checkout and
+          subscriptions, statutory invoices, and the transactional email that has to arrive
+          exactly once. Equal partner in the work and in the decisions.
+        </p>
+        <p>
+          Enquiries come to Vipul and reach us both &mdash; one inbox, no hand-offs.
+        </p>
+        <div class="person__leads">
+          <b>Leads</b>
+          Payments &amp; subscriptions · Invoice generation · Transactional email
+        </div>
+      </article>
+    </div>
+
+    <div class="together rv">
+      <svg class="mark" role="img" aria-label="Shared mark: a half-filled circle" style="margin-top:3px"><use href="#m-both"/></svg>
+      <p>
+        <b>Built together:</b> the platform API that every strategy is composed through, and the
+        market-data ingest that everything downstream reads. On those two we sat on the same
+        problems from both ends — which is also how we&rsquo;d rather work for you.
+      </p>
+    </div>
+
+    <div class="creds rv">
+      <p class="creds__h">Credentials — Vipul</p>
+      <div class="cred"><span>B.Tech, SRM Institute of Science &amp; Technology, 2024</span></div>
+      <div class="cred">
+        <span>NPTEL — Data Structures &amp; Algorithms</span>
+        <a href="https://drive.google.com/file/d/1m7J5pY9VGkKaS6RUgXlBg-MbEjPPlrCN/view" target="_blank" rel="noopener">Verify</a>
+      </div>
+      <div class="cred">
+        <span>HackerRank — SQL (Intermediate)</span>
+        <a href="https://www.hackerrank.com/certificates/7781b740714d" target="_blank" rel="noopener">Verify</a>
+      </div>
+      <div class="cred">
+        <span>HackerRank — Problem Solving (Intermediate)</span>
+        <a href="https://www.hackerrank.com/certificates/bb46e0b2d12d" target="_blank" rel="noopener">Verify</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ WORK ══════════════════════════════ -->
+<section class="sec sec--rule" id="work">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="label">Work</span>
+      <h2>Eight services, all of them live.</h2>
+      <p class="lede">
+        These run a live platform, so the code and the methods stay private. What follows is
+        scope and scale only — the detail belongs in a call, under NDA if you&rsquo;d like one.
+        Every number below was counted from the source.
+      </p>
+    </div>
+
+    <div class="legend rv">
+      <span class="legend__i"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-vipul"/></svg> Led by Vipul</span>
+      <span class="legend__i"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-both"/></svg> Built together</span>
+      <span class="legend__i"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-naveen"/></svg> Led by Naveen</span>
+    </div>
+
+    <div class="entries">
+
+      <article class="entry rv">
+        <div class="entry__n num">01</div>
+        <div>
           <h3>Options execution engine</h3>
-          <p class="proj__lede">
-            A multi-process engine that runs live option strategies end to end:
-            schedules them, selects instruments, fires and protects real broker orders,
-            and monitors every open position continuously against its risk rules.
+          <p>
+            A multi-process engine that runs live option strategies end to end: it schedules them,
+            selects the instruments, fires and protects real broker orders, and watches every open
+            position against its risk rules. Seventeen worker processes stay in step with one another.
           </p>
-          <p class="proj__body">
-            Seventeen independent worker processes coordinate through a shared event
-            backbone. The engineering challenge isn't throughput, it's certainty:
-            several workers can reach the same conclusion at the same instant, and
-            exactly one action must result. Equally, a process that dies mid-order must
-            never leave a live position the system can no longer see.
-          </p>
-          <p class="proj__body">
-            It's built to be operated, not just deployed — health checks per process, a
-            full metrics surface, isolation for poisoned work, and deliberate failure
-            drills that kill workers to prove recovery actually happens.
-          </p>
-          <div class="chips">
-            <span class="chip chip--hi">Python</span><span class="chip chip--hi">Cython</span>
-            <span class="chip">NumPy</span><span class="chip">Redis</span>
-            <span class="chip">PostgreSQL</span><span class="chip">asyncio</span>
-            <span class="chip">Prometheus</span><span class="chip">Docker</span>
-          </div>
+        </div>
+        <div class="entry__meta">
+          <span class="entry__f"><b class="num">81,614</b><span>lines</span></span>
+          <span class="entry__f"><b class="num">1,887</b><span>tests</span></span>
+          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-vipul"/></svg> Led by Vipul</span>
         </div>
       </article>
 
-      <!-- ── 02 ── -->
-      <article class="card proj rv">
-        <div class="proj__l">
-          <div class="det">
-<svg viewBox="0 0 330 172" role="img" aria-labelledby="dBt dBd">
-  <title id="dBt">Detail B — gap and resync on a live stream</title>
-  <desc id="dBd">A stepped stream of updates is interrupted by a disconnect band, then resumes after a resync so nothing is silently lost; one sample is drawn hollow to mark a value withheld rather than guessed.</desc>
-  <rect class="sr" x="6" y="6" width="318" height="160"/>
-  <text class="ta" x="16" y="26">DETAIL B</text>
-  <line class="sl" x1="20" y1="134" x2="310" y2="134"/>
-  <g class="sr">
-    <line x1="40" y1="134" x2="40" y2="139"/><line x1="70" y1="134" x2="70" y2="139"/>
-    <line x1="100" y1="134" x2="100" y2="139"/><line x1="130" y1="134" x2="130" y2="139"/>
-    <line x1="160" y1="134" x2="160" y2="139"/><line x1="190" y1="134" x2="190" y2="139"/>
-    <line x1="220" y1="134" x2="220" y2="139"/><line x1="250" y1="134" x2="250" y2="139"/>
-    <line x1="280" y1="134" x2="280" y2="139"/><line x1="310" y1="134" x2="310" y2="139"/>
-  </g>
-  <rect class="hf" x="138" y="40" width="46" height="94" fill="url(#hx2)"/>
-  <line class="sl dsh" x1="138" y1="40" x2="138" y2="134"/>
-  <line class="sl dsh" x1="184" y1="40" x2="184" y2="134"/>
-  <defs><pattern id="hx2" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line class="pt-line" x1="0" y1="0" x2="0" y2="6"/></pattern></defs>
-  <text class="tz" x="161" y="36">GAP</text>
-  <polyline class="si" points="22,110 38,100 54,104 70,88 86,94 102,78 118,84 134,72"/>
-  <polyline class="si" points="188,80 204,68 220,74 236,60 252,66 268,52 284,58 300,46"/>
-  <line class="sn" marker-end="url(#arn3)" x1="188" y1="112" x2="188" y2="88"/>
-  <defs><marker id="arn3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" markerUnits="userSpaceOnUse" orient="auto"><path class="f-anno" d="M0,1 L9,5 L0,9 z"/></marker></defs>
-  <text class="ta" x="196" y="112" font-size="10">RESYNC</text>
-  <rect class="f-bg s-anno" x="98" y="74" width="8" height="8" stroke-width="1.3"/>
-  <line class="sn" x1="98" y1="82" x2="106" y2="74"/>
-  <text class="tz" x="76" y="60">WITHHELD</text>
-  <text class="tzs" x="16" y="160">GAP &#8594; RESYNC &#183; NOTHING SILENTLY LOST</text>
-</svg>
-          </div>
-          <div class="kv">
-            <div class="kv__row"><span class="kv__k">Scale</span><span class="kv__v">7,868 lines</span></div>
-            <div class="kv__row"><span class="kv__k">Test suite</span><span class="kv__v">278 in 8.7 s</span></div>
-            <div class="kv__row"><span class="kv__k">Test-to-source</span><span class="kv__v">0.82 : 1</span></div>
-            <div class="kv__row"><span class="kv__k">Quality gates</span><span class="kv__v">4, all green</span></div>
-            <div class="kv__row"><span class="kv__k">Authorship</span><span class="kv__v">Sole</span></div>
-          </div>
-          <div class="proj__foot"><span>Part 02 of 04</span><b>Detail B</b></div>
+      <article class="entry rv">
+        <div class="entry__n num">02</div>
+        <div>
+          <h3>Trading platform API</h3>
+          <p>
+            The control plane. Users compose a strategy, the API decides whether it is valid, checks
+            there is margin for it, enforces the limits that apply to that account, and hands it over
+            to the engine to run.
+          </p>
         </div>
-        <div class="proj__r">
-          <div class="proj__idx">02 — Real-time</div>
+        <div class="entry__meta">
+          <span class="entry__f"><b class="num">38,670</b><span>lines</span></span>
+          <span class="entry__f"><b class="num">683</b><span>tests</span></span>
+          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-both"/></svg> Built together</span>
+        </div>
+      </article>
+
+      <article class="entry rv">
+        <div class="entry__n num">03</div>
+        <div>
           <h3>Live streaming gateway</h3>
-          <p class="proj__lede">
-            One authenticated connection that carries a user's entire live trading
-            picture into the browser — positions, profit and loss, and margin — and
-            holds up when the network doesn't.
+          <p>
+            One authenticated connection carrying a user&rsquo;s whole live trading picture to the browser,
+            and going on carrying it through a dropped network — without losing anything or showing
+            anything twice.
           </p>
-          <p class="proj__body">
-            Streaming data is easy. Streaming it correctly is the job. A phone that
-            drops into a lift for ninety seconds must come back to a complete and
-            accurate picture, never a silently incomplete one — and one transient
-            upstream hiccup must not cascade across every connected user at once.
-          </p>
-          <p class="proj__body">
-            It also refuses to guess. Where a value can't be established with
-            confidence, the system withholds it rather than publishing a number a
-            trader might act on. That rule is enforced in code, not in documentation.
-          </p>
-          <div class="chips">
-            <span class="chip chip--hi">FastAPI</span><span class="chip chip--hi">SSE</span>
-            <span class="chip">Redis</span><span class="chip">asyncpg</span>
-            <span class="chip">Pydantic</span><span class="chip">JWT</span>
-            <span class="chip">mypy strict</span><span class="chip">Docker</span>
-          </div>
+        </div>
+        <div class="entry__meta">
+          <span class="entry__f"><b class="num">8,553</b><span>lines</span></span>
+          <span class="entry__f"><b class="num">250</b><span>tests</span></span>
+          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-vipul"/></svg> Sole author — Vipul</span>
         </div>
       </article>
 
-      <!-- ── 03 ── -->
-      <article class="card proj rv">
-        <div class="proj__l">
-          <div class="det">
-<svg viewBox="0 0 330 172" role="img" aria-labelledby="dCt dCd">
-  <title id="dCt">Detail C — piecewise payoff and its sensitivity</title>
-  <desc id="dCd">A generic kinked payoff line plotted over a lattice, with a tangent drawn at one point to stand for the sensitivity surface around it.</desc>
-  <rect class="sr" x="6" y="6" width="318" height="160"/>
-  <text class="ta" x="16" y="26">DETAIL C</text>
-  <g class="sr">
-    <line x1="46" y1="40" x2="46" y2="132"/><line x1="82" y1="40" x2="82" y2="132"/>
-    <line x1="118" y1="40" x2="118" y2="132"/><line x1="154" y1="40" x2="154" y2="132"/>
-    <line x1="190" y1="40" x2="190" y2="132"/><line x1="226" y1="40" x2="226" y2="132"/>
-    <line x1="262" y1="40" x2="262" y2="132"/><line x1="298" y1="40" x2="298" y2="132"/>
-    <line x1="22" y1="40" x2="308" y2="40"/><line x1="22" y1="63" x2="308" y2="63"/>
-    <line x1="22" y1="86" x2="308" y2="86"/><line x1="22" y1="132" x2="308" y2="132"/>
-  </g>
-  <path class="hf" d="M104,109 L166,52 L228,109 Z" fill="url(#hx3)"/>
-  <defs><pattern id="hx3" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)"><line class="pt-acc" x1="0" y1="0" x2="0" y2="6"/></pattern></defs>
-  <line class="sl dsh" x1="22" y1="109" x2="308" y2="109"/>
-  <text class="tzs" x="34" y="105">0</text>
-  <polyline class="si" points="22,109 104,109 166,52 228,109 308,109" stroke-width="1.9"/>
-  <line class="sa dsh" x1="112" y1="86" x2="164" y2="38"/>
-  <circle class="f-accent" cx="138" cy="62" r="3.4"/>
-  <text class="tc" x="170" y="40">&#916;</text>
-  <text class="tzs" x="16" y="160">PIECEWISE PAYOFF + SENSITIVITIES</text>
-</svg>
-          </div>
-          <div class="kv">
-            <div class="kv__row"><span class="kv__k">Exchanges</span><span class="kv__v">Two, independent</span></div>
-            <div class="kv__row"><span class="kv__k">Source</span><span class="kv__v">Exchange risk data</span></div>
-            <div class="kv__row"><span class="kv__k">Pricing</span><span class="kv__v">Full greeks + IV</span></div>
-            <div class="kv__row"><span class="kv__k">Cost model</span><span class="kv__v">Statutory, itemised</span></div>
-            <div class="kv__row"><span class="kv__k">Refresh</span><span class="kv__v">Intraday</span></div>
-          </div>
-          <div class="proj__foot"><span>Part 03 of 04</span><b>Detail C</b></div>
+      <article class="entry rv">
+        <div class="entry__n num">04</div>
+        <div>
+          <h3>Streaming gateway, first generation</h3>
+          <p>
+            The previous generation of that same delivery layer. It ran, it showed us where the sharp
+            edges were, and the rewrite above exists because of what it taught us. We keep it on the
+            list because the lesson is part of the work.
+          </p>
         </div>
-        <div class="proj__r">
-          <div class="proj__idx">03 — Quantitative</div>
-          <h3>Margin &amp; analytics engine</h3>
-          <p class="proj__lede">
-            Regulatory-grade portfolio margin computed from exchange-published risk
-            data, so the capital the platform reserves matches what a real broker would
-            block — across two exchanges, refreshed through the trading day.
-          </p>
-          <p class="proj__body">
-            Approximating margin is how a platform over-commits a client's capital or
-            under-reserves against a position it can't cover. This computes it properly,
-            from the primary source, and holds a consistent view even while the
-            underlying data is being refreshed underneath it.
-          </p>
-          <p class="proj__body">
-            Around it sits the rest of the quantitative surface: an options pricing and
-            greeks suite, and a cost model that accounts for every statutory charge
-            separately rather than as a lumped estimate.
-          </p>
-          <div class="chips">
-            <span class="chip chip--hi">Portfolio margin</span><span class="chip chip--hi">Black&ndash;Scholes</span>
-            <span class="chip">Implied volatility</span><span class="chip">Greeks</span>
-            <span class="chip">Binary formats</span><span class="chip">NumPy</span>
-          </div>
+        <div class="entry__meta">
+          <span class="entry__f"><b class="num">9,271</b><span>lines</span></span>
+          <span class="entry__f"><b class="num">185</b><span>tests</span></span>
+          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-vipul"/></svg> Led by Vipul</span>
         </div>
       </article>
 
-      <!-- ── 04 ── -->
-      <article class="card proj rv">
-        <div class="proj__l">
-          <div class="det">
-<svg viewBox="0 0 330 172" role="img" aria-labelledby="dDt dDd">
-  <title id="dDt">Detail D — seven services on one bus</title>
-  <desc id="dDd">Seven service blocks attached by stubs to a single shared bus running across the drawing.</desc>
-  <rect class="sr" x="6" y="6" width="318" height="160"/>
-  <text class="ta" x="16" y="26">DETAIL D</text>
-  <line class="sl" x1="24" y1="88" x2="306" y2="88"/>
-  <line class="sl" x1="24" y1="94" x2="306" y2="94"/>
-  <line class="sl" x1="24" y1="88" x2="24" y2="94"/>
-  <line class="sl" x1="306" y1="88" x2="306" y2="94"/>
-  <g>
-    <rect class="bx" x="34" y="44" width="52" height="22"/><text class="tz" x="60" y="59">01</text><line class="sl" x1="60" y1="66" x2="60" y2="88"/>
-    <rect class="bx" x="104" y="44" width="52" height="22"/><text class="tz" x="130" y="59">02</text><line class="sl" x1="130" y1="66" x2="130" y2="88"/>
-    <rect class="bx" x="174" y="44" width="52" height="22"/><text class="tz" x="200" y="59">03</text><line class="sl" x1="200" y1="66" x2="200" y2="88"/>
-    <rect class="bx" x="244" y="44" width="52" height="22"/><text class="tz" x="270" y="59">04</text><line class="sl" x1="270" y1="66" x2="270" y2="88"/>
-  </g>
-  <g>
-    <rect class="bx" x="69" y="116" width="52" height="22"/><text class="tz" x="95" y="131">05</text><line class="sl" x1="95" y1="94" x2="95" y2="116"/>
-    <rect class="bx" x="139" y="116" width="52" height="22"/><text class="tz" x="165" y="131">06</text><line class="sl" x1="165" y1="94" x2="165" y2="116"/>
-    <rect class="bx" x="209" y="116" width="52" height="22"/><text class="tz" x="235" y="131">07</text><line class="sl" x1="235" y1="94" x2="235" y2="116"/>
-  </g>
-  <text class="tzs" x="16" y="160">SEVEN SERVICES &#183; ONE SHARED BUS</text>
-</svg>
-          </div>
-          <div class="kv">
-            <div class="kv__row"><span class="kv__k">Control-plane API</span><span class="kv__v">Contributor</span></div>
-            <div class="kv__row"><span class="kv__k">Market data</span><span class="kv__v">Contributor</span></div>
-            <div class="kv__row"><span class="kv__k">Payments</span><span class="kv__v">Team</span></div>
-            <div class="kv__row"><span class="kv__k">Invoicing</span><span class="kv__v">Team</span></div>
-            <div class="kv__row"><span class="kv__k">Notifications</span><span class="kv__v">Team</span></div>
-          </div>
-          <div class="proj__foot"><span>Part 04 of 04</span><b>Detail D</b></div>
+      <article class="entry rv">
+        <div class="entry__n num">05</div>
+        <div>
+          <h3>Market data ingestion</h3>
+          <p>
+            Holds a live broker feed for roughly 1,800 instruments and turns the incoming ticks into
+            the per-minute price stream that everything downstream reads.
+          </p>
         </div>
-        <div class="proj__r">
-          <div class="proj__idx">04 — Platform</div>
-          <h3>The wider platform</h3>
-          <p class="proj__lede">
-            The trading core is one part of a larger product. I work across the services
-            that surround it, and I know how the whole system fits together.
+        <div class="entry__meta">
+          <span class="entry__f"><b class="num">3,846</b><span>lines</span></span>
+          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-both"/></svg> Built together</span>
+        </div>
+      </article>
+
+      <article class="entry rv">
+        <div class="entry__n num">06</div>
+        <div>
+          <h3>Payments &amp; subscriptions</h3>
+          <p>
+            Card and UPI checkout, subscription activation, and the guarantee that one payment
+            arriving from three different directions is still one payment — never a double charge,
+            never a double activation.
           </p>
-          <p class="proj__body">
-            A control-plane API where users compose strategies and hand them to the
-            engine — I own the strategy lifecycle and the seam that projects a saved
-            strategy into the live runtime, plus risk limits, the trading-journal APIs
-            and the payoff service. Alongside it, a market-data service that holds a
-            live exchange feed and turns it into the price stream everything downstream
-            consumes.
+        </div>
+        <div class="entry__meta">
+          <span class="entry__f"><b class="num">4,607</b><span>lines</span></span>
+          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-naveen"/></svg> Led by Naveen</span>
+        </div>
+      </article>
+
+      <article class="entry rv">
+        <div class="entry__n num">07</div>
+        <div>
+          <h3>Invoice generation</h3>
+          <p>
+            A billing-critical service that renders branded statutory invoices, stores them where they
+            cannot quietly go missing, and makes certain the billing system hears about every single one.
           </p>
-          <p class="proj__body">
-            The platform also runs subscription payments and checkout, automated
-            statutory invoice generation, and transactional email — built by the team I
-            work in, and part of the product I help operate end to end.
+        </div>
+        <div class="entry__meta">
+          <span class="entry__f"><b class="num">2,237</b><span>lines</span></span>
+          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-naveen"/></svg> Led by Naveen</span>
+        </div>
+      </article>
+
+      <article class="entry rv">
+        <div class="entry__n num">08</div>
+        <div>
+          <h3>Transactional email</h3>
+          <p>
+            Password resets and invoices that cannot be lost, duplicated, or sent twice — even when a
+            server dies halfway through sending one.
           </p>
-          <div class="chips">
-            <span class="chip chip--hi">FastAPI</span><span class="chip chip--hi">Event bridge</span>
-            <span class="chip">WebSocket feeds</span><span class="chip">Payments</span>
-            <span class="chip">PDF generation</span><span class="chip">SQLAlchemy</span>
-          </div>
+        </div>
+        <div class="entry__meta">
+          <span class="entry__f"><b class="num">1,936</b><span>lines</span></span>
+          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-naveen"/></svg> Led by Naveen</span>
         </div>
       </article>
 
     </div>
 
-    <!-- ── FIG. 2 : quantities ── -->
-    <figure class="fig fig--wide rv" style="margin-top: clamp(30px, 3.2vw, 46px)">
-      <div class="fig__head">
-        <span class="fig__id">FIG. 2</span>
-        <span class="fig__t">Quantities — counted, not estimated</span>
-        <span class="scrollcue">Wide drawing &mdash; scroll it sideways <b>&rarr;</b></span>
-        <span class="fig__n">Drawn to four scales</span>
-      </div>
-      <div class="plate plate--q">
-        <div class="scroller" tabindex="0" role="group" aria-label="Figure 2 drawing — scrolls sideways">
-<svg viewBox="0 0 1160 560" role="img" aria-labelledby="f2t f2d">
-  <title id="f2t">Figure 2 &#8212; the four verified quantities drawn to scale</title>
-  <desc id="f2d">80,753 lines of production code drawn as a dimensioned bar of sixteen 5,000-line divisions plus a part division; 2,134 automated tests drawn as a matrix where one square is ten tests; 17 coordinated processes drawn as seventeen numbered blocks under a dimension line; 7 production services drawn as seven blocks on a shared bus.</desc>
-  <defs>
-    <marker id="tick2" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="11" markerHeight="11" markerUnits="userSpaceOnUse" orient="auto"><path class="mk-tick" d="M2,8 L8,2"/></marker>
-    <pattern id="bar" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line class="pt-bar" x1="0" y1="0" x2="0" y2="6"/></pattern>
-  </defs>
-  <rect class="sl" x="8" y="8" width="1144" height="544"/>
-  <text class="tt" x="30" y="42">FIG. 2 &#8212; VERIFIED QUANTITIES</text>
-  <text class="tze" x="1130" y="42">EACH ROW AT ITS OWN STATED SCALE</text>
-  <line class="sr" x1="30" y1="56" x2="1130" y2="56"/>
-  <text class="tzs" x="30" y="96">LINES IN PRODUCTION</text>
-  <text class="tbig" x="30" y="130">80,753</text>
-  <line class="sr" x1="300" y1="98" x2="300" y2="76"/>
-  <line class="sr" x1="1107.5" y1="98" x2="1107.5" y2="76"/>
-  <line class="sl" marker-start="url(#tick2)" marker-end="url(#tick2)" x1="300" y1="86" x2="1107.5" y2="86"/>
-  <text class="tz" x="703.75" y="79">80 753 LINES</text>
-  <rect class="s-ink12" x="300" y="100" width="807.5" height="30" fill="url(#bar)"/>
-  <line class="sr" x1="350" y1="100" x2="350" y2="111"/>
-  <line class="sr" x1="400" y1="100" x2="400" y2="111"/>
-  <line class="sr" x1="450" y1="100" x2="450" y2="111"/>
-  <line class="sr" x1="500" y1="100" x2="500" y2="111"/>
-  <line class="sl" x1="550" y1="100" x2="550" y2="130"/>
-  <text class="tz" x="550" y="148">25,000</text>
-  <line class="sr" x1="600" y1="100" x2="600" y2="111"/>
-  <line class="sr" x1="650" y1="100" x2="650" y2="111"/>
-  <line class="sr" x1="700" y1="100" x2="700" y2="111"/>
-  <line class="sr" x1="750" y1="100" x2="750" y2="111"/>
-  <line class="sl" x1="800" y1="100" x2="800" y2="130"/>
-  <text class="tz" x="800" y="148">50,000</text>
-  <line class="sr" x1="850" y1="100" x2="850" y2="111"/>
-  <line class="sr" x1="900" y1="100" x2="900" y2="111"/>
-  <line class="sr" x1="950" y1="100" x2="950" y2="111"/>
-  <line class="sr" x1="1000" y1="100" x2="1000" y2="111"/>
-  <line class="sl" x1="1050" y1="100" x2="1050" y2="130"/>
-  <text class="tz" x="1050" y="148">75,000</text>
-  <line class="sr" x1="1100" y1="100" x2="1100" y2="111"/>
-  <line class="sl" x1="1100" y1="100" x2="1100" y2="130"/>
-  <text class="tzs" x="300" y="148">0</text>
-  <text class="tze" x="1130" y="166">1 DIVISION = 5 000 LINES &#183; 16 FULL DIVISIONS + A PART DIVISION OF 753</text>
-  <line class="sr" x1="30" y1="182" x2="1130" y2="182"/>
-  <text class="tzs" x="30" y="222">AUTOMATED TESTS GREEN</text>
-  <text class="tbig" x="30" y="256">2,134</text>
-  <rect class="mx-on" x="300" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="314.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="329" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="343.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="358" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="372.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="387" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="401.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="416" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="430.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="445" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="459.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="474" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="488.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="503" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="517.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="532" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="546.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="561" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="575.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="590" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="604.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="619" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="633.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="648" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="662.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="677" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="691.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="706" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="720.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="735" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="749.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="764" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="778.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="793" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="807.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="822" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="836.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="851" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="865.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="880" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="894.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="909" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="923.5" y="212" width="11" height="11"/>
-  <rect class="mx-on" x="300" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="314.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="329" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="343.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="358" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="372.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="387" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="401.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="416" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="430.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="445" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="459.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="474" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="488.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="503" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="517.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="532" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="546.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="561" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="575.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="590" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="604.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="619" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="633.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="648" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="662.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="677" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="691.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="706" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="720.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="735" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="749.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="764" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="778.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="793" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="807.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="822" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="836.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="851" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="865.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="880" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="894.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="909" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="923.5" y="226.5" width="11" height="11"/>
-  <rect class="mx-on" x="300" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="314.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="329" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="343.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="358" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="372.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="387" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="401.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="416" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="430.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="445" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="459.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="474" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="488.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="503" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="517.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="532" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="546.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="561" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="575.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="590" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="604.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="619" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="633.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="648" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="662.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="677" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="691.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="706" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="720.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="735" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="749.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="764" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="778.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="793" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="807.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="822" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="836.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="851" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="865.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="880" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="894.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="909" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="923.5" y="241" width="11" height="11"/>
-  <rect class="mx-on" x="300" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="314.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="329" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="343.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="358" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="372.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="387" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="401.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="416" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="430.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="445" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="459.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="474" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="488.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="503" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="517.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="532" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="546.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="561" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="575.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="590" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="604.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="619" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="633.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="648" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="662.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="677" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="691.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="706" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="720.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="735" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="749.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="764" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="778.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="793" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="807.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="822" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="836.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="851" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="865.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="880" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="894.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="909" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="923.5" y="255.5" width="11" height="11"/>
-  <rect class="mx-on" x="300" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="314.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="329" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="343.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="358" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="372.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="387" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="401.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="416" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="430.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="445" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="459.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="474" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="488.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="503" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="517.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="532" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="546.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="561" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="575.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="590" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="604.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="619" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="633.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="648" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="662.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="677" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="691.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="706" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="720.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="735" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="749.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="764" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="778.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="793" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="807.5" y="270" width="11" height="11"/>
-  <rect class="mx-on" x="822" y="270" width="11" height="11"/>
-  <rect class="mx-part" x="836.5" y="270" width="11" height="11"/>
-  <rect class="mx-off" x="851" y="270" width="11" height="11"/>
-  <rect class="mx-off" x="865.5" y="270" width="11" height="11"/>
-  <rect class="mx-off" x="880" y="270" width="11" height="11"/>
-  <rect class="mx-off" x="894.5" y="270" width="11" height="11"/>
-  <rect class="mx-off" x="909" y="270" width="11" height="11"/>
-  <rect class="mx-off" x="923.5" y="270" width="11" height="11"/>
-  <text class="tzs" x="962" y="222">1 SQUARE</text>
-  <text class="tzs" x="962" y="238">= 10 TESTS</text>
-  <rect class="mx-on"   x="962" y="248" width="11" height="11"/>
-  <rect class="mx-part" x="978" y="248" width="11" height="11"/>
-  <rect class="mx-off"  x="994" y="248" width="11" height="11"/>
-  <text class="tzs" x="300" y="306">SUITES RUN ON EVERY CHANGE</text>
-  <text class="tze" x="1130" y="306">213 FULL SQUARES + 1 PART &#183; 2 134 TESTS</text>
-  <line class="sr" x1="30" y1="322" x2="1130" y2="322"/>
-  <text class="tzs" x="30" y="362">COORDINATED PROCESSES</text>
-  <text class="tbig" x="30" y="396">17</text>
-  <rect class="bx" x="300" y="346" width="26" height="38"/>
-  <line class="sr" x1="305" y1="361" x2="321" y2="361"/>
-  <text class="tz" x="313" y="378">01</text>
-  <rect class="bx" x="334" y="346" width="26" height="38"/>
-  <line class="sr" x1="339" y1="361" x2="355" y2="361"/>
-  <text class="tz" x="347" y="378">02</text>
-  <rect class="bx" x="368" y="346" width="26" height="38"/>
-  <line class="sr" x1="373" y1="361" x2="389" y2="361"/>
-  <text class="tz" x="381" y="378">03</text>
-  <rect class="bx" x="402" y="346" width="26" height="38"/>
-  <line class="sr" x1="407" y1="361" x2="423" y2="361"/>
-  <text class="tz" x="415" y="378">04</text>
-  <rect class="bx" x="436" y="346" width="26" height="38"/>
-  <line class="sr" x1="441" y1="361" x2="457" y2="361"/>
-  <text class="tz" x="449" y="378">05</text>
-  <rect class="bx" x="470" y="346" width="26" height="38"/>
-  <line class="sr" x1="475" y1="361" x2="491" y2="361"/>
-  <text class="tz" x="483" y="378">06</text>
-  <rect class="bx" x="504" y="346" width="26" height="38"/>
-  <line class="sr" x1="509" y1="361" x2="525" y2="361"/>
-  <text class="tz" x="517" y="378">07</text>
-  <rect class="bx" x="538" y="346" width="26" height="38"/>
-  <line class="sr" x1="543" y1="361" x2="559" y2="361"/>
-  <text class="tz" x="551" y="378">08</text>
-  <rect class="bx" x="572" y="346" width="26" height="38"/>
-  <line class="sr" x1="577" y1="361" x2="593" y2="361"/>
-  <text class="tz" x="585" y="378">09</text>
-  <rect class="bx" x="606" y="346" width="26" height="38"/>
-  <line class="sr" x1="611" y1="361" x2="627" y2="361"/>
-  <text class="tz" x="619" y="378">10</text>
-  <rect class="bx" x="640" y="346" width="26" height="38"/>
-  <line class="sr" x1="645" y1="361" x2="661" y2="361"/>
-  <text class="tz" x="653" y="378">11</text>
-  <rect class="bx" x="674" y="346" width="26" height="38"/>
-  <line class="sr" x1="679" y1="361" x2="695" y2="361"/>
-  <text class="tz" x="687" y="378">12</text>
-  <rect class="bx" x="708" y="346" width="26" height="38"/>
-  <line class="sr" x1="713" y1="361" x2="729" y2="361"/>
-  <text class="tz" x="721" y="378">13</text>
-  <rect class="bx" x="742" y="346" width="26" height="38"/>
-  <line class="sr" x1="747" y1="361" x2="763" y2="361"/>
-  <text class="tz" x="755" y="378">14</text>
-  <rect class="bx" x="776" y="346" width="26" height="38"/>
-  <line class="sr" x1="781" y1="361" x2="797" y2="361"/>
-  <text class="tz" x="789" y="378">15</text>
-  <rect class="bx" x="810" y="346" width="26" height="38"/>
-  <line class="sr" x1="815" y1="361" x2="831" y2="361"/>
-  <text class="tz" x="823" y="378">16</text>
-  <rect class="bx" x="844" y="346" width="26" height="38"/>
-  <line class="sr" x1="849" y1="361" x2="865" y2="361"/>
-  <text class="tz" x="857" y="378">17</text>
-  <line class="sr" x1="300" y1="386" x2="300" y2="406"/>
-  <line class="sr" x1="870" y1="386" x2="870" y2="406"/>
-  <line class="sl" marker-start="url(#tick2)" marker-end="url(#tick2)" x1="300" y1="400" x2="870" y2="400"/>
-  <text class="tz" x="585" y="394">17 OFF</text>
-  <text class="tze" x="1130" y="368">EACH AN INDEPENDENT</text>
-  <text class="tze" x="1130" y="384">OS PROCESS</text>
-  <line class="sr" x1="30" y1="418" x2="1130" y2="418"/>
-  <text class="tzs" x="30" y="458">PLATFORM SERVICES</text>
-  <text class="tbig" x="30" y="492">7</text>
-  <line class="sl" x1="290" y1="486" x2="870" y2="486"/>
-  <line class="sl" x1="290" y1="490" x2="870" y2="490"/>
-  <line class="sl" x1="290" y1="486" x2="290" y2="490"/>
-  <line class="sl" x1="870" y1="486" x2="870" y2="490"/>
-  <rect class="bx" x="300" y="444" width="52" height="26"/>
-  <text class="tz" x="326" y="461">01</text>
-  <line class="sl" x1="326" y1="470" x2="326" y2="486"/>
-  <rect class="bx" x="384" y="444" width="52" height="26"/>
-  <text class="tz" x="410" y="461">02</text>
-  <line class="sl" x1="410" y1="470" x2="410" y2="486"/>
-  <rect class="bx" x="468" y="444" width="52" height="26"/>
-  <text class="tz" x="494" y="461">03</text>
-  <line class="sl" x1="494" y1="470" x2="494" y2="486"/>
-  <rect class="bx" x="552" y="444" width="52" height="26"/>
-  <text class="tz" x="578" y="461">04</text>
-  <line class="sl" x1="578" y1="470" x2="578" y2="486"/>
-  <rect class="bx" x="636" y="444" width="52" height="26"/>
-  <text class="tz" x="662" y="461">05</text>
-  <line class="sl" x1="662" y1="470" x2="662" y2="486"/>
-  <rect class="bx" x="720" y="444" width="52" height="26"/>
-  <text class="tz" x="746" y="461">06</text>
-  <line class="sl" x1="746" y1="470" x2="746" y2="486"/>
-  <rect class="bx" x="804" y="444" width="52" height="26"/>
-  <text class="tz" x="830" y="461">07</text>
-  <line class="sl" x1="830" y1="470" x2="830" y2="486"/>
-  <text class="tze" x="1130" y="464">ONE PRODUCT,</text>
-  <text class="tze" x="1130" y="480">SEVEN DEPLOYABLES</text>
-  <text class="tzs" x="290" y="512">SHARED BUS</text>
-</svg>
-        </div>
-      </div>
-      <figcaption class="fig__cap">
-        Every number above is a count from the repositories I work in, drawn here at the stated scale.
-        Every one of them is stated in full, with the method behind it, in FIG. 3.
-      </figcaption>
-    </figure>
-
+    <div class="work__foot rv">
+      <p class="small">Eight services, all of them in production.</p>
+      <p class="small">Line counts for all eight; test counts for the four suites we measured.</p>
+    </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ 02 — SERVICES ═══════════════════════════ -->
-<section class="sec" id="services">
+<!-- ══════════════════════════════ SERVICES ══════════════════════════════ -->
+<section class="sec sec--rule" id="services">
   <div class="wrap">
     <div class="shead rv">
-      <div class="shead__top"><span class="kicker">02 — Services</span></div>
-      <h2 class="disp">What I can build for you</h2>
+      <span class="label">What we take on</span>
+      <h2>The same work, pointed at your system.</h2>
       <p class="lede">
-        I take backend work where correctness under failure actually matters — and
-        I'm straight about what I don't do.
+        Five things we take on, and one we don&rsquo;t. If your problem isn&rsquo;t in the first five,
+        we&rsquo;ll tell you on the first call rather than learn on your budget.
       </p>
     </div>
 
-    <div class="g3 rv stag">
-      <div class="card svc" style="--d:0">
-        <span class="svc__n">01</span>
-        <h3>Real-time streaming APIs</h3>
-        <p>The layer between your data and your live interface: authenticated long-lived connections, multiplexed updates, reconnects that don't lose or duplicate anything, and backpressure that holds when one client is slow.</p>
-        <div class="svc__fit">For dashboards, live ops, trading screens</div>
+    <div class="lanes rv">
+      <div class="lane">
+        <h3>Real-time delivery to the browser</h3>
+        <p>The layer between your data and your live interface: one authenticated connection, updates that keep their order, and reconnects that don&rsquo;t lose or repeat what the user should have seen.</p>
       </div>
-      <div class="card svc" style="--d:1">
-        <span class="svc__n">02</span>
-        <h3>Money-path reliability</h3>
-        <p>A focused engagement on the part of your system where wrong state costs real money. I map every route a critical event can take, find the double-processing and lost-update windows, and close them. You get a written findings list ranked by blast radius.</p>
-        <div class="svc__fit">For payments, orders, billing, ledgers</div>
-      </div>
-      <div class="card svc" style="--d:2">
-        <span class="svc__n">03</span>
+      <div class="lane">
         <h3>Event-driven backends</h3>
-        <p>Multi-worker pipelines that process each item exactly once, survive restarts without duplicating work, isolate poisoned jobs, and recover cleanly from a crash mid-operation.</p>
-        <div class="svc__fit">For job fleets, ingest, fulfilment</div>
+        <p>Multi-worker pipelines that handle each item once, survive a restart without redoing work, set aside whatever keeps failing, and come back cleanly from a crash mid-operation.</p>
       </div>
-      <div class="card svc" style="--d:3">
-        <span class="svc__n">04</span>
-        <h3>Python performance rescue</h3>
-        <p>When a job that used to finish in time no longer does, I measure first and fix where the measurement points. Always behind a fallback, so a build issue never becomes a correctness issue.</p>
-        <div class="svc__fit">For pipelines that outgrew their runtime</div>
+      <div class="lane">
+        <h3>Payments, billing and invoicing</h3>
+        <p>Checkout, subscription state, invoices and receipts — built so that a payment arriving twice, or a callback arriving late, still leaves exactly one correct outcome behind it.</p>
       </div>
-      <div class="card svc" style="--d:4">
-        <span class="svc__n">05</span>
-        <h3>Trading &amp; market data</h3>
-        <p>The specialist lane: live feed ingestion, strategy scheduling and order execution, broker integrations, portfolio margin, options pricing and accurate cost modelling.</p>
-        <div class="svc__fit">For brokers, prop desks, algo products</div>
+      <div class="lane">
+        <h3>Email that has to arrive</h3>
+        <p>Password resets, receipts and statements engineered so a send is never lost and never doubled — and so that afterwards you can say exactly what went out, and when.</p>
       </div>
-      <div class="card svc" style="--d:5">
-        <span class="svc__n">06</span>
-        <h3>What I don't take on</h3>
-        <p>Frontend and design work. I'll say so on the first call rather than subcontract it badly. I work backend, data and infrastructure — and I'll define a clean API contract so your frontend developer has an easy job.</p>
-        <div class="svc__fit">Honest scope beats a missed deadline</div>
+      <div class="lane">
+        <h3>Market data &amp; trading systems</h3>
+        <p>The specialist lane: live feed ingestion, strategy scheduling, order execution, broker integrations, and cost modelling that matches what actually gets charged.</p>
+      </div>
+      <div class="lane lane--no">
+        <h3>What we don&rsquo;t take on</h3>
+        <p>Front-end and design. We&rsquo;d rather say so on the first call than subcontract it badly — and we&rsquo;ll define a clean API contract so your front-end developer has an easy job of it.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ 03 — STACK ═══════════════════════════ -->
-<section class="sec" id="stack">
+<!-- ══════════════════════════════ PROCESS ══════════════════════════════ -->
+<section class="sec sec--rule" id="process">
   <div class="wrap">
     <div class="shead rv">
-      <div class="shead__top"><span class="kicker">03 — Stack</span></div>
-      <h2 class="disp">Working stack</h2>
-      <p class="lede">Everything here is in production code I've written — not a course list.</p>
+      <span class="label">How it goes</span>
+      <h2>No discovery theatre.</h2>
+      <p class="lede">You&rsquo;ll know inside a week whether this is working, and so will we.</p>
     </div>
 
-    <div class="g4 rv stag">
-      <div class="card sched" style="--d:0"><h4>Core</h4><ul><li><span>01</span>Python 3.12</li><li><span>02</span>Cython</li><li><span>03</span>NumPy</li><li><span>04</span>SQL</li><li><span>05</span>Bash</li><li><span>06</span>C++</li></ul></div>
-      <div class="card sched" style="--d:1"><h4>Concurrency</h4><ul><li><span>01</span>asyncio &amp; uvloop</li><li><span>02</span>Multi-process fleets</li><li><span>03</span>Bounded queues</li><li><span>04</span>Backpressure</li><li><span>05</span>Graceful shutdown</li></ul></div>
-      <div class="card sched" style="--d:2"><h4>Data</h4><ul><li><span>01</span>Redis</li><li><span>02</span>PostgreSQL</li><li><span>03</span>SQLAlchemy 2.0</li><li><span>04</span>asyncpg</li><li><span>05</span>Alembic</li><li><span>06</span>Binary encoding</li></ul></div>
-      <div class="card sched" style="--d:3"><h4>APIs</h4><ul><li><span>01</span>FastAPI</li><li><span>02</span>Server-Sent Events</li><li><span>03</span>Pydantic v2</li><li><span>04</span>JWT auth</li><li><span>05</span>Rate limiting</li></ul></div>
-      <div class="card sched" style="--d:4"><h4>Reliability</h4><ul><li><span>01</span>Exactly-once processing</li><li><span>02</span>Crash recovery</li><li><span>03</span>Dead-letter queues</li><li><span>04</span>Circuit breakers</li><li><span>05</span>Failure drills</li></ul></div>
-      <div class="card sched" style="--d:5"><h4>Performance</h4><ul><li><span>01</span>Profiling</li><li><span>02</span>Vectorisation</li><li><span>03</span>Compiled hot paths</li><li><span>04</span>Batching</li><li><span>05</span>Cache design</li></ul></div>
-      <div class="card sched" style="--d:6"><h4>Quantitative</h4><ul><li><span>01</span>Portfolio margin</li><li><span>02</span>Black&ndash;Scholes</li><li><span>03</span>Implied volatility</li><li><span>04</span>Greeks</li><li><span>05</span>Cost modelling</li><li><span>06</span>Backtesting</li></ul></div>
-      <div class="card sched" style="--d:7"><h4>Operations</h4><ul><li><span>01</span>Docker</li><li><span>02</span>Prometheus</li><li><span>03</span>Health checks</li><li><span>04</span>pytest</li><li><span>05</span>mypy &amp; ruff</li></ul></div>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ 04 — PROCESS ═══════════════════════════ -->
-<section class="sec" id="process">
-  <div class="wrap">
-    <div class="shead rv">
-      <div class="shead__top"><span class="kicker">04 — Process</span></div>
-      <h2 class="disp">How working together goes</h2>
-      <p class="lede">No discovery theatre. You'll know inside a week whether this is working.</p>
-    </div>
-
-    <div class="steps rv stag">
-      <div class="card step" style="--d:0">
-        <div class="step__n">STEP 01</div>
-        <h4>A real conversation</h4>
-        <p>Tell me what the system does and what's going wrong. Free, no pitch. If I'm not the right person I'll say so and, where I can, point you at who is.</p>
+    <div class="steps rv">
+      <div class="step">
+        <div class="step__n num" aria-hidden="true">1</div>
+        <h3>A call</h3>
+        <p>Tell us what the system does and what&rsquo;s going wrong. Free, no pitch. If we&rsquo;re not the right pair for it we&rsquo;ll say so, and point you somewhere better if we can.</p>
       </div>
-      <div class="card step" style="--d:1">
-        <div class="step__n">STEP 02</div>
-        <h4>Scoped proposal</h4>
-        <p>A written plan: what I'll do, what I won't, what it costs and when it lands. Fixed scope for defined work, retainer for ongoing.</p>
+      <div class="step">
+        <div class="step__n num" aria-hidden="true">2</div>
+        <h3>A written plan</h3>
+        <p>What we&rsquo;ll do, what we won&rsquo;t, what it costs and when it lands. Fixed scope for defined work; a retainer if it&rsquo;s ongoing.</p>
       </div>
-      <div class="card step" style="--d:2">
-        <div class="step__n">STEP 03</div>
-        <h4>Build in the open</h4>
-        <p>You get commits as they happen and a short written update every week — what moved, what's next, what worries me. No month-long silences.</p>
+      <div class="step">
+        <div class="step__n num" aria-hidden="true">3</div>
+        <h3>Weekly, in writing</h3>
+        <p>Commits as they happen, and a short note every week: what moved, what&rsquo;s next, what worries us. No month-long silences.</p>
       </div>
-      <div class="card step" style="--d:3">
-        <div class="step__n">STEP 04</div>
-        <h4>Handover that holds</h4>
-        <p>Tests, a README your next developer can follow, and a walkthrough. The goal is that you don't need me afterwards.</p>
+      <div class="step">
+        <div class="step__n num" aria-hidden="true">4</div>
+        <h3>Handover</h3>
+        <p>Tests, a README your next developer can actually follow, and a walkthrough. The point is that you don&rsquo;t need us afterwards.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ═══════════════════════════ 05 — ABOUT ═══════════════════════════ -->
-<section class="sec" id="about">
+<!-- ══════════════════════════════ CONTACT ══════════════════════════════ -->
+<section class="sec sec--rule" id="contact">
   <div class="wrap">
     <div class="shead rv">
-      <div class="shead__top"><span class="kicker">05 — About</span></div>
-      <h2 class="disp">Who you'd be working with</h2>
-    </div>
-
-    <div class="about rv">
-      <div>
-        <p>
-          I'm Vipul Kumar, a backend engineer in India working on trading infrastructure.
-          B.Tech from SRM Institute of Science &amp; Technology, 2024 — and straight into
-          building systems that handle real orders, which taught me faster than any course could.
-        </p>
-        <p>
-          Most of what I know that's worth paying for came from production incidents: that
-          a retry is a duplicate unless you make it otherwise, that a reconnect is a
-          data-loss event unless you design for it, and that the expensive bugs are never
-          in the code you were worried about.
-        </p>
-        <p>
-          I write tests at roughly the same volume as source, because on the systems I
-          work on a regression isn't a bad user experience — it's an unintended trade. And
-          I'd rather ship nothing than ship a number I can't stand behind.
-        </p>
-        <p>
-          I'm taking on a small number of freelance projects. If your problem lives where
-          correctness, ordering and money meet, we'll get on well.
-        </p>
-
-        <details class="more">
-          <summary><span>Credentials</span></summary>
-          <div class="more__body">
-            <div class="credit"><span>B.Tech — SRMIST, 2024 · 8.86 CGPA</span></div>
-            <div class="credit"><span>NPTEL — Data Structures &amp; Algorithms</span><a href="https://drive.google.com/file/d/1m7J5pY9VGkKaS6RUgXlBg-MbEjPPlrCN/view" target="_blank" rel="noopener">verify</a></div>
-            <div class="credit"><span>HackerRank — SQL (Intermediate)</span><a href="https://www.hackerrank.com/certificates/7781b740714d" target="_blank" rel="noopener">verify</a></div>
-            <div class="credit"><span>HackerRank — Problem Solving (Intermediate)</span><a href="https://www.hackerrank.com/certificates/bb46e0b2d12d" target="_blank" rel="noopener">verify</a></div>
-          </div>
-        </details>
-      </div>
-
-      <div class="card facts">
-        <div class="fact"><span class="fact__k">Role</span><span class="fact__v">Backend / infrastructure</span></div>
-        <div class="fact"><span class="fact__k">Domain</span><span class="fact__v">Trading &amp; fintech</span></div>
-        <div class="fact"><span class="fact__k">Based</span><span class="fact__v">India — remote</span></div>
-        <div class="fact"><span class="fact__k">Availability</span><span class="fact__v">Open to projects</span></div>
-        <div class="fact"><span class="fact__k">Engagement</span><span class="fact__v">Project or retainer</span></div>
-        <div class="fact"><span class="fact__k">Minimum</span><span class="fact__v">2-week scoped piece</span></div>
-        <div class="fact"><span class="fact__k">Hours</span><span class="fact__v">IST, overlap flexible</span></div>
-        <div class="fact"><span class="fact__k">Languages</span><span class="fact__v">English, Hindi</span></div>
-      </div>
-    </div>
-
-    <!-- ── FIG. 3 : verified figures ── -->
-    <figure class="fig rv" id="figures" style="margin-top: clamp(30px, 3.4vw, 48px)">
-      <div class="fig__head">
-        <span class="fig__id">FIG. 3</span>
-        <span class="fig__t">Verified figures — register of measured quantities</span>
-        <span class="fig__n">Bars: log&#8321;&#8320; · ref. FIG. 2</span>
-      </div>
-      <div class="plate plate--led">
-        <table class="ledger">
-          <caption class="skip-cap">Every quantity quoted on this page, with its value, its position on a shared logarithmic scale, and the method it was obtained by.</caption>
-          <colgroup>
-            <col style="width:108px"><col><col style="width:118px"><col style="width:28%"><col style="width:176px">
-          </colgroup>
-          <thead>
-            <tr>
-              <th scope="col">Key</th>
-              <th scope="col">Meaning</th>
-              <th scope="col">Value</th>
-              <th scope="col">Scale — log&#8321;&#8320;, 1 to 100 000</th>
-              <th scope="col">Method</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row" class="led__k">ENG.LOC</th>
-              <td class="led__m">Lines of engine source</td>
-              <td class="led__v">80,753</td>
-              <td class="led__b"><span class="led__mob">Log&#8321;&#8320; scale · 1 &rarr; 100 000</span><span class="bar" style="--p:98.1%" aria-hidden="true"><i></i></span></td>
-              <td class="led__s"><span class="stamp">Measured</span><em>Counted from source</em></td>
-            </tr>
-            <tr>
-              <th scope="row" class="led__k">ENG.TESTS</th>
-              <td class="led__m">Automated tests in the engine suite</td>
-              <td class="led__v">1,856 <small>in 55 s</small></td>
-              <td class="led__b"><span class="led__mob">Log&#8321;&#8320; scale · 1 &rarr; 100 000</span><span class="bar" style="--p:65.4%" aria-hidden="true"><i></i></span></td>
-              <td class="led__s"><span class="stamp">Measured</span><em>Counted from a suite run</em></td>
-            </tr>
-            <tr>
-              <th scope="row" class="led__k">GW.TESTS</th>
-              <td class="led__m">Automated tests in the gateway suite</td>
-              <td class="led__v">278 <small>in 8.7 s</small></td>
-              <td class="led__b"><span class="led__mob">Log&#8321;&#8320; scale · 1 &rarr; 100 000</span><span class="bar" style="--p:48.9%" aria-hidden="true"><i></i></span></td>
-              <td class="led__s"><span class="stamp">Measured</span><em>Counted from a suite run</em></td>
-            </tr>
-            <tr>
-              <th scope="row" class="led__k">PROCESSES</th>
-              <td class="led__m">Worker processes the engine coordinates</td>
-              <td class="led__v">17</td>
-              <td class="led__b"><span class="led__mob">Log&#8321;&#8320; scale · 1 &rarr; 100 000</span><span class="bar" style="--p:24.6%" aria-hidden="true"><i></i></span></td>
-              <td class="led__s"><span class="stamp">Measured</span><em>Counted from source</em></td>
-            </tr>
-            <tr>
-              <th scope="row" class="led__k">SERVICES</th>
-              <td class="led__m">Services live in the platform I work across</td>
-              <td class="led__v">7</td>
-              <td class="led__b"><span class="led__mob">Log&#8321;&#8320; scale · 1 &rarr; 100 000</span><span class="bar" style="--p:16.9%" aria-hidden="true"><i></i></span></td>
-              <td class="led__s"><span class="stamp">Measured</span><em>Counted from source</em></td>
-            </tr>
-            <tr>
-              <th scope="row" class="led__k">GW.RATIO</th>
-              <td class="led__m">Gateway test code per unit of source code</td>
-              <td class="led__v">0.82 : 1</td>
-              <td class="led__b"><span class="bar bar--na" aria-hidden="true">A ratio — not on this axis</span></td>
-              <td class="led__s"><span class="stamp">Measured</span><em>Derived from the two counts</em></td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <td colspan="3">Six figures · none estimated</td>
-              <td>
-                <div class="axis" aria-hidden="true"><span>10&#8304;</span><span>10&#185;</span><span>10&#178;</span><span>10&#179;</span><span>10&#8308;</span><span>10&#8309;</span></div>
-              </td>
-              <td>Bars: log&#8321;&#8320;</td>
-            </tr>
-          </tfoot>
-        </table>
-      </div>
-      <figcaption class="fig__cap">
-        The bars are log-scaled so a five-figure count and a single-figure count can share one axis without either being flattered — a bar twice as long is a
-        hundred times the quantity, not twice it. The two suites sum to the 2,134 tests quoted on sheet 01. FIG. 2 draws four of these to their own linear
-        scales; this register states all six and how each was obtained.
-      </figcaption>
-    </figure>
-  </div>
-</section>
-
-<!-- ═══════════════════════════ 06 — CONTACT ═══════════════════════════ -->
-<section class="sec" id="contact">
-  <div class="wrap">
-    <div class="shead rv">
-      <div class="shead__top"><span class="kicker">06 — Contact</span></div>
-      <h2 class="disp">Let's talk about what you're building</h2>
+      <span class="label">Contact</span>
+      <h2>Tell us what you&rsquo;re building.</h2>
       <p class="lede">
-        The most useful first message is one paragraph: what the system does, what's
-        going wrong or what's missing, and roughly when you need it. I'll reply with
-        whether I can help and what I'd do first — no sales call required.
+        One paragraph is plenty: what the system does, what&rsquo;s going wrong or what&rsquo;s missing, and
+        roughly when you need it. You&rsquo;ll get a straight answer about whether we can help and what
+        we&rsquo;d do first — no sales call required.
       </p>
     </div>
 
-    <div class="close rv stag">
-      <div class="card close__main" style="--d:0">
-        <span class="close__k">Route 01 — Primary</span>
-        <h3>Write to me directly</h3>
-        <p class="close__lead">
-          One paragraph is plenty: what the system does, what's going wrong, roughly when
-          you need it. Straight to my inbox — no form, no funnel, no sales call.
+    <div class="contact rv">
+      <div class="contact__main">
+        <h3>Write to Vipul. It reaches both of us.</h3>
+        <p>
+          One inbox for the pair, so nothing gets handed round. Whichever of us the work suits,
+          the reply comes from someone who has read your message properly.
         </p>
-        <a class="cta" href="mailto:vipuldhankar17170277@gmail.com">
-          <span>Start an email</span><span class="arw" aria-hidden="true">&rarr;</span>
+        <a class="btn btn--solid" href="mailto:vipuldhankar17170277@gmail.com" style="align-self:flex-start">
+          Start an email <span class="arw" aria-hidden="true">&rarr;</span>
         </a>
         <div class="addr">
-          <span class="addr__k">Address</span>
           <span class="addr__v" id="addr">vipuldhankar17170277@gmail.com</span>
           <button class="copy" type="button" id="copy" data-copy="vipuldhankar17170277@gmail.com" aria-label="Copy email address to clipboard">
-            <svg viewBox="0 0 24 24" aria-hidden="true" width="13" height="13"><rect x="8.5" y="3.5" width="12" height="14" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M15.5 20.5H3.5V6.5" fill="none" stroke="currentColor" stroke-width="1.7"/></svg><span class="copy__t">Copy</span>
-          </button>
+            <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><rect x="8.5" y="3.5" width="12" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M15.5 20.5H3.5V6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
+          <span class="copy__t">Copy</span></button>
         </div>
-        <p class="close__note">India · remote · IST — overlap flexible</p>
+        <p class="small contact__note">India · remote · IST — overlap flexible.</p>
       </div>
 
-      <div class="card close__side" style="--d:1">
-        <div class="side__h">Other routes</div>
-        <a class="route" href="https://www.linkedin.com/in/vipul-kumar-5861221b9/" target="_blank" rel="noopener">
-          <span class="route__k">Route 02</span>
-          <span class="route__n">LinkedIn</span>
-          <span class="route__v">/in/vipul-kumar-5861221b9</span>
-          <span class="route__a" aria-hidden="true">&#8599;</span>
-        </a>
-        <a class="route" href="https://github.com/Vipul4765" target="_blank" rel="noopener">
-          <span class="route__k">Route 03</span>
-          <span class="route__n">GitHub</span>
-          <span class="route__v">@Vipul4765</span>
-          <span class="route__a" aria-hidden="true">&#8599;</span>
-        </a>
-        <div class="side__f"><span>Sheet 06 of 06</span><b>Rev 2026.08</b></div>
+      <div class="aside">
+        <div class="routes">
+          <a class="route" href="https://www.linkedin.com/in/vipul-kumar-5861221b9/" target="_blank" rel="noopener">
+            <span>
+              <span class="route__n">LinkedIn</span>
+              <span class="route__v">/in/vipul-kumar-5861221b9</span>
+            </span>
+            <span class="route__a" aria-hidden="true">&#8599;</span>
+          </a>
+          <a class="route" href="https://github.com/Vipul4765" target="_blank" rel="noopener">
+            <span>
+              <span class="route__n">GitHub</span>
+              <span class="route__v">@Vipul4765</span>
+            </span>
+            <span class="route__a" aria-hidden="true">&#8599;</span>
+          </a>
+        </div>
+        <div class="facts">
+          <div class="fact"><span class="fact__k">Team</span><span class="fact__v">Two engineers</span></div>
+          <div class="fact"><span class="fact__k">Based</span><span class="fact__v">India — remote</span></div>
+          <div class="fact"><span class="fact__k">Availability</span><span class="fact__v">Open to projects</span></div>
+          <div class="fact"><span class="fact__k">Engagement</span><span class="fact__v">Project or retainer</span></div>
+        </div>
       </div>
-    </div>
-
-    <!-- title block -->
-    <div class="tblock rv">
-      <div class="tb tb--w"><span class="tb__k">Title</span><span class="tb__v">Backend &amp; trading infrastructure — portfolio</span></div>
-      <div class="tb tb--h"><span class="tb__k">Drawn by</span><span class="tb__v">Vipul Kumar</span></div>
-      <div class="tb"><span class="tb__k">Scale</span><span class="tb__v">None</span></div>
-      <div class="tb"><span class="tb__k">Sheets</span><span class="tb__v">06</span></div>
-      <div class="tb"><span class="tb__k">Based</span><span class="tb__v">India · remote</span></div>
-      <div class="tb"><span class="tb__k">Engagement</span><span class="tb__v">Project / retainer</span></div>
-      <div class="tb"><span class="tb__k">Date</span><span class="tb__v"><span id="yr">2026</span></span></div>
-      <div class="tb"><span class="tb__k">Status</span><span class="tb__v">Open to projects</span></div>
-    </div>
-
-    <div class="foot">
-      <p>© <span id="yr2">2026</span> Vipul Kumar</p>
-      <p>Static page · no trackers, no cookies</p>
     </div>
   </div>
 </section>
 
 </main>
 
+<footer class="foot">
+  <div class="wrap foot__in">
+    <svg class="brand__marks" viewBox="0 0 40 24" aria-hidden="true" style="color:var(--accent)">
+      <use href="#m-vipul" x="0" y="0" width="24" height="24"/>
+      <use href="#m-naveen" x="16" y="0" width="24" height="24"/>
+    </svg>
+    <p>&copy; <span id="yr">2026</span> Vipul Kumar &amp; Naveen Shah</p>
+    <p>One page, made by hand · no trackers, no cookies</p>
+  </div>
+</footer>
+
 <script>
+/* Progressive enhancement only. Everything below is optional: with this file
+   removed the page still reads, navigates, opens its menu and shows every word. */
 (function () {
-  'use strict';
-  var d = document.documentElement;
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var root = document.documentElement;
 
-  /* ---------- year ---------- */
-  var y = new Date().getFullYear();
-  ['yr', 'yr2'].forEach(function (id) { var e = document.getElementById(id); if (e) e.textContent = y; });
-
-  /* ---------- theme ---------- */
+  /* ── theme: a manual pick is stored and beats the OS in both directions ── */
   var btn = document.getElementById('theme');
+  function current() {
+    var set = root.getAttribute('data-theme');
+    if (set) return set;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+  }
+  function label() {
+    if (btn) btn.setAttribute('aria-label', current() === 'dark' ? 'Switch to the light theme' : 'Switch to the dark theme');
+  }
+  label();
   if (btn) {
     btn.addEventListener('click', function () {
-      var cur = d.getAttribute('data-theme');
-      if (!cur) {
-        cur = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
-      }
-      var next = cur === 'dark' ? 'light' : 'dark';
-      d.setAttribute('data-theme', next);
-      try { localStorage.setItem('bp-theme', next); } catch (e) {}
+      var next = current() === 'dark' ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('vn-theme', next); } catch (e) {}
+      label();
     });
   }
 
-  /* ---------- mobile index ----------
-     <details> already opens, closes and takes focus with no script at all.
-     This only adds the three things markup cannot: aria-expanded kept in step,
-     close on selection, close on Escape. Nothing here can hide content. */
+  /* ── mobile menu: Escape closes it, picking a section closes it ── */
   var mnav = document.getElementById('mnav');
-  if (mnav) {
-    var msum = mnav.querySelector('summary');
-    mnav.addEventListener('toggle', function () {
-      msum.setAttribute('aria-expanded', mnav.open ? 'true' : 'false');
-    });
-    mnav.addEventListener('click', function (e) {
-      if (e.target.closest('a')) mnav.open = false;
-    });
+  var mbtn = document.getElementById('mnav-btn');
+  if (mnav && mbtn) {
+    var sync = function () { mbtn.setAttribute('aria-expanded', mnav.open ? 'true' : 'false'); };
+    mnav.addEventListener('toggle', sync);
+    sync();
     document.addEventListener('keydown', function (e) {
-      if ((e.key === 'Escape' || e.key === 'Esc') && mnav.open) {
-        mnav.open = false;
-        msum.focus();
-      }
+      if (e.key === 'Escape' && mnav.open) { mnav.open = false; mbtn.focus(); }
+    });
+    mnav.querySelectorAll('a').forEach(function (a) {
+      a.addEventListener('click', function () { mnav.open = false; });
     });
     document.addEventListener('click', function (e) {
       if (mnav.open && !mnav.contains(e.target)) mnav.open = false;
     });
-    /* the panel is only ever a mobile affordance */
-    var wide = window.matchMedia('(min-width: 901px)');
-    var closeIfWide = function () { if (wide.matches) mnav.open = false; };
-    wide.addEventListener ? wide.addEventListener('change', closeIfWide) : wide.addListener(closeIfWide);
   }
 
-  /* ---------- copy address ---------- */
-  var cp = document.getElementById('copy');
-  if (cp && navigator.clipboard) {
-    var lab = cp.querySelector('.copy__t'), t0 = null;
-    cp.addEventListener('click', function () {
-      navigator.clipboard.writeText(cp.getAttribute('data-copy')).then(function () {
-        cp.setAttribute('data-state', 'done');
-        if (lab) lab.textContent = 'Copied';
-        clearTimeout(t0);
-        t0 = setTimeout(function () {
-          cp.removeAttribute('data-state');
-          if (lab) lab.textContent = 'Copy';
-        }, 2200);
+  /* ── copy the address ── */
+  var copy = document.getElementById('copy');
+  if (copy && navigator.clipboard) {
+    var t = copy.querySelector('.copy__t');
+    copy.addEventListener('click', function () {
+      navigator.clipboard.writeText(copy.getAttribute('data-copy')).then(function () {
+        copy.setAttribute('data-state', 'done');
+        if (t) t.textContent = 'Copied';
+        setTimeout(function () {
+          copy.removeAttribute('data-state');
+          if (t) t.textContent = 'Copy';
+        }, 2000);
       }).catch(function () {});
     });
-  } else if (cp) {
-    cp.hidden = true;
+  } else if (copy) {
+    copy.remove();
   }
 
-  /* ---------- wide-figure scroll state ----------
-     CSS shows the cue and the right-hand fade by default on any viewport where
-     a drawing can outrun its frame. Script only ever REMOVES the affordance,
-     for figures it has measured as fitting — so a dead script leaves the cue up
-     rather than hiding it. */
-  var figs = document.querySelectorAll('.fig--wide');
-  Array.prototype.forEach.call(figs, function (fig) {
-    var sc = fig.querySelector('.scroller');
-    if (!sc) return;
-    function state() {
-      var over = sc.scrollWidth - sc.clientWidth;
-      fig.classList.toggle('fig--fits', over < 4);
-      fig.classList.toggle('is-panned', sc.scrollLeft > 4);
-      fig.classList.toggle('is-end', over >= 4 && sc.scrollLeft >= over - 4);
-    }
-    sc.addEventListener('scroll', function () { requestAnimationFrame(state); }, { passive: true });
-    window.addEventListener('resize', state, { passive: true });
-    state();
-  });
+  var yr = document.getElementById('yr');
+  if (yr) yr.textContent = new Date().getFullYear();
 
-  /* ---------- counters ---------- */
-  function runCount(el) {
-    if (el.dataset.done) return;
-    el.dataset.done = '1';
-    var target = parseInt(el.getAttribute('data-count'), 10);
-    if (!isFinite(target) || reduce) return;
-    var sep = el.getAttribute('data-sep') === '1';
-    var fmt = function (n) { return sep ? n.toLocaleString('en-US') : String(n); };
-    var t0 = null, dur = 900;
-    function step(ts) {
-      if (t0 === null) t0 = ts;
-      var p = Math.min(1, (ts - t0) / dur);
-      var e = 1 - Math.pow(1 - p, 3);
-      el.textContent = fmt(Math.round(target * e));
-      if (p < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
+  /* ── entrance. Armed here, disarmed here, and disarmed again on a timer.
+        Reduced motion never arms it at all. ── */
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items = document.querySelectorAll('.rv');
+  function showAll() { root.className += ' reveal-all'; }
+  if (reduce || !('IntersectionObserver' in window) || !items.length) {
+    showAll();
+    return;
   }
-
-  /* ---------- reveal ----------
-     Order matters. Nothing is hidden until .rv-on is added, and .rv-on is only
-     added immediately before the observers are attached and the failsafe timer
-     is scheduled. If any of this throws, .rv-on is taken straight back off and
-     the page renders in its final, fully visible state. */
-  var counters = document.querySelectorAll('[data-count]');
-  function countAll() { Array.prototype.forEach.call(counters, runCount); }
-
-  if (!('IntersectionObserver' in window)) {
-    countAll();
-  } else {
-    try {
-      d.classList.add('rv-on');
-      var io = new IntersectionObserver(function (entries) {
-        entries.forEach(function (en) {
-          if (!en.isIntersecting) return;
-          en.target.classList.add('is-in');
-          Array.prototype.forEach.call(en.target.querySelectorAll('[data-count]'), runCount);
-          io.unobserve(en.target);
-        });
-      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.05 });
-      Array.prototype.forEach.call(document.querySelectorAll('.rv, .stag'), function (t) { io.observe(t); });
-
-      var hs = document.querySelector('.hstrip');
-      if (hs) {
-        var io2 = new IntersectionObserver(function (entries) {
-          entries.forEach(function (en) {
-            if (!en.isIntersecting) return;
-            Array.prototype.forEach.call(en.target.querySelectorAll('[data-count]'), runCount);
-            io2.unobserve(en.target);
-          });
-        }, { threshold: 0.2 });
-        io2.observe(hs);
-      }
-      /* failsafe: whatever the observer has not reached in 6 s is shown anyway */
-      setTimeout(function () { d.classList.add('reveal-all'); countAll(); }, 6000);
-    } catch (err) {
-      d.classList.remove('rv-on');
-      countAll();
-    }
-  }
-
-  /* ---------- scroll progress ---------- */
-  var prog = document.getElementById('prog'), ticking = false;
-  function draw() {
-    ticking = false;
-    var h = document.documentElement.scrollHeight - window.innerHeight;
-    var p = h > 0 ? Math.min(1, Math.max(0, window.scrollY / h)) : 0;
-    if (prog) prog.style.width = (p * 100).toFixed(2) + '%';
-  }
-  window.addEventListener('scroll', function () {
-    if (!ticking) { ticking = true; requestAnimationFrame(draw); }
-  }, { passive: true });
-  draw();
+  root.className += ' rv-on';
+  setTimeout(showAll, 3500);            /* failsafe #2 — head holds failsafe #1 */
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (en) {
+      if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+    });
+  }, { rootMargin: '0px 0px -8% 0px', threshold: 0.04 });
+  items.forEach(function (el) { io.observe(el); });
 })();
 </script>
-
 </body>
 </html>
