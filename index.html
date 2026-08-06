@@ -1,0 +1,801 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vipul Kumar — Backend Engineer, Real-Time & Trading Infrastructure</title>
+<meta name="description" content="I build Python backends where being wrong costs money: Redis-stream worker fleets, exchange-grade SPAN margin, and real-time streaming layers for a live Indian options-trading platform.">
+<meta name="author" content="Vipul Kumar">
+<meta name="theme-color" content="#0B1015" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#ECEFF1" media="(prefers-color-scheme: light)">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Vipul Kumar — Backend Engineer, Real-Time & Trading Infrastructure">
+<meta property="og:description" content="Redis-stream worker fleets, exchange-grade SPAN margin, and real-time streaming for a live Indian options-trading platform.">
+<meta property="og:image" content="assets/img/profile.jpg">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='18' fill='%230B1015'/><text y='72' x='50' text-anchor='middle' font-size='62' font-family='monospace' fill='%23F2A03D'>V</text></svg>">
+<link rel="preload" href="assets/fonts/archivo-400-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="shell">
+
+  <!-- ══════════════ IDENTITY RAIL ══════════════ -->
+  <header class="rail">
+    <div class="rail__id">
+      <img class="rail__photo" src="assets/img/profile.jpg" alt="Vipul Kumar" width="46" height="46">
+      <div>
+        <div class="rail__name">Vipul Kumar</div>
+        <div class="rail__role">Backend&nbsp;/&nbsp;Trading Infrastructure</div>
+      </div>
+    </div>
+
+    <div class="rail__status">
+      <span class="dot" aria-hidden="true"></span>
+      <span>Available for freelance work</span>
+    </div>
+
+    <nav class="rail__nav" aria-label="Sections">
+      <ol>
+        <li><a href="#work"><span class="n">01</span> Selected work</a></li>
+        <li><a href="#services"><span class="n">02</span> What I build</a></li>
+        <li><a href="#capabilities"><span class="n">03</span> Capabilities</a></li>
+        <li><a href="#approach"><span class="n">04</span> How I work</a></li>
+        <li><a href="#background"><span class="n">05</span> Background</a></li>
+        <li><a href="#contact"><span class="n">06</span> Contact</a></li>
+      </ol>
+    </nav>
+
+    <div class="rail__foot">
+      <div class="rail__links">
+        <a href="mailto:vipuldhankar17170277@gmail.com">Email</a>
+        <a href="https://www.linkedin.com/in/vipul-kumar-5861221b9/" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://github.com/Vipul4765" target="_blank" rel="noopener">GitHub</a>
+      </div>
+      <button class="themetoggle" type="button" id="theme" aria-label="Switch colour theme">
+        <span aria-hidden="true">◐</span><span id="theme-label">Theme</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ══════════════ CONTENT ══════════════ -->
+  <main class="content">
+
+    <!-- ─────── HERO ─────── -->
+    <section class="hero" aria-labelledby="h-hero">
+      <div class="hero__eyebrow">
+        <span class="label">Python · Redis · Cython · Options infrastructure</span>
+        <span class="sep" aria-hidden="true"></span>
+      </div>
+
+      <h1 id="h-hero">I build backends where being wrong <em>costs money.</em></h1>
+
+      <p class="hero__sub">
+        For the last two years I've built the execution core of a live Indian options-trading
+        platform — a 17-process engine on Redis streams that fires and protects real broker
+        orders, computes exchange-grade SPAN margin, and is engineered so a position can never
+        be exited twice or left orphaned after a crash.
+      </p>
+
+      <div class="hero__cta">
+        <a class="btn btn--primary" href="#contact">Start a conversation</a>
+        <a class="btn" href="#work">See the work</a>
+      </div>
+
+      <!-- topology -->
+      <figure class="topo">
+        <figcaption class="topo__bar">
+          <span class="label">Fig. 01 — execution engine topology · 17 workers</span>
+          <span class="label">redis streams · consumer groups</span>
+        </figcaption>
+        <div class="topo__wrap">
+          <svg viewBox="0 0 640 172" role="img" aria-label="Diagram: a market data feed flows into a Redis stream backbone, which is consumed by seventeen independent worker processes including execution, risk, protection, confirmation, order guard, reentry, time exit, reconciliation and archiver, which in turn write to the broker and to PostgreSQL.">
+            <!-- spine -->
+            <line class="t-line" x1="118" y1="86" x2="524" y2="86"></line>
+            <line class="t-flow" x1="118" y1="86" x2="524" y2="86"></line>
+
+            <!-- feed -->
+            <rect class="t-box t-box-a" x="6" y="70" width="104" height="32" rx="2"></rect>
+            <text class="t-txt" x="58" y="84" text-anchor="middle">MARKET FEED</text>
+            <text class="t-txt t-txt-m" x="58" y="95" text-anchor="middle">tick → 1m OHLC</text>
+
+            <!-- sinks -->
+            <rect class="t-box" x="532" y="52" width="102" height="30" rx="2"></rect>
+            <text class="t-txt" x="583" y="70" text-anchor="middle">BROKER API</text>
+            <rect class="t-box" x="532" y="90" width="102" height="30" rx="2"></rect>
+            <text class="t-txt" x="583" y="108" text-anchor="middle">POSTGRESQL</text>
+            <line class="t-line" x1="524" y1="86" x2="532" y2="67"></line>
+            <line class="t-line" x1="524" y1="86" x2="532" y2="105"></line>
+
+            <!-- workers above -->
+            <g>
+              <rect class="t-box" x="132" y="12" width="68" height="26" rx="2"></rect>
+              <text class="t-txt" x="166" y="29" text-anchor="middle">execution</text>
+              <line class="t-line" x1="166" y1="38" x2="166" y2="86"></line>
+
+              <rect class="t-box t-box-a" x="210" y="12" width="68" height="26" rx="2"></rect>
+              <text class="t-txt t-txt-a" x="244" y="29" text-anchor="middle">risk</text>
+              <line class="t-line" x1="244" y1="38" x2="244" y2="86"></line>
+
+              <rect class="t-box" x="288" y="12" width="68" height="26" rx="2"></rect>
+              <text class="t-txt" x="322" y="29" text-anchor="middle">protection</text>
+              <line class="t-line" x1="322" y1="38" x2="322" y2="86"></line>
+
+              <rect class="t-box" x="366" y="12" width="68" height="26" rx="2"></rect>
+              <text class="t-txt" x="400" y="29" text-anchor="middle">confirm</text>
+              <line class="t-line" x1="400" y1="38" x2="400" y2="86"></line>
+
+              <rect class="t-box" x="444" y="12" width="68" height="26" rx="2"></rect>
+              <text class="t-txt" x="478" y="29" text-anchor="middle">order-guard</text>
+              <line class="t-line" x1="478" y1="38" x2="478" y2="86"></line>
+            </g>
+
+            <!-- workers below -->
+            <g>
+              <rect class="t-box" x="150" y="130" width="68" height="26" rx="2"></rect>
+              <text class="t-txt" x="184" y="147" text-anchor="middle">reentry</text>
+              <line class="t-line" x1="184" y1="86" x2="184" y2="130"></line>
+
+              <rect class="t-box" x="228" y="130" width="68" height="26" rx="2"></rect>
+              <text class="t-txt" x="262" y="147" text-anchor="middle">time-exit</text>
+              <line class="t-line" x1="262" y1="86" x2="262" y2="130"></line>
+
+              <rect class="t-box t-box-a" x="306" y="130" width="80" height="26" rx="2"></rect>
+              <text class="t-txt t-txt-a" x="346" y="147" text-anchor="middle">reconcile</text>
+              <line class="t-line" x1="346" y1="86" x2="346" y2="130"></line>
+
+              <rect class="t-box" x="396" y="130" width="68" height="26" rx="2"></rect>
+              <text class="t-txt" x="430" y="147" text-anchor="middle">archiver</text>
+              <line class="t-line" x1="430" y1="86" x2="430" y2="130"></line>
+
+              <text class="t-txt t-txt-m" x="474" y="147">+ 8 more</text>
+            </g>
+          </svg>
+        </div>
+      </figure>
+
+      <!-- metric strip -->
+      <div class="metrics">
+        <div class="metric">
+          <div class="metric__v">80,753</div>
+          <div class="metric__k">lines of engine source</div>
+        </div>
+        <div class="metric">
+          <div class="metric__v">2,134</div>
+          <div class="metric__k">automated tests green</div>
+        </div>
+        <div class="metric">
+          <div class="metric__v">17</div>
+          <div class="metric__k">coordinated worker processes</div>
+        </div>
+        <div class="metric">
+          <div class="metric__v">62</div>
+          <div class="metric__k">atomic Lua state transitions</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────── SELECTED WORK ─────── -->
+    <section class="sec" id="work" aria-labelledby="h-work">
+      <div class="sec__head">
+        <span class="sec__num">01</span>
+        <h2 id="h-work">Selected work</h2>
+      </div>
+      <p class="lede" style="margin-bottom:2.4rem">
+        These systems run a real trading platform, so the code is private. The architecture,
+        the failure modes and the numbers below are all mine to describe — and I'll walk any
+        serious prospect through them live.
+      </p>
+
+      <!-- CASE 1 -->
+      <article class="case reveal">
+        <div class="case__head">
+          <div class="case__tags">
+            <span class="tag tag--own">Designed &amp; built</span>
+            <span class="tag tag--priv">Private codebase</span>
+            <span class="tag">2025 – present</span>
+          </div>
+          <h3>Options execution engine for a live derivatives platform</h3>
+          <p class="case__tagline">
+            Seventeen Python processes that watch every open option leg tick by tick, fire and
+            protect real broker orders, and guarantee that a position is never exited twice —
+            or left orphaned when a worker dies mid-order.
+          </p>
+        </div>
+
+        <div class="case__body">
+          <div class="case__narr">
+            <div class="beat">
+              <div class="beat__k">The problem</div>
+              <p>
+                A multi-leg options strategy has to be scheduled, priced, fired, then watched
+                continuously against stop-loss, take-profit, trailing and break-even triggers.
+                Several independent workers can detect the same breach on the same tick. If two
+                of them act, the platform exits a position twice and takes an unintended
+                opposite trade. If the process dies between calling the broker and recording the
+                order id, a live position exists that the engine cannot see.
+              </p>
+            </div>
+            <div class="beat">
+              <div class="beat__k">What I built</div>
+              <p>
+                Every cross-worker state change is a server-side Redis Lua script, so the
+                check-and-claim happens inside one atomic execution — no distributed lock, no
+                read-modify-write window. Exit claiming, partial exits and order fencing all use
+                the same pattern, with four fencing tokens verified before any order can fire, so
+                a stale scheduler dispatch physically cannot double-fire a strategy. A dedicated
+                reconciliation worker sweeps every 30 seconds for legs that were fired but never
+                recorded, probes the broker's order book, and re-attaches what it finds rather
+                than assuming nothing happened.
+              </p>
+            </div>
+            <div class="beat">
+              <div class="beat__k">The performance work</div>
+              <p>
+                The per-tick risk check was the bottleneck, so I flattened the entire active leg
+                set into contiguous NumPy arrays and rewrote the loop in Cython — typed
+                memoryviews, bounds checking off, zero Python dict lookups and zero heap
+                allocation inside the tick. Hot-path event logging goes through a lock-free ring
+                buffer of fixed 80-byte numeric slots, so no Python object is ever constructed on
+                the fast path. Both extensions import behind a fallback: an unbuilt binary costs
+                speed, never correctness.
+              </p>
+            </div>
+            <div class="beat">
+              <div class="beat__k">Result</div>
+              <p>
+                A fleet defined by a single manifest that also generates the start/stop scripts
+                and the container's exposed ports — with a test that fails the build if those
+                copies ever drift. 1,856 tests run green in 55 seconds, backed by dead-letter
+                queues on eight pipelines, 79 Prometheus metrics, per-worker health endpoints and
+                a chaos-drill directory for killing workers on purpose.
+              </p>
+            </div>
+          </div>
+
+          <aside class="case__side">
+            <table class="spec">
+              <caption>Verified figures</caption>
+              <tbody>
+                <tr><td>Engine source</td><td>80,753 lines</td></tr>
+                <tr><td>Hand-written Cython</td><td>1,930 lines</td></tr>
+                <tr><td>Test suite</td><td>1,856 in 54.9 s</td></tr>
+                <tr><td>Worker processes</td><td>17</td></tr>
+                <tr><td>Atomic Lua scripts</td><td>62</td></tr>
+                <tr><td>Redis streams</td><td>27 (8 DLQ)</td></tr>
+                <tr><td>Prometheus metrics</td><td>79</td></tr>
+                <tr><td>Typed settings</td><td>687</td></tr>
+              </tbody>
+            </table>
+            <div class="stackwrap">
+              <span class="label">Stack</span>
+              <div class="stack">
+                <span class="chip">Python 3.12</span><span class="chip">Cython</span>
+                <span class="chip">NumPy</span><span class="chip">Redis Streams</span>
+                <span class="chip">Redis Lua</span><span class="chip">PostgreSQL</span>
+                <span class="chip">SQLAlchemy 2</span><span class="chip">asyncio / uvloop</span>
+                <span class="chip">Prometheus</span><span class="chip">Docker</span>
+                <span class="chip">pytest</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </article>
+
+      <!-- CASE 2 -->
+      <article class="case reveal">
+        <div class="case__head">
+          <div class="case__tags">
+            <span class="tag tag--own">Sole author</span>
+            <span class="tag tag--priv">Private codebase</span>
+            <span class="tag">2026</span>
+          </div>
+          <h3>Real-time P&amp;L, position and margin streaming gateway</h3>
+          <p class="case__tagline">
+            One authenticated connection that multiplexes live trade events, per-strategy and
+            portfolio P&amp;L, broker books and SPAN margin into the browser — and survives
+            network drops without ever showing a client stale, duplicated or missing data.
+          </p>
+        </div>
+
+        <div class="case__body">
+          <div class="case__narr">
+            <div class="beat">
+              <div class="beat__k">The problem</div>
+              <p>
+                Streaming live data is easy. Streaming it <em>correctly</em> is not. Redis
+                trims its streams, so a client that reconnects after a gap can silently miss
+                events it will never learn about. Resolving the live cursor at read time loses
+                everything published during the reconnect window. And a single malformed field
+                written by an upstream service is, to naive error handling, indistinguishable
+                from Redis being down — which tore down the shared connection pool once per
+                second for every logged-in user.
+              </p>
+            </div>
+            <div class="beat">
+              <div class="beat__k">What I built</div>
+              <p>
+                The live cursor is pinned once to a concrete stream id before the read loop
+                starts, so nothing published mid-reconnect is lost. A client-supplied resume id
+                is sanitised and compared against the oldest retained entry, so a genuine
+                trimmed gap forces a clean re-bootstrap instead of a silent hole. Error handling
+                separates connection failures from data-parse failures, and connection
+                invalidation is a compare-and-swap so one transient blip can't cascade into a
+                reconnect storm across every user.
+              </p>
+            </div>
+            <div class="beat">
+              <div class="beat__k">The judgement call</div>
+              <p>
+                A wrong margin number is worse than no margin number. When an open leg can't be
+                parsed into a position, the gateway refuses the whole envelope and logs a
+                warning rather than emitting a figure that understates a trader's risk. Because
+                the gateway is strictly read-only over engine-owned keys, intra-day margin peaks
+                are held on a per-connection monotonic floor — stored with the timestamp they
+                were emitted with — so a peak never visibly regresses.
+              </p>
+            </div>
+            <div class="beat">
+              <div class="beat__k">Result</div>
+              <p>
+                7,868 lines of source against 6,474 lines of tests — a 0.82&#8239;:&#8239;1 ratio —
+                with 278 tests green in under nine seconds and no live infrastructure required.
+                Four quality gates run on every change: ruff, mypy in strict mode, pytest, and an
+                import-linter contract that makes violating the hexagonal layering a build
+                failure rather than a code-review argument.
+              </p>
+            </div>
+          </div>
+
+          <aside class="case__side">
+            <table class="spec">
+              <caption>Verified figures</caption>
+              <tbody>
+                <tr><td>Service source</td><td>7,868 lines</td></tr>
+                <tr><td>Test code</td><td>6,474 lines</td></tr>
+                <tr><td>Test-to-source</td><td>0.82 : 1</td></tr>
+                <tr><td>Test suite</td><td>278 in 8.7 s</td></tr>
+                <tr><td>Quality gates</td><td>4, all green</td></tr>
+                <tr><td>Event types served</td><td>12</td></tr>
+                <tr><td>Public endpoints</td><td>3</td></tr>
+              </tbody>
+            </table>
+            <div class="stackwrap">
+              <span class="label">Stack</span>
+              <div class="stack">
+                <span class="chip">FastAPI</span><span class="chip">Server-Sent Events</span>
+                <span class="chip">Redis Streams</span><span class="chip">asyncpg</span>
+                <span class="chip">Pydantic v2</span><span class="chip">PyJWT</span>
+                <span class="chip">orjson</span><span class="chip">mypy strict</span>
+                <span class="chip">import-linter</span><span class="chip">Docker</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </article>
+
+      <!-- CASE 3 -->
+      <article class="case reveal">
+        <div class="case__head">
+          <div class="case__tags">
+            <span class="tag tag--own">Designed &amp; built</span>
+            <span class="tag tag--priv">Private codebase</span>
+            <span class="tag">NSE + BSE</span>
+          </div>
+          <h3>Exchange-accurate SPAN + ELM margin engine</h3>
+          <p class="case__tagline">
+            Portfolio margin computed from the exchanges' own daily risk files, so the capital
+            the platform blocks matches what a real broker would block — including catching a
+            sign convention that the widely-copied public implementation gets backwards.
+          </p>
+        </div>
+
+        <div class="case__body">
+          <div class="case__narr">
+            <div class="beat">
+              <div class="beat__k">The problem</div>
+              <p>
+                Approximating margin is how a platform ends up over-committing a client's
+                capital or under-reserving against a position it can't cover. Real SPAN means
+                parsing the exchange's published risk arrays directly. Those files refresh
+                several times a day, and a reader that catches a rebuild half-finished will
+                price a portfolio against a mix of old and new scenarios.
+              </p>
+            </div>
+            <div class="beat">
+              <div class="beat__k">What I built</div>
+              <p>
+                A versioned keyspace where each publish writes to fresh keys and only then flips
+                a pointer atomically, keeping the previous version alive on a grace TTL while
+                readers pin a version for the life of a request. NSE and BSE get fully
+                independent pointers, so one exchange's rebuild can never tear the other.
+                Contracts are stored as 68-byte packed structs and strikes are keyed as integers
+                to eliminate floating-point drift.
+              </p>
+            </div>
+            <div class="beat">
+              <div class="beat__k">The correctness catch</div>
+              <p>
+                Scanning risk is <code>max(0, max(scenario_loss))</code> — positive values in the
+                exchange file <em>are</em> losses. The commonly copied form,
+                <code>max(0, −min(…))</code>, picks the opposite position's tail and silently
+                mis-margins the portfolio. On top of that sit the SEBI ELM rate buckets and a
+                portfolio-versus-standalone comparison that exposes the actual spread benefit.
+              </p>
+            </div>
+            <div class="beat">
+              <div class="beat__k">The performance work</div>
+              <p>
+                Per-miss Redis round-trips dominated a margin sweep across a full option chain,
+                so the first touch of a symbol now pulls its entire hash in a single call and
+                keeps the raw blobs in memory — every later lookup, hit or miss, is a pure dict
+                probe with zero round-trips. It's thread-safe without locks by capturing the
+                immutable snapshot once per call, so a version flip can only ever poison a
+                snapshot that has already been discarded.
+              </p>
+            </div>
+          </div>
+
+          <aside class="case__side">
+            <table class="spec">
+              <caption>What it covers</caption>
+              <tbody>
+                <tr><td>Exchanges</td><td>NSE + BSE</td></tr>
+                <tr><td>Risk scenarios</td><td>16 per contract</td></tr>
+                <tr><td>Record format</td><td>68-byte packed</td></tr>
+                <tr><td>Black–Scholes fns</td><td>19</td></tr>
+                <tr><td>F&amp;O cost components</td><td>6 + slippage</td></tr>
+                <tr><td>Warm lookup path</td><td>0 Redis calls</td></tr>
+              </tbody>
+            </table>
+            <div class="stackwrap">
+              <span class="label">Domain</span>
+              <div class="stack">
+                <span class="chip">SPAN risk arrays</span><span class="chip">SEBI ELM</span>
+                <span class="chip">Black–Scholes</span><span class="chip">Implied volatility</span>
+                <span class="chip">Greeks</span><span class="chip">STT / stamp / GST</span>
+                <span class="chip">NIFTY · BANKNIFTY</span><span class="chip">SENSEX · BANKEX</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </article>
+
+      <!-- team contributions -->
+      <article class="case reveal">
+        <div class="case__head">
+          <div class="case__tags">
+            <span class="tag">Team codebase — my contributions</span>
+          </div>
+          <h3>Platform API &amp; market-data ingestion</h3>
+          <p class="case__tagline">
+            Alongside the systems above I contribute to the shared platform API and the
+            market-data ingest service that feed the engine.
+          </p>
+        </div>
+        <div class="case__body">
+          <div class="case__narr">
+            <div class="beat">
+              <div class="beat__k">Control-plane API</div>
+              <p>
+                On the platform's FastAPI control plane I own the strategy lifecycle and the
+                seam into the engine: the transactional Postgres-to-Redis outbox that projects a
+                deployed strategy into the runtime, the start/stop and square-off lifecycle,
+                per-leg partial square-off, broker-account resolution and risk limits, the
+                trading-journal APIs, and a JWT-protected payoff service.
+              </p>
+            </div>
+            <div class="beat">
+              <div class="beat__k">Market-data ingest</div>
+              <p>
+                On the ingest side I added the binary price-delta publication path the risk
+                worker consumes, plus market-session timing and environment configuration work.
+              </p>
+            </div>
+          </div>
+          <aside class="case__side">
+            <div class="stackwrap">
+              <span class="label">Areas</span>
+              <div class="stack">
+                <span class="chip">Transactional outbox</span><span class="chip">Strategy lifecycle</span>
+                <span class="chip">Risk limits</span><span class="chip">Trading journal API</span>
+                <span class="chip">Payoff service</span><span class="chip">Binary price deltas</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </article>
+    </section>
+
+    <!-- ─────── SERVICES ─────── -->
+    <section class="sec" id="services" aria-labelledby="h-services">
+      <div class="sec__head">
+        <span class="sec__num">02</span>
+        <h2 id="h-services">What I build for clients</h2>
+      </div>
+      <p class="lede" style="margin-bottom:2.4rem">
+        I take backend work where correctness under failure actually matters. Five things I do
+        well, in rough order of how often people need them.
+      </p>
+
+      <div class="services">
+        <div class="service reveal">
+          <span class="service__n">S/01</span>
+          <h3>Real-time streaming APIs</h3>
+          <p>
+            The layer between your database and your live dashboard: authenticated long-lived
+            SSE or WebSocket connections, multiplexed event types, resume-after-disconnect that
+            genuinely doesn't lose or duplicate events, and backpressure that doesn't melt when
+            one client is slow.
+          </p>
+          <div class="service__for">Best fit — dashboards, live ops, anything with a "why did my number freeze" bug</div>
+        </div>
+
+        <div class="service reveal">
+          <span class="service__n">S/02</span>
+          <h3>Money-path reliability review</h3>
+          <p>
+            A focused engagement on the part of your system where wrong state costs real money.
+            I map every path a critical event can take, find the double-processing and
+            lost-update windows, and close them with idempotency keys, atomic claims and
+            dead-letter handling. You get a written findings list ranked by blast radius.
+          </p>
+          <div class="service__for">Best fit — payments, orders, billing, ledgers, anything with a refund button</div>
+        </div>
+
+        <div class="service reveal">
+          <span class="service__n">S/03</span>
+          <h3>Event-driven backends on Redis</h3>
+          <p>
+            Multi-worker pipelines built on Redis streams and consumer groups: exactly-once
+            processing via server-side Lua rather than distributed locks, fencing tokens against
+            stale writers, DLQs, crash-recovery reconcilers, and the observability to prove it's
+            working.
+          </p>
+          <div class="service__for">Best fit — job fleets, ingest pipelines, order and fulfilment flows</div>
+        </div>
+
+        <div class="service reveal">
+          <span class="service__n">S/04</span>
+          <h3>Python performance rescue</h3>
+          <p>
+            When a Python loop or a datastore round-trip is your bottleneck, I measure it first,
+            then fix it where the measurement points — vectorising with NumPy, dropping to
+            Cython for a genuine hot path, batching round-trips, or adding the right cache with
+            the right invalidation. Always behind a fallback, so a build problem never becomes a
+            correctness problem.
+          </p>
+          <div class="service__for">Best fit — a job that used to finish in time and no longer does</div>
+        </div>
+
+        <div class="service reveal">
+          <span class="service__n">S/05</span>
+          <h3>Trading &amp; market-data infrastructure</h3>
+          <p>
+            The specialist lane: tick ingestion and candle aggregation, strategy scheduling and
+            order execution, broker adapters, SPAN and ELM margin from exchange risk files,
+            Black–Scholes greeks, and the Indian F&amp;O cost stack — brokerage, STT, exchange
+            transaction charges, SEBI fees, stamp duty and GST, modelled separately.
+          </p>
+          <div class="service__for">Best fit — brokers, prop desks, algo-trading products, margin calculators</div>
+        </div>
+
+        <div class="service reveal">
+          <span class="service__n">S/06</span>
+          <h3>What I don't do</h3>
+          <p>
+            I don't take frontend or design work, and I'll tell you that in the first call
+            rather than subcontract it badly. I work backend, data plane and infrastructure. If
+            you need a UI built on top of what I deliver, I'll define the API contract cleanly
+            so your frontend developer has an easy job.
+          </p>
+          <div class="service__for">Honest scope beats a missed deadline</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────── CAPABILITIES ─────── -->
+    <section class="sec" id="capabilities" aria-labelledby="h-caps">
+      <div class="sec__head">
+        <span class="sec__num">03</span>
+        <h2 id="h-caps">Capabilities</h2>
+      </div>
+      <p class="lede" style="margin-bottom:2.4rem">
+        Everything listed here is in production code I've written, not a course syllabus.
+      </p>
+
+      <div class="caps">
+        <div class="cap reveal">
+          <h4>Languages</h4>
+          <ul><li>Python 3.12</li><li>Cython</li><li>SQL</li><li>Lua (Redis)</li><li>Bash</li><li>C++</li></ul>
+        </div>
+        <div class="cap reveal">
+          <h4>Async &amp; concurrency</h4>
+          <ul><li>asyncio</li><li>uvloop</li><li>bounded queues</li><li>backpressure</li><li>multi-process fleets</li><li>graceful drain</li></ul>
+        </div>
+        <div class="cap reveal">
+          <h4>Redis</h4>
+          <ul><li>Streams</li><li>consumer groups</li><li>server-side Lua</li><li>ZSETs</li><li>pub/sub</li><li>sharding</li><li>binary packing</li></ul>
+        </div>
+        <div class="cap reveal">
+          <h4>Data stores</h4>
+          <ul><li>PostgreSQL</li><li>SQLAlchemy 2.0</li><li>asyncpg</li><li>Alembic</li><li>schema design</li><li>rollups</li></ul>
+        </div>
+        <div class="cap reveal">
+          <h4>APIs</h4>
+          <ul><li>FastAPI</li><li>Server-Sent Events</li><li>Pydantic v2</li><li>JWT auth</li><li>rate limiting</li><li>OpenAPI</li></ul>
+        </div>
+        <div class="cap reveal">
+          <h4>Reliability patterns</h4>
+          <ul><li>exactly-once</li><li>idempotency keys</li><li>fencing tokens</li><li>transactional outbox</li><li>DLQ</li><li>reconcilers</li><li>circuit breakers</li></ul>
+        </div>
+        <div class="cap reveal">
+          <h4>Performance</h4>
+          <ul><li>profiling</li><li>NumPy vectorisation</li><li>Cython hot paths</li><li>lock-free ring buffers</li><li>batching</li><li>cache design</li></ul>
+        </div>
+        <div class="cap reveal">
+          <h4>Quantitative</h4>
+          <ul><li>SPAN margin</li><li>SEBI ELM</li><li>Black–Scholes</li><li>implied volatility</li><li>greeks</li><li>F&amp;O cost modelling</li><li>backtesting</li></ul>
+        </div>
+        <div class="cap reveal">
+          <h4>Operations</h4>
+          <ul><li>Docker</li><li>multi-stage builds</li><li>Prometheus</li><li>health endpoints</li><li>chaos drills</li><li>pytest</li><li>mypy strict</li><li>ruff</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────── APPROACH ─────── -->
+    <section class="sec" id="approach" aria-labelledby="h-approach">
+      <div class="sec__head">
+        <span class="sec__num">04</span>
+        <h2 id="h-approach">How I work</h2>
+      </div>
+
+      <div class="bg-grid">
+        <div>
+          <p class="prose">
+            I write tests at roughly the same volume as source, because on the systems I work on
+            a regression isn't a bad user experience — it's an unintended trade. My streaming
+            gateway carries 6,474 lines of tests against 7,868 lines of source, and the whole
+            suite runs in under nine seconds with no live infrastructure, so there's never an
+            excuse to skip it.
+          </p>
+          <p class="prose">
+            I prefer making invalid states impossible over documenting them. A layering rule
+            enforced by a linter contract is worth more than a wiki page; a manifest that
+            generates the deploy scripts and fails the build when they drift is worth more than
+            a checklist.
+          </p>
+          <p class="prose">
+            And I'd rather emit nothing than emit a number I can't stand behind. That principle
+            is literally in the margin code: unparseable positions refuse the whole response
+            instead of quietly understating risk.
+          </p>
+        </div>
+        <div>
+          <table class="tbl">
+            <caption class="label" style="padding-bottom:.7rem">Engagement</caption>
+            <tbody>
+              <tr><td>Availability</td><td>Open to new projects</td></tr>
+              <tr><td>Engagement</td><td>Project or retainer</td></tr>
+              <tr><td>Minimum</td><td>2-week scoped piece</td></tr>
+              <tr><td>Working hours</td><td>IST, overlap negotiable</td></tr>
+              <tr><td>Location</td><td>India — remote</td></tr>
+              <tr><td>Languages</td><td>English, Hindi</td></tr>
+            </tbody>
+          </table>
+          <p class="prose" style="margin-top:1.4rem;font-size:.9rem">
+            First call is free and I'll tell you honestly whether I'm the right person. If the
+            work is outside what I do well, I'd rather say so than learn it on your budget.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────── BACKGROUND ─────── -->
+    <section class="sec" id="background" aria-labelledby="h-bg">
+      <div class="sec__head">
+        <span class="sec__num">05</span>
+        <h2 id="h-bg">Background</h2>
+      </div>
+
+      <div class="bg-grid">
+        <div>
+          <p class="prose">
+            B.Tech from SRM Institute of Science &amp; Technology, 2024, 8.86 CGPA. I moved
+            straight into building trading infrastructure and have been doing it since — first
+            the execution engine, then the margin layer, then the real-time delivery layer that
+            puts it all in front of a user.
+          </p>
+          <p class="prose">
+            Most of what I know that's worth paying for I learned from production incidents on a
+            system handling real orders: that a retry is a duplicate unless you make it
+            otherwise, that a reconnect is a data-loss event unless you design for it, and that
+            the expensive bugs are never in the code you were worried about.
+          </p>
+
+          <details class="certs">
+            <summary><span>Credentials &amp; profiles</span></summary>
+            <div class="certs__body">
+              <div class="cert">
+                <span class="cert__n">NPTEL — Data Structures &amp; Algorithms</span>
+                <a href="https://drive.google.com/file/d/1m7J5pY9VGkKaS6RUgXlBg-MbEjPPlrCN/view" target="_blank" rel="noopener">verify</a>
+              </div>
+              <div class="cert">
+                <span class="cert__n">HackerRank — SQL (Intermediate)</span>
+                <a href="https://www.hackerrank.com/certificates/7781b740714d" target="_blank" rel="noopener">verify</a>
+              </div>
+              <div class="cert">
+                <span class="cert__n">HackerRank — Problem Solving (Intermediate)</span>
+                <a href="https://www.hackerrank.com/certificates/bb46e0b2d12d" target="_blank" rel="noopener">verify</a>
+              </div>
+              <div class="cert">
+                <span class="cert__n">LeetCode profile</span>
+                <a href="https://leetcode.com/coder_123_/" target="_blank" rel="noopener">open</a>
+              </div>
+            </div>
+          </details>
+        </div>
+
+        <div>
+          <table class="tbl">
+            <caption class="label" style="padding-bottom:.7rem">Domain fluency</caption>
+            <thead>
+              <tr><th scope="col">Area</th><th scope="col">Depth</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Indian index options</td><td>Production</td></tr>
+              <tr><td>SPAN &amp; ELM margin</td><td>Built from spec</td></tr>
+              <tr><td>Order execution</td><td>Production</td></tr>
+              <tr><td>Market-data ingest</td><td>Production</td></tr>
+              <tr><td>Options greeks</td><td>Built from spec</td></tr>
+              <tr><td>Backtesting</td><td>Built from spec</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ─────── CONTACT ─────── -->
+    <section class="sec" id="contact" aria-labelledby="h-contact">
+      <div class="sec__head">
+        <span class="sec__num">06</span>
+        <h2 id="h-contact">Contact</h2>
+      </div>
+
+      <div class="contact">
+        <h3>Tell me what's breaking, or what you need built.</h3>
+        <p>
+          The most useful first message is one paragraph: what the system does, what's going
+          wrong or what's missing, and roughly when you need it. I'll reply with whether I can
+          help and what I'd do first — no sales call required.
+        </p>
+
+        <div class="contact__rows">
+          <a class="crow" href="mailto:vipuldhankar17170277@gmail.com">
+            <span class="crow__k">Email</span>
+            <span class="crow__v">vipuldhankar17170277@gmail.com</span>
+          </a>
+          <a class="crow" href="https://www.linkedin.com/in/vipul-kumar-5861221b9/" target="_blank" rel="noopener">
+            <span class="crow__k">LinkedIn</span>
+            <span class="crow__v">/in/vipul-kumar-5861221b9</span>
+          </a>
+          <a class="crow" href="https://github.com/Vipul4765" target="_blank" rel="noopener">
+            <span class="crow__k">GitHub</span>
+            <span class="crow__v">@Vipul4765</span>
+          </a>
+        </div>
+      </div>
+
+      <footer class="foot">
+        <p>© <span id="yr">2026</span> Vipul Kumar — Backend &amp; trading infrastructure</p>
+        <p>Built as a static page. No trackers, no cookies.</p>
+      </footer>
+    </section>
+
+  </main>
+</div>
+
+<script src="assets/js/main.js"></script>
+</body>
+</html>
