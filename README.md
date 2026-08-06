@@ -10,8 +10,15 @@ assets/js/main.js           theme toggle, scroll-spy, reveal-on-scroll
 assets/fonts/               self-hosted variable Archivo + IBM Plex Mono (136 KB)
 ```
 
-The page loads ~150 KB total and references no images at all — the only binary
-assets are the four self-hosted font files.
+One 140 KB file. No images, no webfonts, no external requests of any kind — the
+only outbound URLs are the credential-verification links. All artwork is inline
+SVG drawn for the page; the type is a system font stack.
+
+The design is an engineering-drawing conceit: a drafting grid, sheet numbering,
+numbered figures with callout legends, and spec tables. FIG. 1 is a general
+arrangement of an event-driven process fleet; FIG. 3 is a register of verified
+figures on a shared log scale. Every drawing is invented and depicts no real or
+client system — each says so in its own caption.
 
 **Confidentiality:** the copy deliberately describes scope and scale only. No
 implementation techniques, algorithms or system internals appear anywhere on the page.

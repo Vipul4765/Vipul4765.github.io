@@ -1,6 +1,9 @@
 .DS_Store
+.idea/
+_lighttest.html
 *.log
 _probe.html
-_lighttest.html
+__pycache__/
+.venv/
 .vscode/
-.idea/
+*.whl
