@@ -8,11 +8,10 @@ index.html                  the whole page
 assets/css/style.css        design tokens + layout
 assets/js/main.js           theme toggle, scroll-spy, reveal-on-scroll
 assets/fonts/               self-hosted variable Archivo + IBM Plex Mono (136 KB)
-assets/img/                  archived assets — not referenced by the page
 ```
 
-The page itself loads ~150 KB. The `assets/img/` folder is an offline archive of the
-old 2023 site and is not referenced — delete it if you don't want it in the repo.
+The page loads ~150 KB total and references no images at all — the only binary
+assets are the four self-hosted font files.
 
 **Confidentiality:** the copy deliberately describes scope and scale only. No
 implementation techniques, algorithms or system internals appear anywhere on the page.
