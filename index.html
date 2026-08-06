@@ -43,7 +43,6 @@
     <a href="#work">Work</a>
     <a href="#services">Services</a>
     <a href="#stack">Stack</a>
-    <a href="#process">Process</a>
     <a href="#about">About</a>
   </div>
   <div class="nav__right">
@@ -55,38 +54,25 @@
 <!-- ═══════════ HERO ═══════════ -->
 <header class="hero" id="top">
   <div class="wrap">
-    <div class="hero__row">
-      <div>
-        <span class="hero__badge"><span class="pip"></span> Available for freelance projects</span>
+    <span class="hero__badge"><span class="pip"></span> Available for freelance projects</span>
 
-        <!-- Words are individually masked so they can rise on a stagger.
-             Order of .w elements sets the sequence; --i drives the delay. -->
-        <h1 class="disp">
-          <span class="ln"><span class="w" style="--i:0"><i>I</i></span> <span class="w" style="--i:1"><i>build</i></span> <span class="w" style="--i:2"><i>backends</i></span></span>
-          <span class="ln"><span class="w" style="--i:3"><i>where</i></span> <span class="w" style="--i:4"><i>being</i></span> <span class="w" style="--i:5"><i>wrong</i></span></span>
-          <span class="ln"><span class="w gradtext" style="--i:6"><i>costs</i></span> <span class="w gradtext" style="--i:7"><i>money.</i></span></span>
-        </h1>
+    <!-- Words are individually masked so they can rise on a stagger.
+         Order of .w elements sets the sequence; --i drives the delay. -->
+    <h1 class="disp">
+      <span class="ln"><span class="w" style="--i:0"><i>I</i></span> <span class="w" style="--i:1"><i>build</i></span> <span class="w" style="--i:2"><i>backends</i></span> <span class="w" style="--i:3"><i>where</i></span> <span class="w" style="--i:4"><i>being</i></span> <span class="w" style="--i:5"><i>wrong</i></span></span>
+      <span class="ln"><span class="w gradtext" style="--i:6"><i>costs</i></span> <span class="w gradtext" style="--i:7"><i>money.</i></span></span>
+    </h1>
 
-        <p class="hero__sub">
-          For the past two years I've built and run the execution core of a live
-          derivatives trading platform — the systems that fire real orders, hold real
-          capital against exchange margin rules, and are engineered so a failure never
-          becomes a financial loss.
-        </p>
+    <p class="hero__sub">
+      For the past two years I've built and run the execution core of a live
+      derivatives trading platform — the systems that fire real orders, hold real
+      capital against exchange margin rules, and are engineered so a failure never
+      becomes a financial loss.
+    </p>
 
-        <div class="hero__cta">
-          <a class="btn btn--go" href="#contact">Start a project <span class="arw">→</span></a>
-          <a class="btn" href="#work">See the work</a>
-        </div>
-      </div>
-
-      <figure class="hero__viz">
-        <canvas id="net" aria-hidden="true"></canvas>
-        <figcaption>
-          <span>Distributed execution</span>
-          <span>live</span>
-        </figcaption>
-      </figure>
+    <div class="hero__cta">
+      <a class="btn btn--go" href="#contact">Start a project <span class="arw">→</span></a>
+      <a class="btn" href="#work">See the work</a>
     </div>
 
     <div class="hero__strip">
@@ -110,187 +96,154 @@
   </div>
 </header>
 
-<!-- ═══════════ TICKER ═══════════ -->
-<div class="ticker" aria-hidden="true">
-  <div class="ticker__row">
-    <span>Python</span><span>Cython</span><span>Redis</span><span>PostgreSQL</span><span>FastAPI</span><span>asyncio</span><span>NumPy</span><span>Docker</span><span>Server-Sent Events</span><span>Prometheus</span><span>Exactly-once</span><span>Portfolio margin</span>
-    <span>Python</span><span>Cython</span><span>Redis</span><span>PostgreSQL</span><span>FastAPI</span><span>asyncio</span><span>NumPy</span><span>Docker</span><span>Server-Sent Events</span><span>Prometheus</span><span>Exactly-once</span><span>Portfolio margin</span>
-  </div>
-</div>
-
 <!-- ═══════════ WORK ═══════════ -->
 <section class="sec" id="work">
   <div class="wrap">
     <div class="shead rv">
-      <div>
-        <span class="kicker">01 — Selected work</span>
-        <h2 class="disp">Systems I've built</h2>
-      </div>
+      <span class="kicker">01 — Selected work</span>
+      <h2 class="disp">Systems I've built</h2>
       <p class="shead__meta">
         These run a live trading platform, so the code and the methods stay private.
-        What follows is scope and scale — the detail belongs in a call, under NDA if you'd like one.
+        What follows is scope and scale — the detail belongs in a call, under NDA if
+        you'd like one.
       </p>
     </div>
 
     <div class="work">
 
-      <article class="card rv">
-        <div class="proj__grid">
-          <div class="proj__main">
-            <div class="proj__idx mono">01 — Execution</div>
-            <h3>Options execution engine</h3>
-            <p class="proj__lede">
-              A multi-process engine that runs live option strategies end to end:
-              schedules them, selects instruments, fires and protects real broker orders,
-              and monitors every open position continuously against its risk rules.
-            </p>
-            <p class="proj__body">
-              Seventeen independent worker processes coordinate through a shared event
-              backbone. The engineering challenge isn't throughput, it's certainty:
-              several workers can reach the same conclusion at the same instant, and
-              exactly one action must result. Equally, a process that dies mid-order must
-              never leave a live position the system can no longer see.
-            </p>
-            <p class="proj__body">
-              It's built to be operated, not just deployed — health checks per process, a
-              full metrics surface, isolation for poisoned work, and deliberate failure
-              drills that kill workers to prove recovery actually happens.
-            </p>
-          </div>
-          <aside class="proj__side">
-            <div class="kv">
-              <div class="kv__row"><span class="kv__k">Scale</span><span class="kv__v">80,753 lines</span></div>
-              <div class="kv__row"><span class="kv__k">Test suite</span><span class="kv__v">1,856 in 55 s</span></div>
-              <div class="kv__row"><span class="kv__k">Processes</span><span class="kv__v">17</span></div>
-              <div class="kv__row"><span class="kv__k">Hot paths</span><span class="kv__v">Compiled</span></div>
-              <div class="kv__row"><span class="kv__k">Status</span><span class="kv__v">Live</span></div>
-            </div>
-            <div class="chips">
-              <span class="chip chip--hi">Python</span><span class="chip chip--hi">Cython</span>
-              <span class="chip">NumPy</span><span class="chip">Redis</span>
-              <span class="chip">PostgreSQL</span><span class="chip">asyncio</span>
-              <span class="chip">Prometheus</span><span class="chip">Docker</span>
-            </div>
-          </aside>
+      <article class="card proj rv">
+        <div class="proj__idx mono">01 — Execution</div>
+        <h3>Options execution engine</h3>
+        <p class="proj__lede">
+          A multi-process engine that runs live option strategies end to end:
+          schedules them, selects instruments, fires and protects real broker orders,
+          and monitors every open position continuously against its risk rules.
+        </p>
+        <p class="proj__body">
+          Seventeen independent worker processes coordinate through a shared event
+          backbone. The engineering challenge isn't throughput, it's certainty:
+          several workers can reach the same conclusion at the same instant, and
+          exactly one action must result. Equally, a process that dies mid-order must
+          never leave a live position the system can no longer see.
+        </p>
+        <p class="proj__body">
+          It's built to be operated, not just deployed — health checks per process, a
+          full metrics surface, isolation for poisoned work, and deliberate failure
+          drills that kill workers to prove recovery actually happens.
+        </p>
+        <div class="kv">
+          <div class="kv__row"><span class="kv__k">Scale</span><span class="kv__v">80,753 lines</span></div>
+          <div class="kv__row"><span class="kv__k">Test suite</span><span class="kv__v">1,856 in 55 s</span></div>
+          <div class="kv__row"><span class="kv__k">Processes</span><span class="kv__v">17</span></div>
+          <div class="kv__row"><span class="kv__k">Hot paths</span><span class="kv__v">Compiled</span></div>
+          <div class="kv__row"><span class="kv__k">Status</span><span class="kv__v">Live</span></div>
+        </div>
+        <div class="chips">
+          <span class="chip chip--hi">Python</span><span class="chip chip--hi">Cython</span>
+          <span class="chip">NumPy</span><span class="chip">Redis</span>
+          <span class="chip">PostgreSQL</span><span class="chip">asyncio</span>
+          <span class="chip">Prometheus</span><span class="chip">Docker</span>
         </div>
       </article>
 
-      <article class="card rv">
-        <div class="proj__grid">
-          <div class="proj__main">
-            <div class="proj__idx mono">02 — Real-time</div>
-            <h3>Live streaming gateway</h3>
-            <p class="proj__lede">
-              One authenticated connection that carries a user's entire live trading
-              picture into the browser — positions, profit and loss, and margin — and
-              holds up when the network doesn't.
-            </p>
-            <p class="proj__body">
-              Streaming data is easy. Streaming it correctly is the job. A phone that
-              drops into a lift for ninety seconds must come back to a complete and
-              accurate picture, never a silently incomplete one — and one transient
-              upstream hiccup must not cascade across every connected user at once.
-            </p>
-            <p class="proj__body">
-              It also refuses to guess. Where a value can't be established with
-              confidence, the system withholds it rather than publishing a number a
-              trader might act on. That rule is enforced in code, not in documentation.
-            </p>
-          </div>
-          <aside class="proj__side">
-            <div class="kv">
-              <div class="kv__row"><span class="kv__k">Scale</span><span class="kv__v">7,868 lines</span></div>
-              <div class="kv__row"><span class="kv__k">Test suite</span><span class="kv__v">278 in 8.7 s</span></div>
-              <div class="kv__row"><span class="kv__k">Test-to-source</span><span class="kv__v">0.82 : 1</span></div>
-              <div class="kv__row"><span class="kv__k">Quality gates</span><span class="kv__v">4, all green</span></div>
-              <div class="kv__row"><span class="kv__k">Authorship</span><span class="kv__v">Sole</span></div>
-            </div>
-            <div class="chips">
-              <span class="chip chip--hi">FastAPI</span><span class="chip chip--hi">SSE</span>
-              <span class="chip">Redis</span><span class="chip">asyncpg</span>
-              <span class="chip">Pydantic</span><span class="chip">JWT</span>
-              <span class="chip">mypy strict</span><span class="chip">Docker</span>
-            </div>
-          </aside>
+      <article class="card proj rv">
+        <div class="proj__idx mono">02 — Real-time</div>
+        <h3>Live streaming gateway</h3>
+        <p class="proj__lede">
+          One authenticated connection that carries a user's entire live trading
+          picture into the browser — positions, profit and loss, and margin — and
+          holds up when the network doesn't.
+        </p>
+        <p class="proj__body">
+          Streaming data is easy. Streaming it correctly is the job. A phone that
+          drops into a lift for ninety seconds must come back to a complete and
+          accurate picture, never a silently incomplete one — and one transient
+          upstream hiccup must not cascade across every connected user at once.
+        </p>
+        <p class="proj__body">
+          It also refuses to guess. Where a value can't be established with
+          confidence, the system withholds it rather than publishing a number a
+          trader might act on. That rule is enforced in code, not in documentation.
+        </p>
+        <div class="kv">
+          <div class="kv__row"><span class="kv__k">Scale</span><span class="kv__v">7,868 lines</span></div>
+          <div class="kv__row"><span class="kv__k">Test suite</span><span class="kv__v">278 in 8.7 s</span></div>
+          <div class="kv__row"><span class="kv__k">Test-to-source</span><span class="kv__v">0.82 : 1</span></div>
+          <div class="kv__row"><span class="kv__k">Quality gates</span><span class="kv__v">4, all green</span></div>
+          <div class="kv__row"><span class="kv__k">Authorship</span><span class="kv__v">Sole</span></div>
+        </div>
+        <div class="chips">
+          <span class="chip chip--hi">FastAPI</span><span class="chip chip--hi">SSE</span>
+          <span class="chip">Redis</span><span class="chip">asyncpg</span>
+          <span class="chip">Pydantic</span><span class="chip">JWT</span>
+          <span class="chip">mypy strict</span><span class="chip">Docker</span>
         </div>
       </article>
 
-      <article class="card rv">
-        <div class="proj__grid">
-          <div class="proj__main">
-            <div class="proj__idx mono">03 — Quantitative</div>
-            <h3>Margin &amp; analytics engine</h3>
-            <p class="proj__lede">
-              Regulatory-grade portfolio margin computed from exchange-published risk
-              data, so the capital the platform reserves matches what a real broker would
-              block — across two exchanges, refreshed through the trading day.
-            </p>
-            <p class="proj__body">
-              Approximating margin is how a platform over-commits a client's capital or
-              under-reserves against a position it can't cover. This computes it properly,
-              from the primary source, and holds a consistent view even while the
-              underlying data is being refreshed underneath it.
-            </p>
-            <p class="proj__body">
-              Around it sits the rest of the quantitative surface: an options pricing and
-              greeks suite, and a cost model that accounts for every statutory charge
-              separately rather than as a lumped estimate.
-            </p>
-          </div>
-          <aside class="proj__side">
-            <div class="kv">
-              <div class="kv__row"><span class="kv__k">Exchanges</span><span class="kv__v">Two, independent</span></div>
-              <div class="kv__row"><span class="kv__k">Source</span><span class="kv__v">Exchange risk data</span></div>
-              <div class="kv__row"><span class="kv__k">Pricing</span><span class="kv__v">Full greeks + IV</span></div>
-              <div class="kv__row"><span class="kv__k">Cost model</span><span class="kv__v">Statutory, itemised</span></div>
-              <div class="kv__row"><span class="kv__k">Refresh</span><span class="kv__v">Intraday</span></div>
-            </div>
-            <div class="chips">
-              <span class="chip chip--hi">Portfolio margin</span><span class="chip chip--hi">Black&ndash;Scholes</span>
-              <span class="chip">Implied volatility</span><span class="chip">Greeks</span>
-              <span class="chip">Binary formats</span><span class="chip">NumPy</span>
-            </div>
-          </aside>
+      <article class="card proj rv">
+        <div class="proj__idx mono">03 — Quantitative</div>
+        <h3>Margin &amp; analytics engine</h3>
+        <p class="proj__lede">
+          Regulatory-grade portfolio margin computed from exchange-published risk
+          data, so the capital the platform reserves matches what a real broker would
+          block — across two exchanges, refreshed through the trading day.
+        </p>
+        <p class="proj__body">
+          Approximating margin is how a platform over-commits a client's capital or
+          under-reserves against a position it can't cover. This computes it properly,
+          from the primary source, and holds a consistent view even while the
+          underlying data is being refreshed underneath it.
+        </p>
+        <p class="proj__body">
+          Around it sits the rest of the quantitative surface: an options pricing and
+          greeks suite, and a cost model that accounts for every statutory charge
+          separately rather than as a lumped estimate.
+        </p>
+        <div class="kv">
+          <div class="kv__row"><span class="kv__k">Exchanges</span><span class="kv__v">Two, independent</span></div>
+          <div class="kv__row"><span class="kv__k">Source</span><span class="kv__v">Exchange risk data</span></div>
+          <div class="kv__row"><span class="kv__k">Pricing</span><span class="kv__v">Full greeks + IV</span></div>
+          <div class="kv__row"><span class="kv__k">Cost model</span><span class="kv__v">Statutory, itemised</span></div>
+          <div class="kv__row"><span class="kv__k">Refresh</span><span class="kv__v">Intraday</span></div>
+        </div>
+        <div class="chips">
+          <span class="chip chip--hi">Portfolio margin</span><span class="chip chip--hi">Black&ndash;Scholes</span>
+          <span class="chip">Implied volatility</span><span class="chip">Greeks</span>
+          <span class="chip">Binary formats</span><span class="chip">NumPy</span>
         </div>
       </article>
 
-      <article class="card rv">
-        <div class="proj__grid">
-          <div class="proj__main">
-            <div class="proj__idx mono">04 — Platform</div>
-            <h3>The wider platform</h3>
-            <p class="proj__lede">
-              The trading core is one part of a larger product. I work across the services
-              that surround it, and I know how the whole system fits together.
-            </p>
-            <p class="proj__body">
-              A control-plane API where users compose strategies and hand them to the
-              engine — I own the strategy lifecycle and the seam that projects a saved
-              strategy into the live runtime, plus risk limits, the trading-journal APIs
-              and the payoff service. Alongside it, a market-data service that holds a
-              live exchange feed and turns it into the price stream everything downstream
-              consumes.
-            </p>
-            <p class="proj__body">
-              The platform also runs subscription payments and checkout, automated
-              statutory invoice generation, and transactional email — built by the team I
-              work in, and part of the product I help operate end to end.
-            </p>
-          </div>
-          <aside class="proj__side">
-            <div class="kv">
-              <div class="kv__row"><span class="kv__k">Control-plane API</span><span class="kv__v">Contributor</span></div>
-              <div class="kv__row"><span class="kv__k">Market data</span><span class="kv__v">Contributor</span></div>
-              <div class="kv__row"><span class="kv__k">Payments</span><span class="kv__v">Team</span></div>
-              <div class="kv__row"><span class="kv__k">Invoicing</span><span class="kv__v">Team</span></div>
-              <div class="kv__row"><span class="kv__k">Notifications</span><span class="kv__v">Team</span></div>
-            </div>
-            <div class="chips">
-              <span class="chip chip--hi">FastAPI</span><span class="chip">Event bridge</span>
-              <span class="chip">WebSocket feeds</span><span class="chip">Payments</span>
-              <span class="chip">PDF generation</span><span class="chip">SQLAlchemy</span>
-            </div>
-          </aside>
+      <article class="card proj rv">
+        <div class="proj__idx mono">04 — Platform</div>
+        <h3>The wider platform</h3>
+        <p class="proj__lede">
+          The trading core is one part of a larger product. I work across the services
+          that surround it, and I know how the whole system fits together.
+        </p>
+        <p class="proj__body">
+          A control-plane API where users compose strategies and hand them to the
+          engine — I own the strategy lifecycle and the seam that projects a saved
+          strategy into the live runtime, plus risk limits, the trading-journal APIs
+          and the payoff service. Alongside it, a market-data service that holds a
+          live exchange feed and turns it into the price stream everything downstream
+          consumes.
+        </p>
+        <p class="proj__body">
+          The platform also runs subscription payments and checkout, automated
+          statutory invoice generation, and transactional email — built by the team I
+          work in, and part of the product I help operate end to end.
+        </p>
+        <div class="kv">
+          <div class="kv__row"><span class="kv__k">Control-plane API</span><span class="kv__v">Contributor</span></div>
+          <div class="kv__row"><span class="kv__k">Market data</span><span class="kv__v">Contributor</span></div>
+          <div class="kv__row"><span class="kv__k">Payments</span><span class="kv__v">Team</span></div>
+          <div class="kv__row"><span class="kv__k">Invoicing</span><span class="kv__v">Team</span></div>
+          <div class="kv__row"><span class="kv__k">Notifications</span><span class="kv__v">Team</span></div>
+        </div>
+        <div class="chips">
+          <span class="chip chip--hi">FastAPI</span><span class="chip">Event bridge</span>
+          <span class="chip">WebSocket feeds</span><span class="chip">Payments</span>
+          <span class="chip">PDF generation</span><span class="chip">SQLAlchemy</span>
         </div>
       </article>
 
@@ -302,64 +255,55 @@
 <section class="sec" id="services">
   <div class="wrap">
     <div class="shead rv">
-      <div>
-        <span class="kicker">02 — Services</span>
-        <h2 class="disp">What I can build for you</h2>
-      </div>
+      <span class="kicker">02 — Services</span>
+      <h2 class="disp">What I can build for you</h2>
       <p class="shead__meta">
-        I take backend work where correctness under failure actually matters — and I'm
-        straight about what I don't do.
+        I take backend work where correctness under failure actually matters — and
+        I'm straight about what I don't do.
       </p>
     </div>
 
-    <div class="bento rv stag">
-      <div class="card svc b-wide">
+    <div class="grid-3 rv stag">
+      <div class="card svc">
         <span class="svc__n mono">01</span>
         <h3>Real-time streaming APIs</h3>
         <p>The layer between your data and your live interface: authenticated long-lived connections, multiplexed updates, reconnects that don't lose or duplicate anything, and backpressure that holds when one client is slow.</p>
         <div class="svc__fit">For dashboards, live ops, trading screens</div>
       </div>
 
-      <div class="card svc b-wide">
+      <div class="card svc">
         <span class="svc__n mono">02</span>
         <h3>Money-path reliability</h3>
         <p>A focused engagement on the part of your system where wrong state costs real money. I map every route a critical event can take, find the double-processing and lost-update windows, and close them. You get a written findings list ranked by blast radius.</p>
         <div class="svc__fit">For payments, orders, billing, ledgers</div>
       </div>
 
-      <div class="card svc b-third">
+      <div class="card svc">
         <span class="svc__n mono">03</span>
         <h3>Event-driven backends</h3>
         <p>Multi-worker pipelines that process each item exactly once, survive restarts without duplicating work, isolate poisoned jobs, and recover cleanly from a crash mid-operation.</p>
-        <div class="svc__fit">Job fleets, ingest, fulfilment</div>
+        <div class="svc__fit">For job fleets, ingest, fulfilment</div>
       </div>
 
-      <div class="card svc b-third">
+      <div class="card svc">
         <span class="svc__n mono">04</span>
         <h3>Python performance rescue</h3>
         <p>When a job that used to finish in time no longer does, I measure first and fix where the measurement points. Always behind a fallback, so a build issue never becomes a correctness issue.</p>
-        <div class="svc__fit">Pipelines that outgrew their runtime</div>
+        <div class="svc__fit">For pipelines that outgrew their runtime</div>
       </div>
 
-      <div class="card svc b-third">
+      <div class="card svc">
         <span class="svc__n mono">05</span>
         <h3>Trading &amp; market data</h3>
         <p>The specialist lane: live feed ingestion, strategy scheduling and order execution, broker integrations, portfolio margin, options pricing and accurate cost modelling.</p>
-        <div class="svc__fit">Brokers, prop desks, algo products</div>
+        <div class="svc__fit">For brokers, prop desks, algo products</div>
       </div>
 
-      <div class="card svc b-wide">
+      <div class="card svc">
         <span class="svc__n mono">06</span>
         <h3>What I don't take on</h3>
         <p>Frontend and design work. I'll say so on the first call rather than subcontract it badly. I work backend, data and infrastructure — and I'll define a clean API contract so your frontend developer has an easy job.</p>
         <div class="svc__fit">Honest scope beats a missed deadline</div>
-      </div>
-
-      <div class="card svc b-wide">
-        <span class="svc__n mono">→</span>
-        <h3>Not sure which one you need?</h3>
-        <p>Describe the problem in a paragraph and I'll tell you what I'd actually do about it — including if the answer is that you don't need me.</p>
-        <div class="svc__fit"><a href="#contact" style="color:var(--accent)">Start a conversation →</a></div>
       </div>
     </div>
   </div>
@@ -369,22 +313,20 @@
 <section class="sec" id="stack">
   <div class="wrap">
     <div class="shead rv">
-      <div>
-        <span class="kicker">03 — Stack</span>
-        <h2 class="disp">Working stack</h2>
-      </div>
+      <span class="kicker">03 — Stack</span>
+      <h2 class="disp">Working stack</h2>
       <p class="shead__meta">Everything here is in production code I've written — not a course list.</p>
     </div>
 
-    <div class="matrix rv stag">
-      <div class="mcell"><h4>Core</h4><ul><li>Python 3.12</li><li>Cython</li><li>NumPy</li><li>SQL</li><li>Bash</li><li>C++</li></ul></div>
-      <div class="mcell"><h4>Concurrency</h4><ul><li>asyncio &amp; uvloop</li><li>Multi-process fleets</li><li>Bounded queues</li><li>Backpressure</li><li>Graceful shutdown</li></ul></div>
-      <div class="mcell"><h4>Data</h4><ul><li>Redis</li><li>PostgreSQL</li><li>SQLAlchemy 2.0</li><li>asyncpg</li><li>Alembic</li><li>Binary encoding</li></ul></div>
-      <div class="mcell"><h4>APIs</h4><ul><li>FastAPI</li><li>Server-Sent Events</li><li>Pydantic v2</li><li>JWT auth</li><li>Rate limiting</li><li>OpenAPI</li></ul></div>
-      <div class="mcell"><h4>Reliability</h4><ul><li>Exactly-once processing</li><li>Crash recovery</li><li>Dead-letter queues</li><li>Circuit breakers</li><li>Failure drills</li></ul></div>
-      <div class="mcell"><h4>Performance</h4><ul><li>Profiling</li><li>Vectorisation</li><li>Compiled hot paths</li><li>Batching</li><li>Cache design</li></ul></div>
-      <div class="mcell"><h4>Quantitative</h4><ul><li>Portfolio margin</li><li>Black&ndash;Scholes</li><li>Implied volatility</li><li>Greeks</li><li>Cost modelling</li><li>Backtesting</li></ul></div>
-      <div class="mcell"><h4>Operations</h4><ul><li>Docker</li><li>Prometheus</li><li>Health checks</li><li>pytest</li><li>mypy &amp; ruff</li></ul></div>
+    <div class="grid-4 rv stag">
+      <div class="card mcell"><h4>Core</h4><ul><li>Python 3.12</li><li>Cython</li><li>NumPy</li><li>SQL</li><li>Bash</li><li>C++</li></ul></div>
+      <div class="card mcell"><h4>Concurrency</h4><ul><li>asyncio &amp; uvloop</li><li>Multi-process fleets</li><li>Bounded queues</li><li>Backpressure</li><li>Graceful shutdown</li></ul></div>
+      <div class="card mcell"><h4>Data</h4><ul><li>Redis</li><li>PostgreSQL</li><li>SQLAlchemy 2.0</li><li>asyncpg</li><li>Alembic</li><li>Binary encoding</li></ul></div>
+      <div class="card mcell"><h4>APIs</h4><ul><li>FastAPI</li><li>Server-Sent Events</li><li>Pydantic v2</li><li>JWT auth</li><li>Rate limiting</li></ul></div>
+      <div class="card mcell"><h4>Reliability</h4><ul><li>Exactly-once processing</li><li>Crash recovery</li><li>Dead-letter queues</li><li>Circuit breakers</li><li>Failure drills</li></ul></div>
+      <div class="card mcell"><h4>Performance</h4><ul><li>Profiling</li><li>Vectorisation</li><li>Compiled hot paths</li><li>Batching</li><li>Cache design</li></ul></div>
+      <div class="card mcell"><h4>Quantitative</h4><ul><li>Portfolio margin</li><li>Black&ndash;Scholes</li><li>Implied volatility</li><li>Greeks</li><li>Cost modelling</li><li>Backtesting</li></ul></div>
+      <div class="card mcell"><h4>Operations</h4><ul><li>Docker</li><li>Prometheus</li><li>Health checks</li><li>pytest</li><li>mypy &amp; ruff</li></ul></div>
     </div>
   </div>
 </section>
@@ -393,14 +335,12 @@
 <section class="sec" id="process">
   <div class="wrap">
     <div class="shead rv">
-      <div>
-        <span class="kicker">04 — Process</span>
-        <h2 class="disp">How working together goes</h2>
-      </div>
+      <span class="kicker">04 — Process</span>
+      <h2 class="disp">How working together goes</h2>
       <p class="shead__meta">No discovery theatre. You'll know inside a week whether this is working.</p>
     </div>
 
-    <div class="steps rv stag">
+    <div class="grid-4 rv stag">
       <div class="card step">
         <div class="step__n">STEP 01</div>
         <h4>A real conversation</h4>
@@ -409,7 +349,7 @@
       <div class="card step">
         <div class="step__n">STEP 02</div>
         <h4>Scoped proposal</h4>
-        <p>A written plan: what I'll do, what I won't, what it costs and when it lands. Fixed scope for defined work, retainer for ongoing. No hourly guessing games.</p>
+        <p>A written plan: what I'll do, what I won't, what it costs and when it lands. Fixed scope for defined work, retainer for ongoing.</p>
       </div>
       <div class="card step">
         <div class="step__n">STEP 03</div>
@@ -419,7 +359,7 @@
       <div class="card step">
         <div class="step__n">STEP 04</div>
         <h4>Handover that holds</h4>
-        <p>Tests, a README your next developer can follow, and a walkthrough. The goal is that you don't need me afterwards — and call me again because you want to.</p>
+        <p>Tests, a README your next developer can follow, and a walkthrough. The goal is that you don't need me afterwards.</p>
       </div>
     </div>
   </div>
@@ -429,10 +369,8 @@
 <section class="sec" id="about">
   <div class="wrap">
     <div class="shead rv">
-      <div>
-        <span class="kicker">05 — About</span>
-        <h2 class="disp">Who you'd be working with</h2>
-      </div>
+      <span class="kicker">05 — About</span>
+      <h2 class="disp">Who you'd be working with</h2>
     </div>
 
     <div class="about rv">
@@ -486,29 +424,29 @@
 <!-- ═══════════ CONTACT ═══════════ -->
 <section class="sec" id="contact">
   <div class="wrap">
-    <div class="card cta rv">
+    <div class="shead rv">
       <span class="kicker">06 — Contact</span>
-      <h2 class="disp">Let's talk about what you're building.</h2>
-      <p>
-        The most useful first message is one paragraph: what the system does, what's going
-        wrong or what's missing, and roughly when you need it. I'll reply with whether I
-        can help and what I'd do first — no sales call required.
+      <h2 class="disp">Let's talk about what you're building</h2>
+      <p class="shead__meta">
+        The most useful first message is one paragraph: what the system does, what's
+        going wrong or what's missing, and roughly when you need it. I'll reply with
+        whether I can help and what I'd do first — no sales call required.
       </p>
+    </div>
 
-      <div class="links rv stag">
-        <a class="link" href="mailto:vipuldhankar17170277@gmail.com">
-          <span class="link__k">Email</span>
-          <span class="link__v">vipuldhankar17170277@gmail.com</span>
-        </a>
-        <a class="link" href="https://www.linkedin.com/in/vipul-kumar-5861221b9/" target="_blank" rel="noopener">
-          <span class="link__k">LinkedIn</span>
-          <span class="link__v">/in/vipul-kumar-5861221b9</span>
-        </a>
-        <a class="link" href="https://github.com/Vipul4765" target="_blank" rel="noopener">
-          <span class="link__k">GitHub</span>
-          <span class="link__v">@Vipul4765</span>
-        </a>
-      </div>
+    <div class="links rv stag">
+      <a class="link" href="mailto:vipuldhankar17170277@gmail.com">
+        <span class="link__k">Email</span>
+        <span class="link__v">vipuldhankar17170277@gmail.com</span>
+      </a>
+      <a class="link" href="https://www.linkedin.com/in/vipul-kumar-5861221b9/" target="_blank" rel="noopener">
+        <span class="link__k">LinkedIn</span>
+        <span class="link__v">/in/vipul-kumar-5861221b9</span>
+      </a>
+      <a class="link" href="https://github.com/Vipul4765" target="_blank" rel="noopener">
+        <span class="link__k">GitHub</span>
+        <span class="link__v">@Vipul4765</span>
+      </a>
     </div>
 
     <footer class="foot">
