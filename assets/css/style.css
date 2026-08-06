@@ -39,8 +39,8 @@
   --s-0:  clamp(1rem, .97rem + .16vw, 1.09rem);
   --s-1:  clamp(1.16rem, 1.06rem + .44vw, 1.44rem);
   --s-2:  clamp(1.5rem, 1.28rem + .95vw, 2.2rem);
-  --s-3:  clamp(2rem, 1.55rem + 2.0vw, 3.5rem);
-  --s-5:  clamp(2.75rem, 1.15rem + 6.6vw, 7.1rem);
+  --s-3:  clamp(1.75rem, 1.35rem + 1.5vw, 2.5rem);
+  --s-5:  clamp(2.05rem, 1.25rem + 2.9vw, 3.6rem);
 
   --gut: clamp(1.25rem, 4.2vw, 4.5rem);
   --maxw: 1440px;
@@ -110,7 +110,7 @@ img, svg, canvas { display: block; max-width: 100%; }
 
 .wrap { width: 100%; max-width: var(--maxw); margin-inline: auto; padding-inline: var(--gut); position: relative; }
 
-.disp { font-weight: 700; font-variation-settings: 'wdth' 118; letter-spacing: -.038em; }
+.disp { font-weight: 700; font-variation-settings: 'wdth' 106; letter-spacing: -.032em; }
 .mono { font-family: var(--f-mono); font-variation-settings: normal; }
 .gradtext {
   background: var(--grad); -webkit-background-clip: text; background-clip: text;
@@ -223,12 +223,12 @@ img, svg, canvas { display: block; max-width: 100%; }
 .hero {
   position: relative; min-height: 100svh;
   display: grid; align-items: center;
-  padding-block: 7.5rem 3.5rem;
+  padding-block: 7rem 3.5rem;
 }
 /* Headline stays full-width so it keeps its scale; the network sits beside
    the supporting copy instead of competing with the type for width. */
-.hero__row { display: grid; gap: clamp(1.8rem, 4vw, 3.5rem); align-items: center; margin-top: 1.7rem; }
-@media (min-width: 1000px) { .hero__row { grid-template-columns: 1.06fr .94fr; } }
+.hero__row { display: grid; gap: clamp(1.8rem, 4vw, 3.5rem); align-items: center; }
+@media (min-width: 1000px) { .hero__row { grid-template-columns: 1.12fr .88fr; } }
 
 .hero__badge {
   display: inline-flex; align-items: center; gap: .55rem;
@@ -247,14 +247,15 @@ img, svg, canvas { display: block; max-width: 100%; }
 }
 
 .hero h1 {
-  margin-top: 1.4rem; font-size: var(--s-5); font-weight: 700;
-  font-variation-settings: 'wdth' 116; letter-spacing: -.045em; line-height: .95;
+  margin-top: 1.2rem;
+  max-width: 20ch; font-size: var(--s-5); font-weight: 700;
+  font-variation-settings: 'wdth' 104; letter-spacing: -.034em; line-height: 1.03;
 }
 .hero h1 .ln { display: block; overflow: hidden; }
 .hero h1 .ln > span { display: block; }
 
 .hero__sub {
-  max-width: 46ch;
+  margin-top: 1.5rem; max-width: 50ch;
   font-size: var(--s-1); line-height: 1.5; color: var(--text-2); letter-spacing: -.011em;
 }
 .hero__cta { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 2.2rem; }
@@ -368,7 +369,7 @@ img, svg, canvas { display: block; max-width: 100%; }
 
 .sec { padding-block: clamp(5rem, 11vw, 9rem); position: relative; }
 .shead { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; flex-wrap: wrap; margin-bottom: clamp(2.5rem, 5vw, 4rem); }
-.shead h2 { font-size: var(--s-3); font-weight: 700; font-variation-settings: 'wdth' 114; letter-spacing: -.04em; max-width: 18ch; }
+.shead h2 { font-size: var(--s-3); font-weight: 700; font-variation-settings: 'wdth' 104; letter-spacing: -.03em; max-width: 20ch; }
 .shead__meta { max-width: 40ch; color: var(--text-2); font-size: .97rem; }
 .kicker {
   display: block; font-family: var(--f-mono); font-size: .7rem; letter-spacing: .18em;
@@ -405,9 +406,11 @@ img, svg, canvas { display: block; max-width: 100%; }
   color: var(--accent); margin-bottom: 1.1rem; display: flex; align-items: center; gap: .7rem;
 }
 .proj__idx::after { content: ''; height: 1px; flex: 1; background: linear-gradient(90deg, var(--edge), transparent); }
-.proj h3 { font-size: var(--s-2); font-weight: 700; font-variation-settings: 'wdth' 112; letter-spacing: -.032em; margin-bottom: .9rem; }
+/* Scoped to .proj__main, not .proj — the card element itself carries the
+   shared .card class, so a `.proj h3` selector matches nothing. */
+.proj__main h3 { font-size: var(--s-2); font-weight: 700; font-variation-settings: 'wdth' 104; letter-spacing: -.026em; margin-bottom: 1rem; }
 .proj__lede { color: var(--text-2); font-size: var(--s-1); line-height: 1.45; letter-spacing: -.012em; max-width: 46ch; }
-.proj__body { margin-top: 1.4rem; color: var(--text-2); max-width: 54ch; font-size: .95rem; }
+.proj__body { margin-top: 1.4rem; color: var(--text-2); max-width: 54ch; font-size: 1rem; }
 .proj__body + .proj__body { margin-top: .85rem; }
 
 .proj__side {
@@ -454,7 +457,7 @@ img, svg, canvas { display: block; max-width: 100%; }
   font-family: var(--f-mono); font-size: .73rem; color: var(--accent);
 }
 .svc h3 { font-size: 1.14rem; font-weight: 700; font-variation-settings: 'wdth' 108; letter-spacing: -.022em; }
-.svc p { color: var(--text-2); font-size: .92rem; }
+.svc p { color: var(--text-2); font-size: .96rem; }
 .svc__fit {
   margin-top: auto; padding-top: .9rem; border-top: 1px solid var(--edge);
   font-family: var(--f-mono); font-size: .7rem; color: var(--muted);
@@ -472,7 +475,7 @@ img, svg, canvas { display: block; max-width: 100%; }
   color: var(--accent); font-weight: 600; margin-bottom: .95rem;
 }
 .mcell ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: .4rem; }
-.mcell li { font-size: .87rem; color: var(--text-2); display: flex; align-items: baseline; gap: .5rem; }
+.mcell li { font-size: .91rem; color: var(--text-2); display: flex; align-items: baseline; gap: .5rem; }
 .mcell li::before { content: ''; width: 3px; height: 3px; border-radius: 50%; background: var(--faint); flex: none; transform: translateY(-3px); }
 
 /* ═══════════ PROCESS ═══════════ */
@@ -490,7 +493,7 @@ img, svg, canvas { display: block; max-width: 100%; }
   background: var(--grad); box-shadow: 0 0 0 4px var(--glow);
 }
 .step h4 { font-size: 1.05rem; font-weight: 700; font-variation-settings: 'wdth' 108; letter-spacing: -.02em; margin-bottom: .5rem; }
-.step p { font-size: .89rem; color: var(--text-2); }
+.step p { font-size: .93rem; color: var(--text-2); }
 
 /* ═══════════ ABOUT ═══════════ */
 
@@ -530,7 +533,7 @@ details.more summary:hover { color: var(--text); }
 /* ═══════════ CTA ═══════════ */
 
 .cta { padding: clamp(2rem, 6vw, 4.5rem); text-align: left; }
-.cta h2 { font-size: var(--s-3); font-weight: 700; font-variation-settings: 'wdth' 114; letter-spacing: -.04em; max-width: 17ch; }
+.cta h2 { font-size: var(--s-3); font-weight: 700; font-variation-settings: 'wdth' 104; letter-spacing: -.03em; max-width: 20ch; }
 .cta p { margin-top: 1.2rem; color: var(--text-2); max-width: 50ch; }
 .links { margin-top: 2.3rem; display: grid; gap: .7rem; }
 @media (min-width: 700px) { .links { grid-template-columns: repeat(3, 1fr); } }
