@@ -3,16 +3,52 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Vipul Kumar &amp; Naveen Shah — Backend engineers, India</title>
-<meta name="description" content="Two backend engineers in India who build and run the infrastructure behind a live derivatives trading platform. Available for freelance projects, as a pair.">
-<meta name="author" content="Vipul Kumar and Naveen Shah">
+<title>Vipul Kumar — Backend engineer, India</title>
+<meta name="description" content="I'm a backend engineer in India. I build and run the order-execution engine and the live streaming layer behind a working options trading platform. Available for freelance work.">
+<meta name="author" content="Vipul Kumar">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#FBF8F3" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#191714" media="(prefers-color-scheme: dark)">
+<link rel="canonical" href="https://vipul4765.github.io/">
+
 <meta property="og:type" content="website">
-<meta property="og:title" content="Vipul Kumar &amp; Naveen Shah — Backend engineers">
-<meta property="og:description" content="Two engineers who build and run the infrastructure behind a live derivatives trading platform. Freelance work, taken on as a pair.">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 24'><circle cx='13' cy='12' r='9' fill='%238A4527'/><circle cx='27' cy='12' r='8' fill='none' stroke='%238A4527' stroke-width='2.4'/></svg>">
+<meta property="og:url" content="https://vipul4765.github.io/">
+<meta property="og:site_name" content="Vipul Kumar">
+<meta property="og:title" content="I build software that isn’t allowed to be wrong.">
+<meta property="og:description" content="Backend engineer in India. Order execution and live streaming for a working options trading platform. Available for freelance work.">
+<meta property="og:image" content="https://vipul4765.github.io/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Vipul Kumar — backend engineer, India.">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="I build software that isn’t allowed to be wrong.">
+<meta name="twitter:description" content="Backend engineer in India. Order execution and live streaming for a working options trading platform.">
+<meta name="twitter:image" content="https://vipul4765.github.io/og.png">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><circle cx='12' cy='12' r='9' fill='%238A4527'/></svg>">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Vipul Kumar",
+  "jobTitle": "Backend engineer",
+  "url": "https://vipul4765.github.io/",
+  "email": "mailto:vipuldhankar17170277@gmail.com",
+  "sameAs": [
+    "https://github.com/Vipul4765",
+    "https://www.linkedin.com/in/vipul-kumar-5861221b9/"
+  ],
+  "knowsAbout": [
+    "Order execution systems",
+    "Real-time data delivery",
+    "Event-driven backends",
+    "Market data and trading systems",
+    "Backend performance work"
+  ],
+  "address": { "@type": "PostalAddress", "addressCountry": "IN" }
+}
+</script>
 
 <script>
 /* Runs before first paint.
@@ -24,7 +60,7 @@
 (function () {
   var d = document.documentElement;
   try {
-    var t = localStorage.getItem('vn-theme');
+    var t = localStorage.getItem('vk-theme');
     if (t === 'light' || t === 'dark') d.setAttribute('data-theme', t);
   } catch (e) {}
   d.className += ' js';
@@ -53,8 +89,8 @@
        muted   7.02    6.44    7.35   ← worst text pair, 6.44:1
        accent  8.79    8.07    9.20
        ink on paper-ground buttons 15.49 · paper on accent 8.79
-   The maker's marks are meaningful graphics and are drawn in accent: 6.69:1
-   light, 8.79:1 dark — both clear of the 3:1 floor for non-text.
+   The marks are meaningful graphics and are drawn in accent: 6.69:1 light,
+   8.79:1 dark — both clear of the 3:1 floor for non-text.
    Never put ink on accent (2.45:1); accent grounds always carry paper.
    ══════════════════════════════════════════════════════════════════════════ */
 :root {
@@ -69,6 +105,8 @@
   --rule:   #E1D8CA;
   --rule-2: #C9BFAE;
   --shadow: 0 1px 2px rgba(28,26,23,.04), 0 8px 24px -18px rgba(28,26,23,.30);
+  --hi:     rgba(255,255,255,.9);
+  --glow:   rgba(138,69,39,.07);
   --mark-w: 1.7;
 }
 @media (prefers-color-scheme: dark) {
@@ -84,6 +122,8 @@
     --rule:   #35302A;
     --rule-2: #514A40;
     --shadow: 0 1px 2px rgba(0,0,0,.30), 0 10px 30px -20px rgba(0,0,0,.75);
+    --hi:     rgba(255,255,255,.045);
+    --glow:   rgba(232,168,124,.075);
     --mark-w: 1.5;
   }
 }
@@ -95,6 +135,8 @@
   --ink:#1C1A17; --ink-2:#4E4841; --muted:#655E56; --accent:#8A4527;
   --rule:#E1D8CA; --rule-2:#C9BFAE;
   --shadow: 0 1px 2px rgba(28,26,23,.04), 0 8px 24px -18px rgba(28,26,23,.30);
+  --hi: rgba(255,255,255,.9);
+  --glow: rgba(138,69,39,.07);
   --mark-w: 1.7;
 }
 :root[data-theme="dark"] {
@@ -103,6 +145,8 @@
   --ink:#F3EEE6; --ink-2:#C6BEB2; --muted:#AAA195; --accent:#E8A87C;
   --rule:#35302A; --rule-2:#514A40;
   --shadow: 0 1px 2px rgba(0,0,0,.30), 0 10px 30px -20px rgba(0,0,0,.75);
+  --hi: rgba(255,255,255,.045);
+  --glow: rgba(232,168,124,.075);
   --mark-w: 1.5;
 }
 
@@ -142,8 +186,11 @@ body {
 
 /* ────────────────────────────── shared type ────────────────────────────── */
 .wrap { max-width: var(--wrap); margin-inline: auto; padding-inline: var(--pad); }
-.serif { font-family: var(--serif); font-weight: 400; letter-spacing: -.012em; }
 h1, h2, h3 { font-family: var(--serif); font-weight: 400; color: var(--ink); letter-spacing: -.014em; }
+/* Ragging: headings break into even lines, body copy never leaves a runt.
+   Both are ignored wholesale by engines that don't know them. */
+h1, h2, h3 { text-wrap: balance; }
+p, .lede, .small { text-wrap: pretty; }
 
 .label {
   font-size: 11.5px; letter-spacing: .2em; text-transform: uppercase;
@@ -162,17 +209,16 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 400; color: var(--ink); let
 .skip:not(:focus) { pointer-events: none; }
 .skip:focus { clip-path: none; }
 
-/* ───────────────────────── the one idea: maker's marks ─────────────────────
-   Every piece of work carries a small hand-inked mark saying whose hand led it:
-   filled for Vipul, open for Naveen, half-and-half for work they built together.
-   The two marks side by side are the studio's logo, and the same wobbly circle
-   is the theme toggle. One drawn shape, used everywhere, and nothing else. */
+/* ───────────────────────── the one idea: two marks ─────────────────────────
+   A circle drawn by hand — never quite round, never quite closed. Filled means
+   the work is mine. Open means I contributed to somebody else's codebase and
+   will say so out loud. The filled one on its own is the wordmark; the
+   half-filled one is only ever the light/dark switch. One shape, three jobs. */
 .mark { width: 20px; height: 20px; color: var(--accent); flex: none; }
-.mark--sm { width: 15px; height: 15px; }
-.mark--lg { width: 30px; height: 30px; }
+.mark--sm { width: 14px; height: 14px; }
 /* stroke-width is an inherited SVG property, so it reaches the <use> shadow
    content from here — presentation attributes cannot carry a CSS variable. */
-.mark, .brand__marks, .tbtn svg { stroke-width: var(--mark-w); }
+.mark, .brand__m, .tbtn svg { stroke-width: var(--mark-w); }
 .sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 
 /* hand-inked underline beneath the italic phrase in the headline */
@@ -199,9 +245,8 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 400; color: var(--ink); let
   display: flex; align-items: center; gap: 11px; text-decoration: none; flex: none;
   min-height: var(--tap); color: var(--ink);
 }
-.brand__marks { width: 40px; height: 24px; color: var(--accent); flex: none; }
+.brand__m { width: 22px; height: 22px; color: var(--accent); flex: none; }
 .brand__n { font-family: var(--serif); font-size: 17px; white-space: nowrap; letter-spacing: -.008em; }
-.brand__n i { font-style: normal; color: var(--muted); padding: 0 .15em; }
 
 .nav__links { display: flex; gap: 2px; margin-left: auto; }
 .nav__links a {
@@ -210,6 +255,7 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 400; color: var(--ink); let
   font-size: 14.5px; border-radius: 3px;
 }
 .nav__links a:hover { color: var(--ink); background: var(--sunk); }
+.nav__links a[aria-current="page"] { color: var(--ink); background: var(--sunk); }
 .nav__right { display: flex; align-items: center; gap: 8px; margin-left: 12px; }
 
 .tbtn {
@@ -267,7 +313,7 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 400; color: var(--ink); let
   .mnav { display: block; }
   .navcta { display: none; }
 }
-@media (max-width: 460px) {
+@media (max-width: 420px) {
   .brand__n { display: none; }
   .nav__in { gap: 10px; }
   .mnav > summary { padding: 0 13px; }
@@ -282,7 +328,18 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 400; color: var(--ink); let
 .shead h2 { font-size: clamp(1.85rem, 1.3rem + 2.1vw, 2.7rem); line-height: 1.16; margin-bottom: 18px; }
 
 /* ────────────────────────────── hero ────────────────────────────── */
-.hero { padding-top: clamp(52px, 7vw, 96px); padding-bottom: clamp(48px, 6vw, 84px); }
+/* A single wash of the accent, thrown from the top-left, so the first screen
+   has depth without ornament. Capped at 7% of a colour that already clears AA
+   by a wide margin, so it cannot move any text pair off its measured ratio. */
+.hero {
+  padding-top: clamp(52px, 7vw, 96px); padding-bottom: clamp(48px, 6vw, 84px);
+  position: relative; isolation: isolate;
+}
+.hero::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 440px; z-index: -1;
+  background: radial-gradient(58% 100% at 20% 0%, var(--glow), transparent 72%);
+  pointer-events: none;
+}
 .eyebrow {
   display: inline-flex; align-items: center; gap: 10px; margin-bottom: clamp(26px, 3vw, 36px);
   font-size: 12.5px; letter-spacing: .13em; text-transform: uppercase; color: var(--muted);
@@ -295,121 +352,123 @@ h1 {
   font-size: clamp(2.2rem, 1.35rem + 3.3vw, 4rem);
   line-height: 1.09; max-width: 15ch; margin-bottom: clamp(26px, 3vw, 34px);
 }
-.hero__sub { font-size: clamp(1.06rem, .98rem + .42vw, 1.28rem); max-width: 54ch; line-height: 1.62; }
+.hero__sub { font-size: clamp(1.06rem, .98rem + .42vw, 1.28rem); max-width: 56ch; line-height: 1.62; }
+.hero__sub + .hero__sub { margin-top: 1em; font-size: 1.02rem; color: var(--muted); }
 .hero__cta { display: flex; flex-wrap: wrap; gap: 12px; margin-top: clamp(30px, 3.4vw, 40px); }
 
 .btn {
   display: inline-flex; align-items: center; gap: 10px; min-height: 50px;
   padding: 0 22px; border-radius: 999px; text-decoration: none; font-size: 15.5px;
   border: 1px solid var(--rule-2); color: var(--ink); background: var(--paper);
+  transition: background .25s ease, border-color .25s ease, opacity .25s ease, transform .14s ease;
 }
 .btn:hover { background: var(--sunk); border-color: var(--muted); }
+.btn:active { transform: translateY(1px); }
 .btn--solid { background: var(--ink); border-color: var(--ink); color: var(--paper); }
 .btn--solid:hover { background: var(--ink); opacity: .86; }
 .btn .arw { transition: transform .32s cubic-bezier(.22,.72,.2,1); }
 .btn:hover .arw { transform: translateX(4px); }
 
-/* the three totals — quiet, serif, on one hairline */
-.totals {
+/* ── the session line ────────────────────────────────────────────────────────
+   The window my code has to hold, and whether we are inside it right now. It
+   states the published NSE schedule and the clock. Nothing about my own uptime,
+   which I don't publish. Script fills it and unhides it; if script never runs,
+   or the browser has no IST, the row simply isn't there. */
+.session {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px;
+  margin-top: clamp(34px, 4.4vw, 54px); padding-top: 18px;
+  border-top: 1px solid var(--rule);
+  font-size: 13px; color: var(--muted); line-height: 1.5;
+}
+.session__st {
+  display: inline-flex; align-items: center; gap: 9px; flex: none;
+  color: var(--ink-2); letter-spacing: .1em; text-transform: uppercase;
+  font-size: 11.5px; font-weight: 600;
+}
+.session__led { width: 7px; height: 7px; border-radius: 50%; flex: none; background: var(--rule-2); }
+.session[data-open="1"] .session__led { background: var(--accent); }
+.session[data-open="1"] .session__st { color: var(--accent); }
+.js .session[data-open="1"] .session__led { animation: beat 2.6s ease-in-out infinite; }
+@keyframes beat {
+  0%, 100% { box-shadow: 0 0 0 0 var(--glow); }
+  50%      { box-shadow: 0 0 0 6px transparent; }
+}
+.session__t { color: var(--ink-2); flex: none; }
+.session__x { color: var(--rule-2); flex: none; }
+@media (max-width: 620px) { .session__x { display: none; } }
+
+/* ── the proof strip — three claims, each on its own hairline ── */
+.proof {
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(20px, 3vw, 44px);
-  margin-top: clamp(46px, 5.5vw, 76px); padding-top: clamp(26px, 3vw, 34px);
-  border-top: 1px solid var(--rule);
+  margin-top: clamp(30px, 3.6vw, 46px);
 }
-.total__v {
-  font-family: var(--serif); color: var(--ink);
-  font-size: clamp(1.6rem, 1.1rem + 1.9vw, 2.5rem); line-height: 1.1; letter-spacing: -.02em;
+.proof__i { padding-top: 20px; border-top: 1px solid var(--rule-2); }
+.proof__i b {
+  display: block; font-family: var(--serif); font-weight: 400; color: var(--ink);
+  font-size: clamp(1.08rem, .98rem + .42vw, 1.3rem); line-height: 1.25;
+  letter-spacing: -.014em; margin-bottom: 8px;
 }
-.total__k { font-size: 13.5px; color: var(--muted); line-height: 1.45; margin-top: 8px; }
-.totals__note { grid-column: 1 / -1; margin-top: 4px; }
-@media (max-width: 560px) {
-  .totals { grid-template-columns: 1fr; gap: 22px; }
-  .total { display: flex; align-items: baseline; gap: 14px; }
-  .total__k { margin-top: 0; }
-}
+.proof__i span { display: block; font-size: 13.5px; color: var(--muted); line-height: 1.55; }
+@media (max-width: 760px) { .proof { grid-template-columns: 1fr; gap: 0; } .proof__i { padding-block: 18px; } }
 
-/* ────────────────────────────── the pair ────────────────────────────── */
-.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(16px, 2.2vw, 26px); }
-.person {
-  background: var(--card); border: 1px solid var(--rule); border-radius: 14px;
-  padding: clamp(24px, 3vw, 38px); box-shadow: var(--shadow);
-  display: flex; flex-direction: column;
+/* ────────────────────────────── the product ────────────────────────────── */
+.product { display: grid; gap: clamp(1.5rem, 3vw, 2.5rem); align-items: start; }
+@media (min-width: 900px) { .product { grid-template-columns: 1.15fr .85fr; } }
+.product__main { display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; }
+.product__eyebrow {
+  font: 600 .74rem/1 var(--sans); letter-spacing: .16em; text-transform: uppercase;
+  color: var(--accent); display: flex; align-items: center; gap: .5rem;
 }
-.person__top { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
-.person h3 { font-size: clamp(1.3rem, 1.1rem + .6vw, 1.55rem); line-height: 1.2; }
-.person__role { display: block; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--accent); font-weight: 600; margin-top: 5px; }
-.person p { margin-bottom: 16px; font-size: .97rem; }
-.person__leads {
-  margin-top: auto; padding-top: 18px; border-top: 1px solid var(--rule);
-  font-size: .84rem; color: var(--muted); line-height: 1.6;
+.product__eyebrow::after { content: ""; width: 7px; height: 7px; border-radius: 50%; background: var(--accent); }
+.product__main h3 {
+  font-family: var(--serif); font-size: clamp(1.35rem, 2.4vw, 1.85rem); line-height: 1.2;
+  letter-spacing: -.012em; max-width: 22ch;
 }
-.person__leads b { color: var(--ink-2); font-weight: 600; display: block; margin-bottom: 3px;
-  font-size: 11.5px; letter-spacing: .14em; text-transform: uppercase; }
-.together {
-  margin-top: clamp(16px, 2.2vw, 26px); padding: clamp(20px, 2.4vw, 26px) clamp(22px, 3vw, 32px);
-  background: var(--sunk); border-radius: 14px; border: 1px solid var(--rule);
-  display: flex; align-items: flex-start; gap: 16px;
+.product__main p { color: var(--ink-2); max-width: 56ch; }
+.product__note { font-size: .88rem; color: var(--muted); }
+.product__f {
+  margin: 0; padding: 1.25rem; border: 1px solid var(--rule); border-radius: 14px;
+  background: var(--sunk); display: flex; flex-direction: column; gap: .1rem;
 }
-.together p { font-size: .97rem; max-width: 68ch; }
-.together b { color: var(--ink); font-weight: 600; }
-@media (max-width: 820px) { .pair { grid-template-columns: 1fr; } }
-
-/* credentials — small, plain, always visible */
-.creds { margin-top: clamp(30px, 4vw, 48px); max-width: 620px; }
-.creds__h { font-size: 11.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
-.cred {
-  display: flex; align-items: center; justify-content: space-between; gap: 16px;
-  min-height: var(--tap); padding: 8px 0; border-bottom: 1px solid var(--rule);
-  font-size: .9rem;
-}
-.cred:last-child { border-bottom: 0; }
-.cred a {
-  display: inline-flex; align-items: center; justify-content: center; gap: 6px; flex: none;
-  min-height: var(--tap); min-width: 92px; padding: 0 14px; border-radius: 999px;
-  border: 1px solid var(--rule-2); color: var(--accent); text-decoration: none;
-  font-size: 13px; letter-spacing: .04em;
-}
-.cred a:hover { border-color: var(--accent); background: var(--sunk); }
+.product__f li { display: flex; flex-direction: column; gap: .2rem; padding: .75rem 0; border-bottom: 1px solid var(--rule); }
+.product__f li:last-child { border-bottom: 0; }
+.product__f b { font-family: var(--serif); font-weight: 600; font-size: 1.02rem; color: var(--ink); }
+.product__f span { font-size: .9rem; color: var(--ink-2); }
 
 /* ────────────────────────────── work ────────────────────────────── */
-.legend {
-  display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: center;
-  margin-bottom: clamp(28px, 3.4vw, 42px);
-}
+.legend { display: flex; flex-wrap: wrap; gap: 10px 26px; align-items: center; margin-bottom: clamp(28px, 3.4vw, 42px); }
 .legend__i { display: inline-flex; align-items: center; gap: 9px; font-size: .86rem; color: var(--muted); }
 
 .entries { border-bottom: 1px solid var(--rule); }
 .entry {
-  display: grid; grid-template-columns: 3.2rem minmax(0, 1fr) 11.5rem;
-  gap: 0 clamp(20px, 3.4vw, 56px);
-  padding: clamp(26px, 3vw, 38px) 0; border-top: 1px solid var(--rule);
+  display: grid; grid-template-columns: 3.4rem minmax(0, 1fr);
+  gap: 0 clamp(18px, 2.6vw, 34px);
+  padding: clamp(26px, 3vw, 40px) 0; border-top: 1px solid var(--rule);
   align-items: start;
 }
-.entry__n { font-family: var(--serif); font-size: 1.05rem; color: var(--muted); line-height: 1.5; padding-top: 2px; }
-.entry h3 { font-size: clamp(1.18rem, 1.04rem + .5vw, 1.42rem); line-height: 1.25; margin-bottom: 10px; }
-.entry p { font-size: .97rem; max-width: 58ch; }
-.entry__meta { text-align: right; padding-top: 3px; }
-.entry__f { display: block; line-height: 1.35; margin-bottom: 7px; }
-.entry__f b { font-family: var(--serif); font-weight: 400; color: var(--ink); font-size: 1.12rem; letter-spacing: -.01em; }
-.entry__f span { font-size: 12.5px; color: var(--muted); margin-left: 6px; }
+.entry__n {
+  font-family: var(--serif); font-size: 1.15rem; color: var(--rule-2); line-height: 1.35;
+  padding-top: 3px; letter-spacing: .01em; transition: color .35s ease;
+}
+.entry:hover .entry__n { color: var(--accent); }
+.entry__head {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+  gap: 6px 22px; margin-bottom: 11px;
+}
+.entry h3 { font-size: clamp(1.18rem, 1.04rem + .55vw, 1.46rem); line-height: 1.25; }
+.entry p { font-size: .97rem; max-width: 60ch; }
+.entry p + p { margin-top: .85em; }
 .entry__by {
-  display: inline-flex; align-items: center; gap: 8px; margin-top: 9px;
-  font-size: 12.5px; color: var(--muted); letter-spacing: .02em;
+  display: inline-flex; align-items: center; gap: 8px; flex: none;
+  font-size: 12.5px; color: var(--muted); letter-spacing: .02em; white-space: nowrap;
 }
-.work__foot {
-  display: flex; flex-wrap: wrap; gap: 8px 28px; justify-content: space-between;
-  padding-top: 20px;
-}
-@media (max-width: 860px) {
-  .entry { grid-template-columns: 2.4rem minmax(0, 1fr); row-gap: 16px; }
-  .entry__meta { grid-column: 2; text-align: left; padding-top: 0; }
-  .entry__f { display: inline-block; margin-right: 22px; }
-  .entry__by { display: flex; margin-top: 12px; }
-}
-@media (max-width: 420px) {
-  .entry { grid-template-columns: 1fr; row-gap: 12px; }
-  .entry__n { padding-top: 0; font-size: .95rem; }
-  .entry__meta { grid-column: 1; }
+.entry__stake { color: var(--ink); }
+.work__foot { padding-top: 22px; }
+@media (max-width: 620px) {
+  .entry { grid-template-columns: 1fr; row-gap: 10px; }
+  .entry__n { padding-top: 0; font-size: 1rem; }
+  .entry__head { margin-bottom: 10px; }
 }
 
 /* ────────────────────────────── services ────────────────────────────── */
@@ -433,6 +492,19 @@ h1 {
 @media (max-width: 880px) { .steps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
 
+/* ────────────────────────────── about ────────────────────────────── */
+.about { display: grid; gap: clamp(24px, 3.6vw, 48px); align-items: start; }
+@media (min-width: 820px) { .about { grid-template-columns: 190px minmax(0, 1fr); } }
+.about__pic { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+.about__img {
+  width: 132px; height: 132px; border-radius: 50%; object-fit: cover;
+  border: 1px solid var(--rule-2); display: block;
+}
+.about__cap { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.about__body p { max-width: 62ch; }
+.about__body p + p { margin-top: 1.05em; }
+.about__body strong { color: var(--ink); font-weight: 600; }
+
 /* ────────────────────────────── contact ────────────────────────────── */
 .contact { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: clamp(18px, 2.4vw, 30px); align-items: stretch; }
 .contact__main {
@@ -441,7 +513,7 @@ h1 {
   display: flex; flex-direction: column;
 }
 .contact__main h3 { font-size: clamp(1.4rem, 1.15rem + .9vw, 1.85rem); line-height: 1.18; margin-bottom: 14px; }
-.contact__main p { font-size: .98rem; margin-bottom: 24px; max-width: 46ch; }
+.contact__main p { font-size: .98rem; margin-bottom: 24px; max-width: 48ch; }
 .addr {
   margin-top: 22px; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px;
   padding-top: 18px; border-top: 1px solid var(--rule);
@@ -462,7 +534,7 @@ h1 {
 .route {
   display: flex; align-items: center; justify-content: space-between; gap: 14px;
   min-height: 76px; padding: 16px clamp(18px, 2.2vw, 24px); text-decoration: none;
-  border-bottom: 1px solid var(--rule); color: inherit;
+  border-bottom: 1px solid var(--rule); color: inherit; transition: background .25s ease;
 }
 .route:last-child { border-bottom: 0; }
 .route:hover { background: var(--sunk); }
@@ -481,56 +553,56 @@ h1 {
 .foot { border-top: 1px solid var(--rule); padding-block: 34px 44px; }
 .foot__in { display: flex; flex-wrap: wrap; gap: 10px 30px; justify-content: space-between; align-items: center; }
 .foot p { font-size: .84rem; color: var(--muted); }
-.foot .brand__marks { width: 32px; height: 19px; }
+.foot .mark { width: 18px; height: 18px; }
+
+/* ───────────────────── surface, and small craft ─────────────────────────────
+   A one-pixel lit edge along the top of every raised surface. It is what makes
+   a card read as a physical thing catching the light rather than a rectangle
+   with a border, and it costs nothing. */
+.person, .contact__main, .routes { box-shadow: var(--shadow), inset 0 1px 0 var(--hi); }
 
 /* ───────────────────────── entrance, and its failsafes ─────────────────────
    Hiding is gated on .rv-on, which is added by the very script that also
    attaches the observers AND schedules the un-hiding. A second, independent
    failsafe (.reveal-all) is armed in <head>. Either one un-hides everything,
-   and .reveal-all is declared last so it wins at equal specificity. */
+   and .reveal-all is declared last so it wins at equal specificity.
+   NEVER lift these start states out of the .rv-on prefix. */
 .rv-on .rv { opacity: 0; transform: translateY(12px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,.72,.2,1); }
 .rv-on .rv.in { opacity: 1; transform: none; }
-.reveal-all .rv { opacity: 1 !important; transform: none !important; transition: none !important; }
+.rv-on .rv .stg { opacity: 0; transform: translateY(10px); transition: opacity .62s ease, transform .62s cubic-bezier(.22,.72,.2,1); }
+.rv-on .rv.in .stg { opacity: 1; transform: none; }
+.rv-on .rv.in .stg:nth-child(2) { transition-delay: .07s; }
+.rv-on .rv.in .stg:nth-child(3) { transition-delay: .14s; }
+.rv-on .rv.in .stg:nth-child(4) { transition-delay: .21s; }
+.rv-on .rv.in .stg:nth-child(5) { transition-delay: .28s; }
+.rv-on .rv.in .stg:nth-child(6) { transition-delay: .35s; }
+.reveal-all .rv,
+.reveal-all .stg { opacity: 1 !important; transform: none !important; transition: none !important; }
 
 @media (prefers-reduced-motion: reduce) {
-  .rv-on .rv { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .rv-on .rv,
+  .rv-on .rv .stg { opacity: 1 !important; transform: none !important; transition: none !important; }
   .js .inked path { animation: none !important; }
   .js .eyebrow .dot { animation: none !important; }
-  .btn .arw, .route__a { transition: none !important; }
+  .js .session[data-open="1"] .session__led { animation: none !important; }
+  .btn .arw, .route__a, .entry__n { transition: none !important; }
 }
-.me{width:72px;height:72px;border-radius:50%;object-fit:cover;border:1px solid var(--rule);margin-bottom:1rem;display:block}
-
-.product{display:grid;gap:clamp(1.5rem,3vw,2.5rem);align-items:start}
-@media(min-width:900px){.product{grid-template-columns:1.15fr .85fr}}
-.product__main{display:flex;flex-direction:column;gap:1rem;align-items:flex-start}
-.product__eyebrow{font:600 .74rem/1 var(--sans);letter-spacing:.16em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:.5rem}
-.product__eyebrow::after{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent)}
-.product__main h3{font-family:var(--serif);font-size:clamp(1.35rem,2.4vw,1.85rem);line-height:1.2;letter-spacing:-.012em;max-width:22ch}
-.product__main p{color:var(--ink-2);max-width:56ch}
-.product__note{font-size:.88rem;color:var(--muted)}
-.product__f{list-style:none;margin:0;padding:1.25rem;border:1px solid var(--rule);border-radius:14px;background:var(--sunk);display:flex;flex-direction:column;gap:.1rem}
-.product__f li{display:flex;flex-direction:column;gap:.2rem;padding:.75rem 0;border-bottom:1px solid var(--rule)}
-.product__f li:last-child{border-bottom:0}
-.product__f b{font-family:var(--serif);font-weight:600;font-size:1.02rem}
-.product__f span{font-size:.9rem;color:var(--ink-2)}
-.ilink{color:inherit;text-decoration:underline;text-decoration-color:var(--accent);text-underline-offset:3px;text-decoration-thickness:1.5px}
-.ilink:hover{color:var(--accent)}
 </style>
 </head>
 <body id="top">
 
-<!-- the maker's marks, drawn once ------------------------------------------->
+<!-- the marks, drawn once ---------------------------------------------------->
 <svg class="sprite" aria-hidden="true" focusable="false">
   <!-- a circle drawn by hand: never quite round, never quite closed -->
-  <symbol id="m-vipul" viewBox="0 0 24 24">
+  <symbol id="m-mine" viewBox="0 0 24 24">
     <path d="M12.2 2.6C17.4 2.7 21.5 7 21.4 12.2 21.3 17.4 17 21.5 11.8 21.4 6.7 21.3 2.6 17 2.6 11.8 2.7 6.8 7 2.6 12.2 2.6Z"
           fill="currentColor" stroke="currentColor" stroke-linejoin="round"/>
   </symbol>
-  <symbol id="m-naveen" viewBox="0 0 24 24">
+  <symbol id="m-part" viewBox="0 0 24 24">
     <path d="M12.2 2.6C17.4 2.7 21.5 7 21.4 12.2 21.3 17.4 17 21.5 11.8 21.4 6.7 21.3 2.6 17 2.6 11.8 2.7 6.8 7 2.6 12.2 2.6Z"
           fill="none" stroke="currentColor" stroke-linejoin="round"/>
   </symbol>
-  <symbol id="m-both" viewBox="0 0 24 24">
+  <symbol id="m-half" viewBox="0 0 24 24">
     <path d="M12 2.6C6.8 2.7 2.6 6.9 2.6 12 2.6 17.1 6.8 21.3 12 21.4Z" fill="currentColor" stroke="none"/>
     <path d="M12.2 2.6C17.4 2.7 21.5 7 21.4 12.2 21.3 17.4 17 21.5 11.8 21.4 6.7 21.3 2.6 17 2.6 11.8 2.7 6.8 7 2.6 12.2 2.6Z"
           fill="none" stroke="currentColor" stroke-linejoin="round"/>
@@ -543,24 +615,21 @@ h1 {
 <nav class="nav" aria-label="Primary">
   <div class="nav__in">
     <a class="brand" href="#top">
-      <svg class="brand__marks" viewBox="0 0 40 24" aria-hidden="true">
-        <use href="#m-vipul" x="0" y="0" width="24" height="24"/>
-        <use href="#m-naveen" x="16" y="0" width="24" height="24"/>
-      </svg>
-      <span class="brand__n">Vipul Kumar <i>&amp;</i> Naveen Shah</span>
+      <svg class="brand__m" viewBox="0 0 24 24" aria-hidden="true"><use href="#m-mine"/></svg>
+      <span class="brand__n">Vipul Kumar</span>
     </a>
 
     <div class="nav__links">
       <a href="#product">The product</a>
-      <a href="#team">The two of us</a>
       <a href="#work">Work</a>
-      <a href="#services">What we take on</a>
-      <a href="#process">How it goes</a>
+      <a href="#services">What I do</a>
+      <a href="#process">How I work</a>
+      <a href="#about">About</a>
     </div>
 
     <div class="nav__right">
       <button class="tbtn" id="theme" type="button" aria-label="Switch colour theme" title="Switch colour theme">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#m-both" width="24" height="24"/></svg>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><use href="#m-half" width="24" height="24"/></svg>
       </button>
       <a class="navcta" href="#contact">Get in touch</a>
     </div>
@@ -572,14 +641,15 @@ h1 {
       <div class="mnav__panel" id="mnav-panel">
         <div class="mnav__in">
           <nav aria-label="Sections">
-            <a class="mnav__a" href="#team">The two of us</a>
+            <a class="mnav__a" href="#product">The product</a>
             <a class="mnav__a" href="#work">Work</a>
-            <a class="mnav__a" href="#services">What we take on</a>
-            <a class="mnav__a" href="#process">How it goes</a>
+            <a class="mnav__a" href="#services">What I do</a>
+            <a class="mnav__a" href="#process">How I work</a>
+            <a class="mnav__a" href="#about">About</a>
             <a class="mnav__a" href="#contact">Contact</a>
           </nav>
           <div class="mnav__cta">
-            <a class="btn btn--solid" href="#contact">Start a conversation <span class="arw" aria-hidden="true">&rarr;</span></a>
+            <a class="btn btn--solid" href="#contact">Email me <span class="arw" aria-hidden="true">&rarr;</span></a>
           </div>
         </div>
       </div>
@@ -592,72 +662,84 @@ h1 {
 <!-- ══════════════════════════════ HERO ══════════════════════════════ -->
 <header class="sec hero">
   <div class="wrap">
-    <p class="eyebrow"><span class="dot" aria-hidden="true"></span> Available for freelance projects</p>
+    <p class="eyebrow"><span class="dot" aria-hidden="true"></span> Open to freelance work</p>
 
     <h1>
-      We build software that
+      I build software that
       <span class="inked">isn&rsquo;t allowed<svg viewBox="0 0 200 8" preserveAspectRatio="none" aria-hidden="true"><path d="M2 5.6C38 2.4 74 6.8 110 4.2 140 2 168 5.6 198 3.2" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span>
       to be wrong.
     </h1>
 
     <p class="hero__sub">
-      Vipul Kumar and Naveen Shah — two backend engineers in India. We build and run the
-      infrastructure behind a live derivatives trading platform, and we take freelance
-      work on together, as a pair.
+      I&rsquo;m Vipul Kumar, a backend engineer in India. I build and run the engine that fires
+      live option orders for a trading platform called Algoverve, and the layer that streams
+      what&rsquo;s happening back to your screen while it happens.
+    </p>
+    <p class="hero__sub">
+      I take freelance work in the same areas. Mostly backends where being roughly right
+      isn&rsquo;t good enough.
     </p>
 
     <div class="hero__cta">
-      <a class="btn btn--solid" href="#contact">Start a conversation <span class="arw" aria-hidden="true">&rarr;</span></a>
-      <a class="btn" href="https://algoverve.in/" target="_blank" rel="noopener">Visit Algoverve <span class="arw" aria-hidden="true">&#8599;</span></a>
+      <a class="btn btn--solid" href="#contact">Email me <span class="arw" aria-hidden="true">&rarr;</span></a>
+      <a class="btn" href="https://algoverve.in/" target="_blank" rel="noopener">See the live platform <span class="arw" aria-hidden="true">&#8599;</span></a>
     </div>
 
-    <div class="totals">
-      <div class="total">
-        <div class="total__v num">150,734</div>
-        <div class="total__k">lines of production code</div>
+    <div class="session" id="session" data-open="0" hidden>
+      <span class="session__st">
+        <span class="session__led" aria-hidden="true"></span><span id="session-state">Market closed</span>
+      </span>
+      <span class="session__x" aria-hidden="true">&middot;</span>
+      <span class="session__t num" id="session-clock">&mdash;</span>
+      <span class="session__x" aria-hidden="true">&middot;</span>
+      <span id="session-note">NSE runs 09:15 to 15:30, Monday to Friday. That&rsquo;s the window my code has to hold.</span>
+    </div>
+
+    <div class="proof rv">
+      <div class="proof__i stg">
+        <b>You can go and use it</b>
+        <span>algoverve.in is open on the internet. Sign-up, price list, real market hours. It isn&rsquo;t a case study I&rsquo;m asking you to believe.</span>
       </div>
-      <div class="total">
-        <div class="total__v num">3,005</div>
-        <div class="total__k">automated tests, four suites</div>
+      <div class="proof__i stg">
+        <b>It moves real money</b>
+        <span>Real broker orders, held against real exchange margin. When this is wrong, it&rsquo;s wrong with somebody&rsquo;s capital.</span>
       </div>
-      <div class="total">
-        <div class="total__v num">8</div>
-        <div class="total__k">services in production</div>
+      <div class="proof__i stg">
+        <b>I&rsquo;m the one who gets called</b>
+        <span>If it breaks at 09:20 on a Tuesday, that&rsquo;s my phone. I don&rsquo;t hand things over and hope.</span>
       </div>
-      <p class="small totals__note">Counted from the source, one service at a time. Nothing here is an estimate.</p>
     </div>
   </div>
 </header>
 
-<!-- ══════════════════════════════ THE TWO OF US ══════════════════════════════ -->
+<!-- ══════════════════════════════ THE PRODUCT ══════════════════════════════ -->
 <section class="sec sec--rule" id="product">
   <div class="wrap">
     <div class="shead rv">
       <span class="label">The product</span>
-      <h2>You can go and use the thing we built.</h2>
+      <h2>Start here, because you can actually open it.</h2>
       <p class="lede">
-        Most of what follows is private code running a live platform. The platform itself
-        is not — it is open on the internet, with a sign-up, a price list and real market
-        hours. Everything on this page exists to keep it running.
+        Nearly everything below is private code running a live platform, so you&rsquo;ll have to
+        take my word for a lot of it. The platform itself you don&rsquo;t. It&rsquo;s public, it has real
+        users, and it keeps real market hours.
       </p>
     </div>
 
     <div class="product rv">
       <div class="product__main">
         <p class="product__eyebrow">Algoverve &mdash; live</p>
-        <h3>An options-trading platform for people who do not want to write code.</h3>
+        <h3>Options trading for people who don&rsquo;t want to write code.</h3>
         <p>
-          Traders design multi-leg strategies in a builder, test them against real market
-          data, and deploy them to run on their own. The platform prices the positions,
-          holds capital against exchange margin rules, and shows profit and loss moving in
-          real time. We built and operate all of it, the two of us.
+          Traders build multi-leg strategies in a builder, test them against real market data,
+          and then let them run on their own. The platform prices the positions, holds capital
+          against exchange margin rules, and shows profit and loss moving as it moves.
+        </p>
+        <p>
+          I don&rsquo;t own the product. I own the parts of it that have to be right.
         </p>
         <a class="btn btn--solid" href="https://algoverve.in/" target="_blank" rel="noopener">
           Open algoverve.in <span class="arw" aria-hidden="true">&#8599;</span>
         </a>
-        <p class="product__note">
-          A public product, not a case study we are asking you to take on trust.
-        </p>
       </div>
 
       <ul class="product__f">
@@ -671,230 +753,136 @@ h1 {
   </div>
 </section>
 
-<section class="sec sec--rule" id="team">
-  <div class="wrap">
-    <div class="shead rv">
-      <span class="label">The two of us</span>
-      <h2>Two people, one inbox.</h2>
-      <p class="lede">
-        We&rsquo;ve worked on the same platform long enough to have opinions about each other&rsquo;s
-        code, which is the useful kind of partnership. You get both of us on the work, and
-        one person to talk to.
-      </p>
-    </div>
-
-    <div class="pair rv">
-      <article class="person">
-        <div class="person__top">
-          <svg class="mark mark--lg" role="img" aria-label="Vipul&rsquo;s mark: a filled circle"><use href="#m-vipul"/></svg>
-          <div>
-            <h3>Vipul Kumar</h3>
-            <span class="person__role">Execution &amp; delivery</span>
-          </div>
-        </div>
-        <p>
-          Vipul leads the engine that runs live strategies — the largest system here, by some
-          distance — and both generations of the streaming layer that carries a user&rsquo;s live
-          picture to the browser. He wrote the current one on his own.
-        </p>
-        <p>
-          He&rsquo;s also the one you&rsquo;ll be writing to, and the one who answers.
-        </p>
-        <div class="person__leads">
-          <b>Leads</b>
-          Options execution engine · Live streaming gateway · Streaming gateway, first generation
-        </div>
-      </article>
-
-      <article class="person">
-        <div class="person__top">
-          <svg class="mark mark--lg" role="img" aria-label="Naveen&rsquo;s mark: an open circle"><use href="#m-naveen"/></svg>
-          <div>
-            <h3>Naveen Shah</h3>
-            <span class="person__role">Money &amp; billing</span>
-          </div>
-        </div>
-        <p>
-          Naveen leads everything that touches money on its way in or out: checkout and
-          subscriptions, statutory invoices, and the transactional email that has to arrive
-          exactly once. Equal partner in the work and in the decisions.
-        </p>
-        <p>
-          Enquiries come to Vipul and reach us both &mdash; one inbox, no hand-offs.
-        </p>
-        <div class="person__leads">
-          <b>Leads</b>
-          Payments &amp; subscriptions · Invoice generation · Transactional email
-        </div>
-      </article>
-    </div>
-
-    <div class="together rv">
-      <svg class="mark" role="img" aria-label="Shared mark: a half-filled circle" style="margin-top:3px"><use href="#m-both"/></svg>
-      <p>
-        <b>Built together:</b> the platform API that every strategy is composed through, and the
-        market-data ingest that everything downstream reads. On those two we sat on the same
-        problems from both ends — which is also how we&rsquo;d rather work for you.
-      </p>
-    </div>
-  </div>
-</section>
-
 <!-- ══════════════════════════════ WORK ══════════════════════════════ -->
 <section class="sec sec--rule" id="work">
   <div class="wrap">
     <div class="shead rv">
       <span class="label">Work</span>
-      <h2>Eight services, all of them live.</h2>
+      <h2>Six systems. Four are mine, two I only worked on.</h2>
       <p class="lede">
-        These run a live platform, so the code and the methods stay private. What follows is
-        scope and scale only — the detail belongs in a call, under NDA if you&rsquo;d like one.
-        Every number below was counted from the source.
+        I&rsquo;ve marked which is which, because engineers who claim a whole team&rsquo;s codebase
+        are usually hiding something. This is scope only. The methods stay private, but if you
+        want the detail I&rsquo;ll go as deep on a call as an NDA lets me.
       </p>
     </div>
 
     <div class="legend rv">
-      <span class="legend__i"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-vipul"/></svg> Led by Vipul</span>
-      <span class="legend__i"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-both"/></svg> Built together</span>
-      <span class="legend__i"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-naveen"/></svg> Led by Naveen</span>
+      <span class="legend__i"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-mine"/></svg> Built by me</span>
+      <span class="legend__i"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-part"/></svg> I contributed to it</span>
     </div>
 
     <div class="entries">
 
       <article class="entry rv">
-        <div class="entry__n num">01</div>
+        <div class="entry__n num" aria-hidden="true">01</div>
         <div>
-          <h3>Options execution engine</h3>
+          <div class="entry__head">
+            <h3>Options execution engine</h3>
+            <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-mine"/></svg> Built by me</span>
+          </div>
           <p>
-            A multi-process engine that runs live option strategies end to end: it schedules them,
-            selects the instruments, fires and protects real broker orders, and watches every open
-            position against its risk rules. Seventeen worker processes stay in step with one another.
+            The biggest thing here, and the one I&rsquo;d want to be judged on. It runs live option
+            strategies from end to end: schedules them, picks the instruments, fires the broker
+            orders, protects them, and watches every open position against its risk rules.
+            Seventeen worker processes have to keep agreeing with each other all day.
           </p>
-        </div>
-        <div class="entry__meta">
-          <span class="entry__f"><b class="num">81,614</b><span>lines</span></span>
-          <span class="entry__f"><b class="num">1,887</b><span>tests</span></span>
-          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-vipul"/></svg> Led by Vipul</span>
+          <p>
+            <span class="entry__stake">If it fires an order twice, that money is gone. If it misses an exit it was
+            told to take, same.</span> There is no version of this that is mostly working.
+          </p>
         </div>
       </article>
 
       <article class="entry rv">
-        <div class="entry__n num">02</div>
+        <div class="entry__n num" aria-hidden="true">02</div>
         <div>
-          <h3>Trading platform API</h3>
+          <div class="entry__head">
+            <h3>Live streaming gateway</h3>
+            <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-mine"/></svg> Built by me</span>
+          </div>
           <p>
-            The control plane. Users compose a strategy, the API decides whether it is valid, checks
-            there is margin for it, enforces the limits that apply to that account, and hands it over
-            to the engine to run.
+            One connection per user, carrying their whole live trading picture to the browser.
+            The happy path is the easy half. The real work is what happens when somebody&rsquo;s
+            train goes into a tunnel and their phone reconnects four minutes later, and they
+            have to get back exactly what they missed. Nothing lost, nothing shown twice.
           </p>
-        </div>
-        <div class="entry__meta">
-          <span class="entry__f"><b class="num">38,670</b><span>lines</span></span>
-          <span class="entry__f"><b class="num">683</b><span>tests</span></span>
-          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-both"/></svg> Built together</span>
         </div>
       </article>
 
       <article class="entry rv">
-        <div class="entry__n num">03</div>
+        <div class="entry__n num" aria-hidden="true">03</div>
         <div>
-          <h3>Live streaming gateway</h3>
+          <div class="entry__head">
+            <h3>The streaming gateway before that one</h3>
+            <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-mine"/></svg> Built by me</span>
+          </div>
           <p>
-            One authenticated connection carrying a user&rsquo;s whole live trading picture to the browser,
-            and going on carrying it through a dropped network — without losing anything or showing
-            anything twice.
+            My first attempt at the same problem. It went to production and it worked, right up
+            until the parts I&rsquo;d got wrong started to matter. So I rewrote it, and number 02 is
+            what came out.
           </p>
-        </div>
-        <div class="entry__meta">
-          <span class="entry__f"><b class="num">8,553</b><span>lines</span></span>
-          <span class="entry__f"><b class="num">250</b><span>tests</span></span>
-          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-vipul"/></svg> Sole author — Vipul</span>
+          <p>
+            I keep it on this list on purpose. An engineer who tells you they got a hard thing
+            right first time is telling you they haven&rsquo;t built many hard things.
+          </p>
         </div>
       </article>
 
       <article class="entry rv">
-        <div class="entry__n num">04</div>
+        <div class="entry__n num" aria-hidden="true">04</div>
         <div>
-          <h3>Streaming gateway, first generation</h3>
+          <div class="entry__head">
+            <h3>Trading platform API</h3>
+            <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-part"/></svg> I contributed to it</span>
+          </div>
           <p>
-            The previous generation of that same delivery layer. It ran, it showed us where the sharp
-            edges were, and the rewrite above exists because of what it taught us. We keep it on the
-            list because the lesson is part of the work.
+            The control plane the rest of the platform runs on. A user composes a strategy, this
+            decides whether it&rsquo;s valid, whether there&rsquo;s margin for it, and whether that account
+            is allowed it, then hands it to the engine.
           </p>
-        </div>
-        <div class="entry__meta">
-          <span class="entry__f"><b class="num">9,271</b><span>lines</span></span>
-          <span class="entry__f"><b class="num">185</b><span>tests</span></span>
-          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-vipul"/></svg> Led by Vipul</span>
+          <p>
+            Most of this codebase isn&rsquo;t mine and I&rsquo;m not going to pretend otherwise. My part is
+            the strategy lifecycle, the handover into the engine, the risk limits, the payoff
+            maths and the journal APIs.
+          </p>
         </div>
       </article>
 
       <article class="entry rv">
-        <div class="entry__n num">05</div>
+        <div class="entry__n num" aria-hidden="true">05</div>
         <div>
-          <h3>Market data ingestion</h3>
+          <div class="entry__head">
+            <h3>Market data ingestion</h3>
+            <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-part"/></svg> I contributed to it</span>
+          </div>
           <p>
-            Holds a live broker feed for roughly 1,800 instruments and turns the incoming ticks into
-            the per-minute price stream that everything downstream reads.
+            Holds a live broker feed for roughly 1,800 instruments and turns the incoming ticks
+            into the price stream every other service reads. Another team codebase. Mine is the
+            fast price path and the session timing.
           </p>
-        </div>
-        <div class="entry__meta">
-          <span class="entry__f"><b class="num">3,846</b><span>lines</span></span>
-          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-both"/></svg> Built together</span>
         </div>
       </article>
 
       <article class="entry rv">
-        <div class="entry__n num">06</div>
+        <div class="entry__n num" aria-hidden="true">06</div>
         <div>
-          <h3>Payments &amp; subscriptions</h3>
+          <div class="entry__head">
+            <h3>Options backtesting engine</h3>
+            <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-mine"/></svg> Built by me</span>
+          </div>
           <p>
-            Card and UPI checkout, subscription activation, and the guarantee that one payment
-            arriving from three different directions is still one payment — never a double charge,
-            never a double activation.
+            My own project, built in my own time. A store of Indian index-options history and an
+            engine that replays a strategy across it, so you can find out whether an idea was
+            ever any good before you put money behind it. It&rsquo;s also where I try things I
+            wouldn&rsquo;t try first on something live.
           </p>
-        </div>
-        <div class="entry__meta">
-          <span class="entry__f"><b class="num">4,607</b><span>lines</span></span>
-          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-naveen"/></svg> Led by Naveen</span>
-        </div>
-      </article>
-
-      <article class="entry rv">
-        <div class="entry__n num">07</div>
-        <div>
-          <h3>Invoice generation</h3>
-          <p>
-            A billing-critical service that renders branded statutory invoices, stores them where they
-            cannot quietly go missing, and makes certain the billing system hears about every single one.
-          </p>
-        </div>
-        <div class="entry__meta">
-          <span class="entry__f"><b class="num">2,237</b><span>lines</span></span>
-          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-naveen"/></svg> Led by Naveen</span>
-        </div>
-      </article>
-
-      <article class="entry rv">
-        <div class="entry__n num">08</div>
-        <div>
-          <h3>Transactional email</h3>
-          <p>
-            Password resets and invoices that cannot be lost, duplicated, or sent twice — even when a
-            server dies halfway through sending one.
-          </p>
-        </div>
-        <div class="entry__meta">
-          <span class="entry__f"><b class="num">1,936</b><span>lines</span></span>
-          <span class="entry__by"><svg class="mark mark--sm" aria-hidden="true"><use href="#m-naveen"/></svg> Led by Naveen</span>
         </div>
       </article>
 
     </div>
 
     <div class="work__foot rv">
-      <p class="small">Eight services, all of them in production.</p>
-      <p class="small">Line counts for all eight; test counts for the four suites we measured.</p>
+      <p class="small">Everything above except number 06 is in production right now.</p>
     </div>
   </div>
 </section>
@@ -903,38 +891,38 @@ h1 {
 <section class="sec sec--rule" id="services">
   <div class="wrap">
     <div class="shead rv">
-      <span class="label">What we take on</span>
-      <h2>The same work, pointed at your system.</h2>
+      <span class="label">What I do</span>
+      <h2>Five things I&rsquo;m good at, and one I&rsquo;m not.</h2>
       <p class="lede">
-        Five things we take on, and one we don&rsquo;t. If your problem isn&rsquo;t in the first five,
-        we&rsquo;ll tell you on the first call rather than learn on your budget.
+        If your problem isn&rsquo;t on this list, I&rsquo;d rather say so on the first call than work it
+        out slowly on your budget.
       </p>
     </div>
 
     <div class="lanes rv">
-      <div class="lane">
-        <h3>Real-time delivery to the browser</h3>
-        <p>The layer between your data and your live interface: one authenticated connection, updates that keep their order, and reconnects that don&rsquo;t lose or repeat what the user should have seen.</p>
+      <div class="lane stg">
+        <h3>Live data into a browser</h3>
+        <p>One connection, updates that stay in order, and a reconnect that gives the user back exactly what they missed. Not more, not less.</p>
       </div>
-      <div class="lane">
+      <div class="lane stg">
         <h3>Event-driven backends</h3>
-        <p>Multi-worker pipelines that handle each item once, survive a restart without redoing work, set aside whatever keeps failing, and come back cleanly from a crash mid-operation.</p>
+        <p>Multi-worker pipelines that handle each item once, survive a restart without redoing work, park whatever keeps failing, and come back cleanly after a crash halfway through something.</p>
       </div>
-      <div class="lane">
-        <h3>Payments, billing and invoicing</h3>
-        <p>Checkout, subscription state, invoices and receipts — built so that a payment arriving twice, or a callback arriving late, still leaves exactly one correct outcome behind it.</p>
+      <div class="lane stg">
+        <h3>Market data and trading systems</h3>
+        <p>The specialist one. Live feeds, strategy scheduling, order execution, broker integrations, and cost modelling that matches what the exchange actually charges you.</p>
       </div>
-      <div class="lane">
-        <h3>Email that has to arrive</h3>
-        <p>Password resets, receipts and statements engineered so a send is never lost and never doubled — and so that afterwards you can say exactly what went out, and when.</p>
+      <div class="lane stg">
+        <h3>Making a slow system fast</h3>
+        <p>Most of my last year has been taking things that already worked and making them several times faster. The answer is almost never a rewrite, which is usually the news people don&rsquo;t want.</p>
       </div>
-      <div class="lane">
-        <h3>Market data &amp; trading systems</h3>
-        <p>The specialist lane: live feed ingestion, strategy scheduling, order execution, broker integrations, and cost modelling that matches what actually gets charged.</p>
+      <div class="lane stg">
+        <h3>APIs your front-end dev won&rsquo;t fight</h3>
+        <p>A clear contract, written down, that doesn&rsquo;t change under them on a Friday. I&rsquo;ve been on the other end of the bad version of this.</p>
       </div>
-      <div class="lane lane--no">
-        <h3>What we don&rsquo;t take on</h3>
-        <p>Front-end and design. We&rsquo;d rather say so on the first call than subcontract it badly — and we&rsquo;ll define a clean API contract so your front-end developer has an easy job of it.</p>
+      <div class="lane lane--no stg">
+        <h3>Not front-end, not design</h3>
+        <p>I&rsquo;d do a mediocre job and charge you for it. I&rsquo;ll define the API cleanly instead, so whoever does your front-end has an easy time.</p>
       </div>
     </div>
   </div>
@@ -944,31 +932,66 @@ h1 {
 <section class="sec sec--rule" id="process">
   <div class="wrap">
     <div class="shead rv">
-      <span class="label">How it goes</span>
-      <h2>No discovery theatre.</h2>
-      <p class="lede">You&rsquo;ll know inside a week whether this is working, and so will we.</p>
+      <span class="label">How I work</span>
+      <h2>You&rsquo;ll know inside a week if this is working.</h2>
+      <p class="lede">So will I, and I&rsquo;ll tell you.</p>
     </div>
 
     <div class="steps rv">
-      <div class="step">
+      <div class="step stg">
         <div class="step__n num" aria-hidden="true">1</div>
         <h3>A call</h3>
-        <p>Tell us what the system does and what&rsquo;s going wrong. Free, no pitch. If we&rsquo;re not the right pair for it we&rsquo;ll say so, and point you somewhere better if we can.</p>
+        <p>Tell me what the system does and what&rsquo;s going wrong with it. Free, and no pitch. If I&rsquo;m the wrong person I&rsquo;ll say so, and point you at a better one if I know one.</p>
       </div>
-      <div class="step">
+      <div class="step stg">
         <div class="step__n num" aria-hidden="true">2</div>
-        <h3>A written plan</h3>
-        <p>What we&rsquo;ll do, what we won&rsquo;t, what it costs and when it lands. Fixed scope for defined work; a retainer if it&rsquo;s ongoing.</p>
+        <h3>A plan, in writing</h3>
+        <p>What I&rsquo;ll do and what I won&rsquo;t, what it costs, and when it lands. Fixed scope for defined work, a retainer if it&rsquo;s ongoing.</p>
       </div>
-      <div class="step">
+      <div class="step stg">
         <div class="step__n num" aria-hidden="true">3</div>
-        <h3>Weekly, in writing</h3>
-        <p>Commits as they happen, and a short note every week: what moved, what&rsquo;s next, what worries us. No month-long silences.</p>
+        <h3>A note every week</h3>
+        <p>Commits as they happen, and a short message every week saying what moved, what&rsquo;s next, and what&rsquo;s worrying me. You will not get a month of silence from me.</p>
       </div>
-      <div class="step">
+      <div class="step stg">
         <div class="step__n num" aria-hidden="true">4</div>
         <h3>Handover</h3>
-        <p>Tests, a README your next developer can actually follow, and a walkthrough. The point is that you don&rsquo;t need us afterwards.</p>
+        <p>Tests, a README the next developer can actually follow, and a walkthrough. The whole point is that you stop needing me.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════ ABOUT ══════════════════════════════ -->
+<section class="sec sec--rule" id="about">
+  <div class="wrap">
+    <div class="shead rv">
+      <span class="label">About</span>
+      <h2>A bit about me.</h2>
+    </div>
+
+    <div class="about rv">
+      <div class="about__pic">
+        <img class="about__img" src="data:image/jpeg;base64,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" alt="Vipul Kumar" width="132" height="132" decoding="async">
+        <p class="about__cap">Vipul Kumar<br>India &middot; IST &middot; remote</p>
+      </div>
+      <div class="about__body">
+        <p>
+          I work on the parts of a system where approximately right isn&rsquo;t good enough. Order
+          execution, exchange margin, live data that has to arrive in order and arrive once.
+          It&rsquo;s a narrow kind of engineering and I like it, because at the end of the day the
+          market either agreed with you or it didn&rsquo;t.
+        </p>
+        <p>
+          Most of what I know came from getting something wrong on a system that was already
+          live, which is a bad way to learn and the only way I actually did. The first streaming
+          gateway I wrote is on this page for that reason.
+        </p>
+        <p>
+          I work remotely, on IST, and I&rsquo;m flexible about overlap. I read my own email and I
+          answer it myself, usually the same day. <strong>If I think your project is in trouble,
+          I&rsquo;ll tell you that too.</strong>
+        </p>
       </div>
     </div>
   </div>
@@ -979,21 +1002,20 @@ h1 {
   <div class="wrap">
     <div class="shead rv">
       <span class="label">Contact</span>
-      <h2>Tell us what you&rsquo;re building.</h2>
+      <h2>Tell me what you&rsquo;re building.</h2>
       <p class="lede">
-        One paragraph is plenty: what the system does, what&rsquo;s going wrong or what&rsquo;s missing, and
-        roughly when you need it. You&rsquo;ll get a straight answer about whether we can help and what
-        we&rsquo;d do first — no sales call required.
+        One paragraph is plenty. What the system does, what&rsquo;s going wrong or what&rsquo;s missing,
+        and roughly when you need it. You&rsquo;ll get a straight answer about whether I can help and
+        what I&rsquo;d do first. No sales call.
       </p>
     </div>
 
     <div class="contact rv">
       <div class="contact__main">
-        <img class="me" src="data:image/jpeg;base64,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" alt="Vipul Kumar" width="72" height="72" decoding="async">
-        <h3>Write to Vipul. It reaches both of us.</h3>
+        <h3>Write to me.</h3>
         <p>
-          One inbox for the pair, so nothing gets handed round. Whichever of us the work suits,
-          the reply comes from someone who has read your message properly.
+          I&rsquo;d rather have a short message today than a perfect brief next month. If it turns
+          out I&rsquo;m not the right fit, I&rsquo;ll say so quickly instead of stringing it out.
         </p>
         <a class="btn btn--solid" href="mailto:vipuldhankar17170277@gmail.com" style="align-self:flex-start">
           Start an email <span class="arw" aria-hidden="true">&rarr;</span>
@@ -1004,7 +1026,7 @@ h1 {
             <svg viewBox="0 0 24 24" width="13" height="13" aria-hidden="true"><rect x="8.5" y="3.5" width="12" height="14" rx="2" fill="none" stroke="currentColor" stroke-width="1.7"/><path d="M15.5 20.5H3.5V6.5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>
           <span class="copy__t">Copy</span></button>
         </div>
-        <p class="small contact__note">India · remote · IST — overlap flexible.</p>
+        <p class="small contact__note">India &middot; remote &middot; IST, and flexible about overlap.</p>
       </div>
 
       <div class="aside">
@@ -1025,8 +1047,8 @@ h1 {
           </a>
         </div>
         <div class="facts">
-          <div class="fact"><span class="fact__k">Team</span><span class="fact__v">Two engineers</span></div>
-          <div class="fact"><span class="fact__k">Based</span><span class="fact__v">India — remote</span></div>
+          <div class="fact"><span class="fact__k">Based</span><span class="fact__v">India, remote</span></div>
+          <div class="fact"><span class="fact__k">Hours</span><span class="fact__v">IST, overlap flexible</span></div>
           <div class="fact"><span class="fact__k">Availability</span><span class="fact__v">Open to projects</span></div>
           <div class="fact"><span class="fact__k">Engagement</span><span class="fact__v">Project or retainer</span></div>
         </div>
@@ -1039,18 +1061,17 @@ h1 {
 
 <footer class="foot">
   <div class="wrap foot__in">
-    <svg class="brand__marks" viewBox="0 0 40 24" aria-hidden="true" style="color:var(--accent)">
-      <use href="#m-vipul" x="0" y="0" width="24" height="24"/>
-      <use href="#m-naveen" x="16" y="0" width="24" height="24"/>
-    </svg>
-    <p>&copy; <span id="yr">2026</span> Vipul Kumar &amp; Naveen Shah</p>
-    <p>One page, made by hand · no trackers, no cookies</p>
+    <svg class="mark" aria-hidden="true"><use href="#m-mine"/></svg>
+    <p>&copy; <span id="yr">2026</span> Vipul Kumar</p>
+    <p>I wrote this page by hand. No template, no tracker, no cookie banner.</p>
   </div>
 </footer>
 
 <script>
-/* Progressive enhancement only. Everything below is optional: with this file
-   removed the page still reads, navigates, opens its menu and shows every word. */
+/* Progressive enhancement only. Everything below is optional: with this script
+   removed the page still reads, navigates, opens its menu and shows every word.
+   The one thing that disappears is the market-session line, which is born
+   hidden and only ever unhidden from in here. */
 (function () {
   var root = document.documentElement;
 
@@ -1069,7 +1090,7 @@ h1 {
     btn.addEventListener('click', function () {
       var next = current() === 'dark' ? 'light' : 'dark';
       root.setAttribute('data-theme', next);
-      try { localStorage.setItem('vn-theme', next); } catch (e) {}
+      try { localStorage.setItem('vk-theme', next); } catch (e) {}
       label();
     });
   }
@@ -1095,14 +1116,14 @@ h1 {
   /* ── copy the address ── */
   var copy = document.getElementById('copy');
   if (copy && navigator.clipboard) {
-    var t = copy.querySelector('.copy__t');
+    var ct = copy.querySelector('.copy__t');
     copy.addEventListener('click', function () {
       navigator.clipboard.writeText(copy.getAttribute('data-copy')).then(function () {
         copy.setAttribute('data-state', 'done');
-        if (t) t.textContent = 'Copied';
+        if (ct) ct.textContent = 'Copied';
         setTimeout(function () {
           copy.removeAttribute('data-state');
-          if (t) t.textContent = 'Copy';
+          if (ct) ct.textContent = 'Copy';
         }, 2000);
       }).catch(function () {});
     });
@@ -1113,11 +1134,89 @@ h1 {
   var yr = document.getElementById('yr');
   if (yr) yr.textContent = new Date().getFullYear();
 
+  /* ── the market session line ───────────────────────────────────────────────
+     Reads the clock in Asia/Kolkata no matter where the visitor is, and states
+     the PUBLISHED NSE window: Mon–Fri, 09:15–15:30 IST. It deliberately claims
+     nothing about my own systems. Exchange holidays are not modelled, and the
+     copy says "runs 09:15 to 15:30, Monday to Friday" for exactly that reason —
+     it describes the schedule, not today's trading. If Intl cannot do IST the
+     row stays hidden rather than showing the visitor their own local time. */
+  var sess = document.getElementById('session');
+  if (sess) {
+    var fmt = null;
+    try {
+      fmt = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Asia/Kolkata', hour12: false,
+        weekday: 'short', hour: '2-digit', minute: '2-digit', second: '2-digit'
+      });
+      /* Engines canonicalise this zone to its older IANA link, so both spellings
+         are the same place and both are correct. Checking for only one of them
+         silently hides the row on most browsers. */
+      var tz = fmt.resolvedOptions().timeZone;
+      if (tz !== 'Asia/Kolkata' && tz !== 'Asia/Calcutta') fmt = null;
+    } catch (e) { fmt = null; }
+
+    if (fmt) {
+      var elState = document.getElementById('session-state');
+      var elClock = document.getElementById('session-clock');
+      var OPEN = 9 * 60 + 15, CLOSE = 15 * 60 + 30;
+
+      var tick = function () {
+        var p = {};
+        fmt.formatToParts(new Date()).forEach(function (x) { p[x.type] = x.value; });
+        var h = +p.hour, m = +p.minute, mins = h * 60 + m;
+        var weekday = String(p.weekday).slice(0, 3);
+        var isWeekday = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'].indexOf(weekday) !== -1;
+        var open = isWeekday && mins >= OPEN && mins < CLOSE;
+
+        sess.setAttribute('data-open', open ? '1' : '0');
+        elState.textContent = open ? 'Market open' : 'Market closed';
+        elClock.textContent = p.hour + ':' + p.minute + ':' + p.second + ' IST';
+      };
+
+      tick();
+      sess.hidden = false;
+      setInterval(tick, 1000);
+    }
+  }
+
   /* ── entrance. Armed here, disarmed here, and disarmed again on a timer.
         Reduced motion never arms it at all. ── */
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   var items = document.querySelectorAll('.rv');
   function showAll() { root.className += ' reveal-all'; }
+
+  /* ── you-are-here in the desktop nav ── */
+  var links = {}, sections = [];
+  document.querySelectorAll('.nav__links a[href^="#"]').forEach(function (a) {
+    var id = a.getAttribute('href').slice(1);
+    var el = document.getElementById(id);
+    if (el) { links[id] = a; sections.push(el); }
+  });
+  if (sections.length && 'IntersectionObserver' in window) {
+    /* Track what is currently in the band and always mark the FIRST such
+       section in document order. Reacting to each entry as it arrives would
+       make the winner depend on callback order, which flickers whenever two
+       sections are in the band together — on a short section, or a tall
+       viewport, that is most of the time. */
+    var seen = Object.create(null);
+    var mark = function () {
+      var pick = null, i;
+      for (i = 0; i < sections.length; i++) {
+        if (seen[sections[i].id]) { pick = sections[i].id; break; }
+      }
+      Object.keys(links).forEach(function (k) {
+        if (k === pick) links[k].setAttribute('aria-current', 'page');
+        else links[k].removeAttribute('aria-current');
+      });
+    };
+    var spy = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) { seen[en.target.id] = en.isIntersecting; });
+      mark();
+    }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+    sections.forEach(function (el) { spy.observe(el); });
+  }
+
   if (reduce || !('IntersectionObserver' in window) || !items.length) {
     showAll();
     return;
