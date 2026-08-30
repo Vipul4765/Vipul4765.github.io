@@ -4,12 +4,16 @@ A static, dependency-free personal site. No build step, no framework, no trackin
 Open `index.html` and it works.
 
 ```
-index.html    the entire page — markup, CSS and JS inline
-og.png        1200×630 share preview (regenerate instructions below)
+index.html      the entire page — markup, CSS and JS inline
+og-source.html  source for the share preview
+og.png          1200×630 share preview (regenerate instructions below)
+robots.txt      crawler rules and sitemap pointer
+sitemap.xml     the single canonical page for search engines
 ```
 
-Two files. No webfonts, no images beyond the inline profile photo, and no external
-requests of any kind — the only outbound URLs are algoverve.in, LinkedIn and GitHub.
+No webfonts, no images beyond the inline profile photo and share preview, and no external
+requests of any kind. The only outbound destinations are email, algoverve.in, LinkedIn
+and GitHub.
 The type is a system font stack: a serif for headings, the UI sans for everything else.
 Light theme is the default.
 
@@ -29,9 +33,10 @@ The page marks each system with one of two hand-drawn circles:
 - **filled** = built by me
 - **open** = I contributed to it
 
-Four systems are marked as his (execution engine, both streaming gateways, the
-backtesting engine). Two are marked as contributions (trading platform API ≈11% of the
-codebase, market data ingestion ≈13%). The payment, invoice and email services are
+Four systems are marked as his (execution engine, both streaming-gateway generations,
+and the backtesting engine). The two gateway generations are discussed together in one
+featured case study. Two systems are marked as contributions (trading platform API ≈11%
+of the codebase, market data ingestion ≈13%). The payment, invoice and email services are
 **not** his work — they are a colleague's, essentially in full — and must never be
 listed here in any form. See the `repo-authorship-map` note for how those shares were
 measured, and re-measure before adding anything:
@@ -74,8 +79,10 @@ beats the operating system in both directions.
 
 ### Things to update as they change
 
-- The availability line in the hero, and the `Availability` row in the contact panel.
-- The `og.png` headline if the h1 changes, so the share preview matches the page.
+- The engagement wording in the hero and the `Availability` row in the contact panel.
+- The `og.png` headline and role line if the positioning changes, so the share preview
+  matches the page.
+- The `lastmod` date in `sitemap.xml` when a published content change lands.
 
 ## Two things that are easy to break
 
